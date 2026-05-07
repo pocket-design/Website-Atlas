@@ -841,7 +841,11 @@
     observer.observe(el);
   });
 
-  /* ─── Globe behind hero (lines + multilingual characters, mouse repels) ─── */
+  /* ─── Globe behind hero ─────────────────────────────────────
+     Full-width sphere anchored at the bottom of the hero so
+     only the top hemisphere shows in the first fold. Lines
+     repel from the cursor and bloom into scarlet within a
+     soft radial halo that follows the mouse. */
   (function () {
     const canvas = document.getElementById('globeBg');
     if (!canvas) return;
@@ -861,9 +865,6 @@
     resize();
     window.addEventListener('resize', resize);
 
-    /* Multilingual character pool — Latin, Devanagari, Cyrillic,
-       Hanzi, Arabic, Hiragana — keeps the globe feeling like
-       "stories in every language". */
     const charPool = (
       'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
       'अआइईउऊएऐओऔकखगघचछजझटठडढणतथदधनपफबभमयरलवशषसह' +
@@ -873,8 +874,8 @@
       'あいうえおかきくけこさしすせそ'
     ).split('');
 
-    const latSteps = 16;
-    const lonSteps = 32;
+    const latSteps = 18;
+    const lonSteps = 36;
     const points = [];
     for (let i = 0; i <= latSteps; i++) {
       const lat = Math.PI * (i / latSteps - 0.5);
@@ -903,27 +904,35 @@
       mouseX = -9999; mouseY = -9999;
     });
 
-    const repelR = 110;
-    const repelMax = 38;
+    const repelR   = 130;
+    const repelMax = 44;
+    const hoverR   = 240;
+    const hoverR2  = hoverR * hoverR;
 
-    function project(lat, lon, R) {
+    function project(lat, lon, R, cx, cy) {
       const cl = Math.cos(lat);
       const x3 = cl * Math.cos(lon + rot);
       const y3 = Math.sin(lat);
       const z3 = cl * Math.sin(lon + rot);
-      return { x: W / 2 + x3 * R, y: H / 2 + y3 * R, z: z3 };
+      return { x: cx + x3 * R, y: cy + y3 * R, z: z3 };
     }
 
     function tick() {
       rot += rotSpeed;
       ctx.clearRect(0, 0, W, H);
-      const R = Math.min(W, H) * 0.42;
+
+      /* Full-width globe anchored at the bottom — diameter ≈ page width,
+         center sits just below the fold so only the upper hemisphere
+         curves into the hero. */
+      const R  = Math.min(W * 0.52, H * 0.95);
+      const cx = W * 0.5;
+      const cy = H * 0.96;
       if (R < 60) { requestAnimationFrame(tick); return; }
 
       const proj = new Array(points.length);
       for (let k = 0; k < points.length; k++) {
         const p = points[k];
-        const base = project(p.lat, p.lon, R);
+        const base = project(p.lat, p.lon, R, cx, cy);
 
         const dx = base.x - mouseX;
         const dy = base.y - mouseY;
@@ -942,9 +951,8 @@
         proj[k] = { x: base.x + p.ox, y: base.y + p.oy, z: base.z };
       }
 
+      /* ── Pass 1: ink wireframe ────────────────────────────── */
       ctx.lineWidth = 1;
-
-      // Latitude rings
       for (let i = 0; i <= latSteps; i++) {
         for (let j = 0; j < lonSteps; j++) {
           const a = proj[i * lonSteps + j];
@@ -958,7 +966,6 @@
           ctx.stroke();
         }
       }
-      // Longitude meridians
       for (let j = 0; j < lonSteps; j++) {
         for (let i = 0; i < latSteps; i++) {
           const a = proj[i * lonSteps + j];
@@ -973,7 +980,7 @@
         }
       }
 
-      // Multilingual characters — front hemisphere only
+      /* ── Pass 2: characters (front hemisphere) ────────────── */
       ctx.font = '11px Mallory, system-ui, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -985,6 +992,80 @@
         const alpha = Math.max(0, ((pp.z + 1) * 0.5)) * 0.32;
         ctx.fillStyle = 'rgba(28,28,28,' + alpha.toFixed(3) + ')';
         ctx.fillText(p.char, pp.x, pp.y);
+      }
+
+      /* ── Pass 3: scarlet hover halo ────────────────────────
+         Re-strokes only the segments and characters within
+         hoverR of the cursor, in scarlet, with shadowBlur for
+         the soft "blurred" glow that radiates from the mouse. */
+      if (mouseX > -1000) {
+        ctx.save();
+        ctx.shadowColor = 'rgba(245,29,0,0.55)';
+        ctx.shadowBlur  = 14;
+        ctx.lineWidth   = 1.2;
+
+        // Latitude segments near cursor
+        for (let i = 0; i <= latSteps; i++) {
+          for (let j = 0; j < lonSteps; j++) {
+            const a = proj[i * lonSteps + j];
+            const b = proj[i * lonSteps + ((j + 1) % lonSteps)];
+            const mx = (a.x + b.x) * 0.5;
+            const my = (a.y + b.y) * 0.5;
+            const ddx = mx - mouseX, ddy = my - mouseY;
+            const d2 = ddx * ddx + ddy * ddy;
+            if (d2 > hoverR2) continue;
+            const t = 1 - Math.sqrt(d2) / hoverR;
+            const f = t * t;
+            const az = (a.z + b.z) * 0.5;
+            const depth = Math.max(0, (az + 1) * 0.5);
+            ctx.strokeStyle = 'rgba(245,29,0,' + (f * 0.85 * depth).toFixed(3) + ')';
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+        // Longitude segments near cursor
+        for (let j = 0; j < lonSteps; j++) {
+          for (let i = 0; i < latSteps; i++) {
+            const a = proj[i * lonSteps + j];
+            const b = proj[(i + 1) * lonSteps + j];
+            const mx = (a.x + b.x) * 0.5;
+            const my = (a.y + b.y) * 0.5;
+            const ddx = mx - mouseX, ddy = my - mouseY;
+            const d2 = ddx * ddx + ddy * ddy;
+            if (d2 > hoverR2) continue;
+            const t = 1 - Math.sqrt(d2) / hoverR;
+            const f = t * t;
+            const az = (a.z + b.z) * 0.5;
+            const depth = Math.max(0, (az + 1) * 0.5);
+            ctx.strokeStyle = 'rgba(245,29,0,' + (f * 0.85 * depth).toFixed(3) + ')';
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+        // Characters near cursor
+        ctx.font = '11px Mallory, system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        for (let k = 0; k < points.length; k++) {
+          const p = points[k];
+          if (!p.showChar) continue;
+          const pp = proj[k];
+          if (pp.z < -0.05) continue;
+          const ddx = pp.x - mouseX, ddy = pp.y - mouseY;
+          const d2 = ddx * ddx + ddy * ddy;
+          if (d2 > hoverR2) continue;
+          const t = 1 - Math.sqrt(d2) / hoverR;
+          const f = t * t;
+          const depth = Math.max(0, (pp.z + 1) * 0.5);
+          ctx.fillStyle = 'rgba(245,29,0,' + (f * 0.95 * depth).toFixed(3) + ')';
+          ctx.fillText(p.char, pp.x, pp.y);
+        }
+
+        ctx.restore();
       }
 
       requestAnimationFrame(tick);
