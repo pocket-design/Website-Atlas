@@ -4,430 +4,515 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pocket Atlas — Go Global</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #08080f;
-      --surface: #0f0f1c;
-      --card: #14142a;
-      --border: rgba(255, 255, 255, 0.07);
-      --primary: #8B5CF6;
-      --primary-light: #a78bfa;
-      --text: #eeeef8;
-      --muted: #7878a0;
-      --radius: 18px;
+    /* ── Self-hosted fonts ───────────────────────────────────── */
+    @font-face {
+      font-family: 'Season Mix';
+      src: url('./fonts/SeasonMix-Regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Mallory';
+      src: url('./fonts/Mallory-MP-Narrow-Book.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Mallory';
+      src: url('./fonts/Mallory-MP-Narrow-Bold.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
     }
 
+    /* ── Design tokens ───────────────────────────────────────── */
+    :root {
+      /* Ink */
+      --ink-tint-7:  #E2E2E2;
+      --ink-tint-6:  #C6C6C6;
+      --ink-tint-5:  #A9A9A9;
+      --ink-tint-4:  #8D8D8D;
+      --ink-tint-3:  #717171;
+      --ink-tint-1:  #383838;
+      --ink:         #1C1C1C;
+      --ink-shade-2: #151515;
+
+      /* Vellum */
+      --vellum-tint-7:  #FEFEFD;
+      --vellum-tint-3:  #FBFBF6;
+      --vellum:         #FAF9F1;
+      --vellum-shade-1: #DAD9D2;
+      --vellum-shade-2: #BBBAB4;
+      --vellum-shade-3: #9C9B96;
+      --vellum-shade-4: #7D7C78;
+
+      /* Scarlet */
+      --scarlet-tint-7:  #FDE2DF;
+      --scarlet:         #F51D00;
+      --scarlet-shade-1: #D61900;
+      --scarlet-shade-2: #B71500;
+
+      /* Semantic */
+      --text-primary:    var(--ink);
+      --text-secondary:  var(--ink-tint-3);
+      --text-tertiary:   var(--ink-tint-4);
+      --text-on-dark:    var(--vellum);
+
+      --surface-page:    var(--vellum);
+      --surface-card:    var(--vellum-tint-7);
+      --surface-alt:     var(--vellum-shade-1);
+      --surface-divider: var(--vellum-shade-2);
+      --surface-inverse: var(--ink);
+
+      /* Spacing (8px grid) */
+      --sp-half: 4px;
+      --sp-1:    8px;
+      --sp-1-5:  12px;
+      --sp-2:    16px;
+      --sp-2-5:  20px;
+      --sp-3:    24px;
+      --sp-4:    32px;
+      --sp-5:    40px;
+      --sp-6:    48px;
+      --sp-8:    64px;
+      --sp-10:   80px;
+      --sp-12:   96px;
+      --sp-15:   120px;
+      --sp-20:   160px;
+
+      /* Container */
+      --container:        1200px;
+      --container-narrow: 720px;
+
+      /* Radii */
+      --r-btn:  4px;
+      --r-input: 4px;
+      --r-tag:  4px;
+      --r-card: 6px;
+      --r-pill: 32px;
+
+      /* Motion */
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+      font-family: 'Mallory', 'Inter', system-ui, sans-serif;
+      background: var(--surface-page);
+      color: var(--text-primary);
+      font-size: 16px;
+      line-height: 1.55;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── NAV ── */
+    /* ── Type scale ──────────────────────────────────────────── */
+    .t-display {
+      font-family: 'Season Mix', Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(40px, 5.4vw, 56px);
+      line-height: 1.07;
+      letter-spacing: -0.03em;
+    }
+    .t-h1 {
+      font-family: 'Season Mix', Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(36px, 4.5vw, 48px);
+      line-height: 1.10;
+      letter-spacing: -0.025em;
+    }
+    .t-h2 {
+      font-family: 'Season Mix', Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(28px, 3.4vw, 36px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .t-h3 {
+      font-family: 'Season Mix', Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(22px, 2.4vw, 28px);
+      line-height: 1.20;
+      letter-spacing: -0.015em;
+    }
+    .t-h4 {
+      font-family: 'Season Mix', Georgia, serif;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+    .t-subheading {
+      font-family: 'Mallory', system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+    .t-body {
+      font-family: 'Mallory', system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+    .t-body-sm {
+      font-family: 'Mallory', system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.45;
+      letter-spacing: 0.003em;
+    }
+    .t-label {
+      font-family: 'Mallory', system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 1.4;
+      letter-spacing: 0.005em;
+    }
+    .t-eyebrow {
+      font-family: 'Mallory', system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .t-caption {
+      font-family: 'Mallory', system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 11px;
+      line-height: 1.4;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Buttons ─────────────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-1);
+      background: var(--ink);
+      color: var(--vellum);
+      border: none;
+      padding: var(--sp-1) var(--sp-2-5);
+      border-radius: var(--r-pill); /* nav CTA uses pill */
+      font-family: 'Mallory', system-ui, sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: background 120ms var(--ease);
+    }
+    .btn-primary:hover  { background: var(--ink-tint-1); }
+    .btn-primary:active { background: var(--ink-shade-2); }
+
+    .btn-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-1);
+      background: var(--scarlet);
+      color: var(--vellum);
+      border: none;
+      padding: var(--sp-1) var(--sp-3);
+      border-radius: var(--r-btn);
+      font-family: 'Mallory', system-ui, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: background 120ms var(--ease);
+    }
+    .btn-brand:hover    { background: var(--scarlet-shade-1); }
+    .btn-brand:active   { background: var(--scarlet-shade-2); }
+    .btn-brand:disabled { opacity: 0.5; cursor: default; }
+
+    /* ── NAV ─────────────────────────────────────────────────── */
     nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px 64px;
-      border-bottom: 1px solid var(--border);
+      padding: var(--sp-2-5) var(--sp-8);
+      border-bottom: 1px solid var(--surface-divider);
       position: sticky;
       top: 0;
-      background: rgba(8, 8, 15, 0.85);
+      background: rgba(250, 249, 241, 0.92);
       backdrop-filter: blur(16px);
       z-index: 100;
     }
-
     .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
+      font-family: 'Season Mix', Georgia, serif;
+      font-weight: 400;
       font-size: 18px;
-      letter-spacing: -0.4px;
+      letter-spacing: -0.02em;
+      color: var(--ink);
     }
-    .nav-logo span { color: var(--primary-light); }
+    .nav-logo span { color: var(--scarlet); }
 
     .nav-links {
       display: flex;
-      gap: 36px;
+      gap: var(--sp-6);
       list-style: none;
     }
     .nav-links a {
-      color: var(--muted);
+      color: var(--text-secondary);
       text-decoration: none;
       font-size: 14px;
-      font-weight: 500;
-      transition: color 0.18s;
+      transition: color 120ms var(--ease);
     }
-    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover { color: var(--text-primary); }
 
-    .nav-cta {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 10px 22px;
-      border-radius: 9px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      transition: opacity 0.18s, transform 0.18s;
-    }
-    .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
-
-    /* ── FOLD 1: HERO ── */
+    /* ── FOLD 1 — HERO ───────────────────────────────────────── */
     .hero {
-      padding: 112px 64px 128px;
+      padding: var(--sp-20) var(--sp-8);
       text-align: center;
-      position: relative;
-      overflow: hidden;
     }
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -60px; left: 50%;
-      transform: translateX(-50%);
-      width: 900px;
-      height: 480px;
-      background: radial-gradient(ellipse at 50% 30%, rgba(139,92,246,0.18) 0%, transparent 65%);
-      pointer-events: none;
+    .hero-eyebrow {
+      color: var(--scarlet);
+      margin-bottom: var(--sp-2);
     }
-
-    .hero-badge {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--primary-light);
-      padding: 6px 16px;
-      border: 1px solid rgba(139,92,246,0.35);
-      border-radius: 100px;
-      margin-bottom: 28px;
-    }
-
     .hero-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(72px, 10vw, 132px);
-      font-weight: 800;
-      line-height: 0.92;
-      letter-spacing: -4px;
-      margin-bottom: 56px;
-      background: linear-gradient(140deg, #ffffff 40%, #8B5CF6 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      margin-bottom: var(--sp-12);
     }
 
-    /* ── Story boxes ── */
     .story-wrapper {
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 20px;
+      gap: var(--sp-3);
+      max-width: 1040px;
       margin: 0 auto;
-      max-width: 1080px;
     }
 
     .story-box {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px 32px 28px;
+      background: var(--surface-card);
+      border: 1px solid var(--surface-divider);
+      border-radius: var(--r-card);
+      padding: var(--sp-4);
       text-align: left;
       width: 480px;
       flex-shrink: 0;
-      transition: border-color 0.25s;
+      box-shadow: rgba(0,0,0,0.06) 0 3px 6px 0;
+      transition: border-color 120ms var(--ease);
     }
-    .story-box:hover { border-color: rgba(139,92,246,0.25); }
+    .story-box:hover { border-color: var(--vellum-shade-3); }
 
     .box-lang {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 14px;
+      color: var(--text-tertiary);
+      margin-bottom: var(--sp-2);
     }
 
     .story-box p {
-      font-size: 15px;
-      line-height: 1.75;
-      color: #c0c0da;
-      margin-bottom: 28px;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: var(--sp-4);
     }
 
-    .cta-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      transition: background 0.2s, transform 0.18s, opacity 0.2s;
-    }
-    .cta-btn:hover { background: #7c3aed; transform: translateY(-1px); }
-    .cta-btn:disabled { opacity: 0.6; cursor: default; transform: none; }
-
-    /* Right box — hidden until "Make it global" clicked */
+    /* Right box — hidden, reveals on CTA click */
     .story-box-right {
       opacity: 0;
-      transform: translateX(24px);
+      transform: translateX(20px);
       pointer-events: none;
-      overflow: hidden;
       max-width: 0;
       padding: 0;
+      overflow: hidden;
       border: none;
+      box-shadow: none;
     }
     .story-box-right.visible {
       opacity: 1;
       transform: translateX(0);
       pointer-events: all;
       max-width: 480px;
-      padding: 32px 32px 28px;
-      border: 1px solid rgba(139,92,246,0.28);
+      padding: var(--sp-4);
+      border: 1px solid var(--scarlet-tint-7);
+      box-shadow: rgba(0,0,0,0.06) 0 3px 6px 0;
       transition:
-        opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-        transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-        max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity 0.45s var(--ease),
+        transform 0.45s var(--ease),
+        max-width 0.4s var(--ease);
     }
 
-    .adapted-badge {
+    .adapted-tag {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #34d399;
-      background: rgba(52,211,153,0.1);
-      padding: 5px 12px;
-      border-radius: 100px;
-      margin-bottom: 14px;
+      gap: var(--sp-half);
+      color: var(--scarlet);
+      background: var(--scarlet-tint-7);
+      padding: var(--sp-half) var(--sp-1-5);
+      border-radius: var(--r-tag);
+      margin-bottom: var(--sp-2);
     }
 
-    /* ── FOLD 2: BENTO ── */
+    /* ── FOLD 2 — BENTO ──────────────────────────────────────── */
     .bento {
-      padding: 112px 64px;
+      padding: var(--sp-12) var(--sp-8);
+      border-top: 1px solid var(--surface-divider);
     }
 
-    .fold-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--primary-light);
-      margin-bottom: 14px;
+    .section-header {
+      max-width: var(--container);
+      margin: 0 auto var(--sp-8);
     }
-
-    .fold-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(34px, 4vw, 52px);
-      font-weight: 800;
-      letter-spacing: -1.5px;
-      margin-bottom: 52px;
-      line-height: 1.08;
+    .section-eyebrow {
+      color: var(--scarlet);
+      margin-bottom: var(--sp-2);
     }
 
     .bento-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto auto;
-      gap: 14px;
-      max-width: 1080px;
+      gap: var(--sp-2);
+      max-width: var(--container);
       margin: 0 auto;
     }
 
     .bcell {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 36px;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.22s;
+      background: var(--surface-card);
+      border: 1px solid var(--surface-divider);
+      border-radius: var(--r-card);
+      padding: var(--sp-4);
+      transition: border-color 120ms var(--ease), box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
     }
-    .bcell:hover { border-color: rgba(139,92,246,0.3); }
-    .bcell.wide  { grid-column: span 2; }
-    .bcell.tall  { grid-row: span 2; }
+    .bcell:hover {
+      border-color: var(--vellum-shade-3);
+      box-shadow: rgba(50,50,93,0.12) 0 16px 32px 0;
+      transform: translateY(-2px);
+    }
+    .bcell.wide { grid-column: span 2; }
 
     .bcell-icon {
-      font-size: 32px;
-      margin-bottom: 20px;
+      font-size: 28px;
+      margin-bottom: var(--sp-3);
       display: block;
     }
-
-    .bcell h3 {
-      font-size: 19px;
-      font-weight: 700;
-      letter-spacing: -0.4px;
-      margin-bottom: 12px;
-    }
-
-    .bcell p {
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.65;
-    }
+    .bcell h3 { margin-bottom: var(--sp-1-5); }
+    .bcell p  { color: var(--text-secondary); }
 
     .bcell-stat {
-      font-family: 'Syne', sans-serif;
-      font-size: 60px;
-      font-weight: 800;
-      color: var(--primary-light);
+      font-family: 'Season Mix', Georgia, serif;
+      font-size: 56px;
+      font-weight: 400;
       line-height: 1;
-      margin-bottom: 6px;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: var(--sp-1);
     }
 
-    /* ── FOLD 3: CARDS ── */
+    /* ── FOLD 3 — CARDS ──────────────────────────────────────── */
     .cards-section {
-      padding: 112px 64px;
-      background: var(--surface);
+      padding: var(--sp-12) var(--sp-8);
+      background: var(--surface-alt);
+      border-top: 1px solid var(--surface-divider);
+      border-bottom: 1px solid var(--surface-divider);
     }
-
-    .cards-section .fold-title,
-    .cards-section .fold-label { text-align: center; }
+    .cards-section .section-header { text-align: center; }
 
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+      gap: var(--sp-3);
       max-width: 860px;
       margin: 0 auto;
     }
 
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      background: var(--surface-card);
+      border: 1px solid var(--surface-divider);
+      border-radius: var(--r-card);
       overflow: hidden;
-      transition: transform 0.22s, border-color 0.22s;
+      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
     }
     .card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(139,92,246,0.3);
+      transform: translateY(-2px);
+      box-shadow: rgba(50,50,93,0.12) 0 16px 32px 0;
     }
 
     .card-img {
       width: 100%;
-      height: 192px;
+      height: 180px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 52px;
+      font-size: 44px;
+      border-bottom: 1px solid var(--surface-divider);
     }
-    .card-img.c1 { background: linear-gradient(135deg, #1a1040, #3b0764); }
-    .card-img.c2 { background: linear-gradient(135deg, #0f2027, #1a3a4c); }
-    .card-img.c3 { background: linear-gradient(135deg, #1a0a2e, #4a0e6b); }
-    .card-img.c4 { background: linear-gradient(135deg, #0a1a2e, #0e3d6b); }
+    .card-img.c1 { background: var(--vellum-shade-1); }
+    .card-img.c2 { background: var(--vellum-shade-2); }
+    .card-img.c3 { background: var(--vellum-tint-3); }
+    .card-img.c4 { background: var(--scarlet-tint-7); }
 
-    .card-body { padding: 24px; }
-    .card-body h3 {
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-      margin-bottom: 8px;
-    }
-    .card-body p {
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
+    .card-body { padding: var(--sp-3); }
+    .card-body h3 { margin-bottom: var(--sp-1); }
+    .card-body p  { color: var(--text-secondary); }
 
-    /* ── FOLD 4: FINAL CTA ── */
+    /* ── FOLD 4 — FINAL CTA ──────────────────────────────────── */
     .final-cta {
-      padding: 128px 64px;
+      padding: var(--sp-20) var(--sp-8);
       text-align: center;
-      position: relative;
-      overflow: hidden;
+      background: var(--surface-inverse);
     }
-    .final-cta::before {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 700px;
-      height: 300px;
-      background: radial-gradient(ellipse at 50% 100%, rgba(139,92,246,0.14) 0%, transparent 65%);
-      pointer-events: none;
-    }
-
     .final-cta h2 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(38px, 5.5vw, 68px);
-      font-weight: 800;
-      letter-spacing: -2.5px;
-      line-height: 1.05;
-      margin-bottom: 52px;
+      color: var(--text-on-dark);
+      margin-bottom: var(--sp-8);
     }
 
     .prompt-box {
       display: flex;
-      gap: 10px;
-      max-width: 580px;
+      gap: var(--sp-1);
+      max-width: 560px;
       margin: 0 auto;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 8px 8px 8px 22px;
-      transition: border-color 0.22s, box-shadow 0.22s;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--r-input);
+      padding: var(--sp-1) var(--sp-1) var(--sp-1) var(--sp-3);
+      transition: border-color 120ms var(--ease);
     }
-    .prompt-box:focus-within {
-      border-color: rgba(139,92,246,0.5);
-      box-shadow: 0 0 0 4px rgba(139,92,246,0.08);
-    }
+    .prompt-box:focus-within { border-color: rgba(255,255,255,0.4); }
 
     .prompt-box input {
       flex: 1;
       background: none;
       border: none;
       outline: none;
-      color: var(--text);
+      color: var(--vellum);
       font-size: 15px;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Mallory', system-ui, sans-serif;
     }
-    .prompt-box input::placeholder { color: var(--muted); }
+    .prompt-box input::placeholder { color: rgba(250,249,241,0.4); }
 
     .prompt-submit {
-      background: var(--primary);
-      color: #fff;
+      background: var(--vellum);
+      color: var(--ink);
       border: none;
-      padding: 12px 22px;
-      border-radius: 9px;
-      font-size: 14px;
-      font-weight: 600;
+      padding: var(--sp-1) var(--sp-3);
+      border-radius: var(--r-btn);
+      font-family: 'Mallory', system-ui, sans-serif;
+      font-size: 13px;
+      font-weight: 400;
       cursor: pointer;
-      font-family: 'Inter', sans-serif;
       white-space: nowrap;
-      transition: opacity 0.18s, transform 0.18s;
+      transition: background 120ms var(--ease);
     }
-    .prompt-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+    .prompt-submit:hover { background: var(--vellum-shade-1); }
 
-    /* ── FOOTER ── */
+    /* ── FOOTER ──────────────────────────────────────────────── */
     footer {
-      border-top: 1px solid var(--border);
-      padding: 28px 64px;
+      border-top: 1px solid var(--surface-divider);
+      padding: var(--sp-4) var(--sp-8);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      background: var(--surface-page);
     }
-    footer .nav-logo { font-size: 15px; }
-    footer p { font-size: 13px; color: var(--muted); }
+    .footer-logo {
+      font-family: 'Season Mix', Georgia, serif;
+      font-weight: 400;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+    }
+    .footer-logo span { color: var(--scarlet); }
   </style>
 </head>
 <body>
@@ -441,116 +526,108 @@
     <li><a href="#">Pricing</a></li>
     <li><a href="#">Docs</a></li>
   </ul>
-  <button class="nav-cta">Get started</button>
+  <button class="btn-primary">Get started</button>
 </nav>
 
-<!-- ────────────────── FOLD 1 — HERO ────────────────── -->
+<!-- ── FOLD 1 — HERO ── -->
 <section class="hero">
-  <div class="hero-badge">Introducing Pocket Atlas</div>
-  <h1 class="hero-title">Season Mix</h1>
+  <div class="t-eyebrow hero-eyebrow">Introducing Pocket Atlas</div>
+  <h1 class="t-display hero-title">Season Mix</h1>
 
   <div class="story-wrapper" id="storyWrapper">
 
-    <!-- Left box — English -->
+    <!-- Left — English original -->
     <div class="story-box">
-      <div class="box-lang">🇺🇸 English — Original</div>
+      <div class="t-eyebrow box-lang">🇺🇸 English — Original</div>
       <p>In a small coastal town, where the fog rolled in every morning like a gentle reminder of the sea's presence, lived a young lighthouse keeper named Elara. She had inherited the lighthouse from her grandmother, along with its ancient logbook filled with stories of ships guided safely home through the darkest storms.</p>
-      <button class="cta-btn" id="makeGlobalBtn" onclick="makeGlobal()">
+      <button class="btn-brand" id="makeGlobalBtn" onclick="makeGlobal()">
         🌍 Make it global
       </button>
     </div>
 
-    <!-- Right box — Adapted locale (hidden until CTA click) -->
+    <!-- Right — adapted locale, hidden until click -->
     <div class="story-box story-box-right" id="storyRight">
-      <div class="adapted-badge">✦ Culturally adapted</div>
-      <div class="box-lang">🇮🇳 Hindi — Local Market</div>
+      <div class="adapted-tag t-caption">✦ Culturally adapted</div>
+      <div class="t-eyebrow box-lang">🇮🇳 Hindi — Local Market</div>
       <p>एक छोटे से तटीय गाँव में, जहाँ हर सुबह कोहरा समुद्र की याद दिलाता हुआ आता था, वहाँ एलारा नाम की एक युवा दीपस्तम्भ-रक्षक रहती थी। उसे यह विरासत अपनी नानी से मिली थी — साथ में एक पुरानी डायरी, जो सबसे भयानक तूफ़ानों में घर लौटे जहाज़ों की कहानियों से भरी थी।</p>
     </div>
 
   </div>
 </section>
 
-<!-- ────────────────── FOLD 2 — BENTO ────────────────── -->
+<!-- ── FOLD 2 — BENTO ── -->
 <section class="bento">
-  <div style="max-width: 1080px; margin: 0 auto;">
-    <div class="fold-label">What we do</div>
-    <h2 class="fold-title">Built for stories that<br>cross borders</h2>
+  <div class="section-header">
+    <div class="t-eyebrow section-eyebrow">What we do</div>
+    <h2 class="t-h2">Built for stories that cross borders</h2>
+  </div>
 
-    <div class="bento-grid">
-
-      <div class="bcell wide">
-        <span class="bcell-icon">🌐</span>
-        <h3>Cultural Intelligence, Not Just Translation</h3>
-        <p>Pocket Atlas goes beyond word-for-word translation. It adapts idioms, cultural references, humor, and emotional resonance so your story feels native — no matter where it lands.</p>
-      </div>
-
-      <div class="bcell">
-        <div class="bcell-stat">100+</div>
-        <h3>Languages</h3>
-        <p>Reach listeners across every major market on earth.</p>
-      </div>
-
-      <div class="bcell">
-        <span class="bcell-icon">⚡</span>
-        <h3>Instant Adaptation</h3>
-        <p>From English to any locale in seconds, powered by deep narrative AI.</p>
-      </div>
-
-      <div class="bcell wide">
-        <span class="bcell-icon">📖</span>
-        <h3>Story-Aware AI</h3>
-        <p>Unlike generic translation tools, Pocket Atlas understands genre, tone, pacing, and character voice — preserving what makes your story uniquely yours across every market.</p>
-      </div>
-
+  <div class="bento-grid">
+    <div class="bcell wide">
+      <span class="bcell-icon">🌐</span>
+      <h3 class="t-h3">Cultural Intelligence, Not Just Translation</h3>
+      <p class="t-body-sm">Pocket Atlas goes beyond word-for-word translation. It adapts idioms, cultural references, humor, and emotional resonance so your story feels native — no matter where it lands.</p>
+    </div>
+    <div class="bcell">
+      <div class="bcell-stat">100+</div>
+      <h3 class="t-h4">Languages</h3>
+      <p class="t-body-sm">Reach listeners across every major market on earth.</p>
+    </div>
+    <div class="bcell">
+      <span class="bcell-icon">⚡</span>
+      <h3 class="t-h4">Instant Adaptation</h3>
+      <p class="t-body-sm">From English to any locale in seconds, powered by deep narrative AI.</p>
+    </div>
+    <div class="bcell wide">
+      <span class="bcell-icon">📖</span>
+      <h3 class="t-h3">Story-Aware AI</h3>
+      <p class="t-body-sm">Unlike generic translation tools, Pocket Atlas understands genre, tone, pacing, and character voice — preserving what makes your story uniquely yours across every market.</p>
     </div>
   </div>
 </section>
 
-<!-- ────────────────── FOLD 3 — CARDS ────────────────── -->
+<!-- ── FOLD 3 — CARDS ── -->
 <section class="cards-section">
-  <div class="fold-label">Use cases</div>
-  <h2 class="fold-title" style="text-align:center;">One story,<br>every culture</h2>
+  <div class="section-header">
+    <div class="t-eyebrow section-eyebrow">Use cases</div>
+    <h2 class="t-h2">One episode, every culture</h2>
+  </div>
 
   <div class="cards-grid">
-
     <div class="card">
       <div class="card-img c1">🎙️</div>
       <div class="card-body">
-        <h3>Audio Drama</h3>
-        <p>Adapt your podcast or audio drama to resonate with listeners in any language and cultural context.</p>
+        <h3 class="t-h4">Audio Drama</h3>
+        <p class="t-body-sm">Adapt your podcast or audio drama to resonate with listeners in any language and cultural context.</p>
       </div>
     </div>
-
     <div class="card">
       <div class="card-img c2">📚</div>
       <div class="card-body">
-        <h3>Serial Fiction</h3>
-        <p>Publish your serialized stories globally without losing character depth or narrative consistency.</p>
+        <h3 class="t-h4">Serial Fiction</h3>
+        <p class="t-body-sm">Publish your serialized stories globally without losing character depth or narrative consistency.</p>
       </div>
     </div>
-
     <div class="card">
       <div class="card-img c3">🎬</div>
       <div class="card-body">
-        <h3>Script Adaptation</h3>
-        <p>Turn screenplays and dialogue into culturally fluent scripts ready for international production.</p>
+        <h3 class="t-h4">Script Adaptation</h3>
+        <p class="t-body-sm">Turn screenplays and dialogue into culturally fluent scripts ready for international production.</p>
       </div>
     </div>
-
     <div class="card">
       <div class="card-img c4">✍️</div>
       <div class="card-body">
-        <h3>Creator Tools</h3>
-        <p>A full suite of writing, editing, and localization tools designed for the modern global storyteller.</p>
+        <h3 class="t-h4">Creator Tools</h3>
+        <p class="t-body-sm">A full suite of writing, editing, and localization tools designed for the modern global storyteller.</p>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- ────────────────── FOLD 4 — FINAL CTA ────────────────── -->
+<!-- ── FOLD 4 — FINAL CTA ── -->
 <section class="final-cta">
-  <h2>Bring your story to<br>Pocket today</h2>
+  <h2 class="t-h1">Bring your story to<br>Pocket today</h2>
   <div class="prompt-box">
     <input type="text" placeholder="Paste your story or describe what you're building…" />
     <button class="prompt-submit">Get started →</button>
@@ -559,13 +636,13 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="nav-logo">Pocket <span>Atlas</span></div>
-  <p>© 2025 Pocket FM. All rights reserved.</p>
+  <div class="footer-logo">Pocket <span>Atlas</span></div>
+  <p class="t-caption" style="color: var(--text-tertiary);">© 2025 Pocket FM. All rights reserved.</p>
 </footer>
 
 <script>
   function makeGlobal() {
-    const btn = document.getElementById('makeGlobalBtn');
+    const btn   = document.getElementById('makeGlobalBtn');
     const right = document.getElementById('storyRight');
 
     btn.disabled = true;
@@ -574,7 +651,7 @@
     setTimeout(() => {
       right.classList.add('visible');
       btn.innerHTML = '✓ Adapted';
-      btn.style.background = '#059669';
+      btn.style.background = 'var(--ink)'; /* settle to primary after action completes */
     }, 380);
   }
 </script>
