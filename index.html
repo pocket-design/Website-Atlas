@@ -292,6 +292,19 @@
     .hero {
       padding: var(--sp-20) var(--sp-8);
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero > * { position: relative; z-index: 1; }
+
+    /* Globe canvas — behind hero content */
+    .globe-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
     }
 
     .hero-title {
@@ -643,6 +656,7 @@
 
 <!-- ── FOLD 1 — HERO ── -->
 <section class="hero">
+  <canvas class="globe-bg" id="globeBg" aria-hidden="true"></canvas>
   <h1 class="t-display hero-title">Translation changes words. We change worlds.</h1>
   <p class="t-subheading hero-subhead">Reimagine your story across cultures and geographies so it truly belongs everywhere.</p>
 
@@ -826,6 +840,157 @@
     el.style.transition = `opacity 0.5s ${easing} ${delay}ms, transform 0.5s ${easing} ${delay}ms`;
     observer.observe(el);
   });
+
+  /* ─── Globe behind hero (lines + multilingual characters, mouse repels) ─── */
+  (function () {
+    const canvas = document.getElementById('globeBg');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const hero = canvas.parentElement;
+
+    let W = 0, H = 0;
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+      canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+      W = rect.width;
+      H = rect.height;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    /* Multilingual character pool — Latin, Devanagari, Cyrillic,
+       Hanzi, Arabic, Hiragana — keeps the globe feeling like
+       "stories in every language". */
+    const charPool = (
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+      'अआइईउऊएऐओऔकखगघचछजझटठडढणतथदधनपफबभमयरलवशषसह' +
+      'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯ' +
+      '你好世界天月日山水火土木金' +
+      'ابتثجحخدذرزسشصضطظعغفقكلمنهوي' +
+      'あいうえおかきくけこさしすせそ'
+    ).split('');
+
+    const latSteps = 16;
+    const lonSteps = 32;
+    const points = [];
+    for (let i = 0; i <= latSteps; i++) {
+      const lat = Math.PI * (i / latSteps - 0.5);
+      for (let j = 0; j < lonSteps; j++) {
+        const lon = 2 * Math.PI * j / lonSteps;
+        points.push({
+          lat, lon,
+          char: charPool[Math.floor(Math.random() * charPool.length)],
+          showChar: Math.random() < 0.32 && i > 0 && i < latSteps,
+          ox: 0, oy: 0,
+        });
+      }
+    }
+
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const rotSpeed = reduceMotion ? 0 : 0.0014;
+    let rot = 0;
+
+    let mouseX = -9999, mouseY = -9999;
+    hero.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    });
+    hero.addEventListener('mouseleave', () => {
+      mouseX = -9999; mouseY = -9999;
+    });
+
+    const repelR = 110;
+    const repelMax = 38;
+
+    function project(lat, lon, R) {
+      const cl = Math.cos(lat);
+      const x3 = cl * Math.cos(lon + rot);
+      const y3 = Math.sin(lat);
+      const z3 = cl * Math.sin(lon + rot);
+      return { x: W / 2 + x3 * R, y: H / 2 + y3 * R, z: z3 };
+    }
+
+    function tick() {
+      rot += rotSpeed;
+      ctx.clearRect(0, 0, W, H);
+      const R = Math.min(W, H) * 0.42;
+      if (R < 60) { requestAnimationFrame(tick); return; }
+
+      const proj = new Array(points.length);
+      for (let k = 0; k < points.length; k++) {
+        const p = points[k];
+        const base = project(p.lat, p.lon, R);
+
+        const dx = base.x - mouseX;
+        const dy = base.y - mouseY;
+        const d  = Math.hypot(dx, dy);
+
+        let tx = 0, ty = 0;
+        if (d < repelR && d > 0.001) {
+          const t = 1 - d / repelR;
+          const f = t * t * repelMax;
+          tx = (dx / d) * f;
+          ty = (dy / d) * f;
+        }
+        p.ox += (tx - p.ox) * 0.18;
+        p.oy += (ty - p.oy) * 0.18;
+
+        proj[k] = { x: base.x + p.ox, y: base.y + p.oy, z: base.z };
+      }
+
+      ctx.lineWidth = 1;
+
+      // Latitude rings
+      for (let i = 0; i <= latSteps; i++) {
+        for (let j = 0; j < lonSteps; j++) {
+          const a = proj[i * lonSteps + j];
+          const b = proj[i * lonSteps + ((j + 1) % lonSteps)];
+          const az = (a.z + b.z) * 0.5;
+          const alpha = ((az + 1) * 0.5) * 0.16;
+          ctx.strokeStyle = 'rgba(28,28,28,' + alpha.toFixed(3) + ')';
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+      // Longitude meridians
+      for (let j = 0; j < lonSteps; j++) {
+        for (let i = 0; i < latSteps; i++) {
+          const a = proj[i * lonSteps + j];
+          const b = proj[(i + 1) * lonSteps + j];
+          const az = (a.z + b.z) * 0.5;
+          const alpha = ((az + 1) * 0.5) * 0.16;
+          ctx.strokeStyle = 'rgba(28,28,28,' + alpha.toFixed(3) + ')';
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+
+      // Multilingual characters — front hemisphere only
+      ctx.font = '11px Mallory, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      for (let k = 0; k < points.length; k++) {
+        const p = points[k];
+        if (!p.showChar) continue;
+        const pp = proj[k];
+        if (pp.z < -0.05) continue;
+        const alpha = Math.max(0, ((pp.z + 1) * 0.5)) * 0.32;
+        ctx.fillStyle = 'rgba(28,28,28,' + alpha.toFixed(3) + ')';
+        ctx.fillText(p.char, pp.x, pp.y);
+      }
+
+      requestAnimationFrame(tick);
+    }
+    tick();
+  })();
 </script>
 
 </body>
