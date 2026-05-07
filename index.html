@@ -110,6 +110,18 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* ── Scroll reveal ───────────────────────────────────────── */
+    .reveal { opacity: 0; }
+
+    /* ── Hero entrance ───────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-eyebrow  { animation: fadeUp 0.6s var(--ease) 0.10s both; }
+    .hero-title    { animation: fadeUp 0.7s var(--ease) 0.22s both; }
+    #storyWrapper  { animation: fadeUp 0.7s var(--ease) 0.38s both; }
+
     /* ── Type scale ──────────────────────────────────────────── */
     .t-display {
       font-family: 'Season Mix', Georgia, serif;
@@ -117,6 +129,7 @@
       font-size: clamp(40px, 5.4vw, 56px);
       line-height: 1.07;
       letter-spacing: -0.03em;
+      text-wrap: balance;
     }
     .t-h1 {
       font-family: 'Season Mix', Georgia, serif;
@@ -124,6 +137,7 @@
       font-size: clamp(36px, 4.5vw, 48px);
       line-height: 1.10;
       letter-spacing: -0.025em;
+      text-wrap: balance;
     }
     .t-h2 {
       font-family: 'Season Mix', Georgia, serif;
@@ -131,6 +145,7 @@
       font-size: clamp(28px, 3.4vw, 36px);
       line-height: 1.15;
       letter-spacing: -0.02em;
+      text-wrap: balance;
     }
     .t-h3 {
       font-family: 'Season Mix', Georgia, serif;
@@ -138,6 +153,7 @@
       font-size: clamp(22px, 2.4vw, 28px);
       line-height: 1.20;
       letter-spacing: -0.015em;
+      text-wrap: balance;
     }
     .t-h4 {
       font-family: 'Season Mix', Georgia, serif;
@@ -145,18 +161,21 @@
       font-size: 20px;
       line-height: 1.25;
       letter-spacing: -0.01em;
+      text-wrap: balance;
     }
     .t-subheading {
       font-family: 'Mallory', system-ui, sans-serif;
       font-weight: 400;
       font-size: 18px;
       line-height: 1.5;
+      text-wrap: pretty;
     }
     .t-body {
       font-family: 'Mallory', system-ui, sans-serif;
       font-weight: 400;
       font-size: 16px;
       line-height: 1.55;
+      text-wrap: pretty;
     }
     .t-body-sm {
       font-family: 'Mallory', system-ui, sans-serif;
@@ -164,6 +183,7 @@
       font-size: 14px;
       line-height: 1.45;
       letter-spacing: 0.003em;
+      text-wrap: pretty;
     }
     .t-label {
       font-family: 'Mallory', system-ui, sans-serif;
@@ -196,16 +216,17 @@
       background: var(--ink);
       color: var(--vellum);
       border: none;
-      padding: var(--sp-1) var(--sp-2-5);
-      border-radius: var(--r-pill); /* nav CTA uses pill */
+      padding: 10px var(--sp-2-5);
+      border-radius: var(--r-pill);
       font-family: 'Mallory', system-ui, sans-serif;
       font-size: 13px;
       font-weight: 400;
       cursor: pointer;
-      transition: background 120ms var(--ease);
+      min-height: 40px;
+      transition: background 120ms var(--ease), transform 120ms var(--ease);
     }
     .btn-primary:hover  { background: var(--ink-tint-1); }
-    .btn-primary:active { background: var(--ink-shade-2); }
+    .btn-primary:active { background: var(--ink-shade-2); transform: scale(0.96); }
 
     .btn-brand {
       display: inline-flex;
@@ -214,16 +235,17 @@
       background: var(--scarlet);
       color: var(--vellum);
       border: none;
-      padding: var(--sp-1) var(--sp-3);
+      padding: 10px var(--sp-3);
       border-radius: var(--r-btn);
       font-family: 'Mallory', system-ui, sans-serif;
       font-size: 14px;
       font-weight: 400;
       cursor: pointer;
-      transition: background 120ms var(--ease);
+      min-height: 40px;
+      transition: background 120ms var(--ease), transform 120ms var(--ease);
     }
     .btn-brand:hover    { background: var(--scarlet-shade-1); }
-    .btn-brand:active   { background: var(--scarlet-shade-2); }
+    .btn-brand:active   { background: var(--scarlet-shade-2); transform: scale(0.96); }
     .btn-brand:disabled { opacity: 0.5; cursor: default; }
 
     /* ── NAV ─────────────────────────────────────────────────── */
@@ -257,6 +279,7 @@
       color: var(--text-secondary);
       text-decoration: none;
       font-size: 14px;
+      padding: 12px 4px;
       transition: color 120ms var(--ease);
     }
     .nav-links a:hover { color: var(--text-primary); }
@@ -292,7 +315,9 @@
       text-align: left;
       width: 480px;
       flex-shrink: 0;
-      box-shadow: rgba(0,0,0,0.06) 0 3px 6px 0;
+      box-shadow:
+        0 1px 2px rgba(0,0,0,0.04),
+        0 4px 8px rgba(0,0,0,0.06);
       transition: border-color 120ms var(--ease);
     }
     .story-box:hover { border-color: var(--vellum-shade-3); }
@@ -307,6 +332,7 @@
       line-height: 1.7;
       color: var(--text-secondary);
       margin-bottom: var(--sp-4);
+      text-wrap: pretty;
     }
 
     /* Right box — hidden, reveals on CTA click */
@@ -373,11 +399,15 @@
       border: 1px solid var(--surface-divider);
       border-radius: var(--r-card);
       padding: var(--sp-4);
+      will-change: transform;
       transition: border-color 120ms var(--ease), box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
     }
     .bcell:hover {
       border-color: var(--vellum-shade-3);
-      box-shadow: rgba(50,50,93,0.12) 0 16px 32px 0;
+      box-shadow:
+        0 4px 6px rgba(0,0,0,0.04),
+        0 16px 32px rgba(50,50,93,0.10),
+        0 2px 4px rgba(0,0,0,0.04);
       transform: translateY(-2px);
     }
     .bcell.wide { grid-column: span 2; }
@@ -398,6 +428,7 @@
       letter-spacing: -0.03em;
       color: var(--ink);
       margin-bottom: var(--sp-1);
+      font-variant-numeric: tabular-nums;
     }
 
     /* ── FOLD 3 — CARDS ──────────────────────────────────────── */
@@ -422,11 +453,15 @@
       border: 1px solid var(--surface-divider);
       border-radius: var(--r-card);
       overflow: hidden;
+      will-change: transform;
       transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
     }
     .card:hover {
       transform: translateY(-2px);
-      box-shadow: rgba(50,50,93,0.12) 0 16px 32px 0;
+      box-shadow:
+        0 4px 6px rgba(0,0,0,0.04),
+        0 16px 32px rgba(50,50,93,0.10),
+        0 2px 4px rgba(0,0,0,0.04);
     }
 
     .card-img {
@@ -437,6 +472,7 @@
       justify-content: center;
       font-size: 44px;
       border-bottom: 1px solid var(--surface-divider);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
     }
     .card-img.c1 { background: var(--vellum-shade-1); }
     .card-img.c2 { background: var(--vellum-shade-2); }
@@ -465,7 +501,7 @@
       margin: 0 auto;
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.15);
-      border-radius: var(--r-input);
+      border-radius: 12px; /* concentric: 4px inner btn + 8px padding */
       padding: var(--sp-1) var(--sp-1) var(--sp-1) var(--sp-3);
       transition: border-color 120ms var(--ease);
     }
@@ -493,9 +529,11 @@
       font-weight: 400;
       cursor: pointer;
       white-space: nowrap;
-      transition: background 120ms var(--ease);
+      min-height: 40px;
+      transition: background 120ms var(--ease), transform 120ms var(--ease);
     }
-    .prompt-submit:hover { background: var(--vellum-shade-1); }
+    .prompt-submit:hover  { background: var(--vellum-shade-1); }
+    .prompt-submit:active { background: var(--vellum-shade-2); transform: scale(0.96); }
 
     /* ── FOOTER ──────────────────────────────────────────────── */
     footer {
@@ -651,9 +689,36 @@
     setTimeout(() => {
       right.classList.add('visible');
       btn.innerHTML = '✓ Adapted';
-      btn.style.background = 'var(--ink)'; /* settle to primary after action completes */
+      btn.style.background = 'var(--ink)';
     }, 380);
   }
+
+  /* Scroll-reveal stagger for bento cells and cards */
+  const easing = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+      el.addEventListener('transitionend', function cleanup() {
+        el.style.transition = '';
+        el.style.opacity = '';
+        el.style.transform = '';
+        el.removeEventListener('transitionend', cleanup);
+      }, { once: true });
+      observer.unobserve(el);
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
+
+  document.querySelectorAll('.bcell, .card').forEach((el, i) => {
+    const delay = i * 70;
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = `opacity 0.5s ${easing} ${delay}ms, transform 0.5s ${easing} ${delay}ms`;
+    observer.observe(el);
+  });
 </script>
 
 </body>
