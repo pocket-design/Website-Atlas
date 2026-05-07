@@ -118,9 +118,9 @@
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    .hero-eyebrow  { animation: fadeUp 0.6s var(--ease) 0.10s both; }
-    .hero-title    { animation: fadeUp 0.7s var(--ease) 0.22s both; }
-    #storyWrapper  { animation: fadeUp 0.7s var(--ease) 0.38s both; }
+    .hero-title    { animation: fadeUp 0.7s var(--ease) 0.10s both; }
+    .hero-subhead  { animation: fadeUp 0.7s var(--ease) 0.22s both; }
+    #twWindow      { animation: fadeUp 0.7s var(--ease) 0.38s both; }
 
     /* ── Type scale ──────────────────────────────────────────── */
     .t-display {
@@ -294,86 +294,161 @@
       text-align: center;
     }
 
-    .hero-eyebrow {
-      color: var(--scarlet);
-      margin-bottom: var(--sp-2);
-    }
     .hero-title {
-      margin-bottom: var(--sp-12);
+      margin-bottom: var(--sp-3);
+      max-width: 980px;
+      margin-left: auto;
+      margin-right: auto;
     }
-
-    .story-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: var(--sp-3);
-      max-width: 1040px;
-      margin: 0 auto;
-    }
-
-    .story-box {
-      background: var(--surface-card);
-      border: 1px solid var(--surface-divider);
-      border-radius: var(--r-card);
-      padding: var(--sp-4);
-      text-align: left;
-      width: 480px;
-      flex-shrink: 0;
-      box-shadow:
-        0 1px 2px rgba(0,0,0,0.04),
-        0 4px 8px rgba(0,0,0,0.06);
-      transition: border-color 120ms var(--ease);
-    }
-    .story-box:hover { border-color: var(--vellum-shade-3); }
-
-    .box-lang {
-      color: var(--text-tertiary);
-      margin-bottom: var(--sp-2);
-    }
-
-    .story-box p {
-      font-size: 16px;
-      line-height: 1.7;
+    .hero-subhead {
+      max-width: 580px;
+      margin: 0 auto var(--sp-12);
       color: var(--text-secondary);
-      margin-bottom: var(--sp-4);
       text-wrap: pretty;
     }
 
-    /* Right box — hidden, reveals on CTA click */
-    .story-box-right {
-      opacity: 0;
-      transform: translateX(20px);
-      pointer-events: none;
-      max-width: 0;
-      padding: 0;
-      overflow: hidden;
-      border: none;
-      box-shadow: none;
-    }
-    .story-box-right.visible {
-      opacity: 1;
-      transform: translateX(0);
-      pointer-events: all;
-      max-width: 480px;
-      padding: var(--sp-4);
-      border: 1px solid var(--scarlet-tint-7);
-      box-shadow: rgba(0,0,0,0.06) 0 3px 6px 0;
-      transition:
-        opacity 0.45s var(--ease),
-        transform 0.45s var(--ease),
-        max-width 0.4s var(--ease);
+    /* ── Translation window ──────────────────────────────────── */
+    .tw-window {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-3);
+      max-width: 1080px;
+      margin: 0 auto;
+      text-align: left;
     }
 
-    .adapted-tag {
+    .tw-panel {
+      display: flex;
+      flex-direction: column;
+      min-height: 460px;
+      border: 1px solid var(--surface-divider);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow:
+        0 1px 2px rgba(0,0,0,0.04),
+        0 4px 14px rgba(0,0,0,0.05);
+      transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease);
+    }
+    .tw-panel.tw-source { background: var(--vellum-tint-7); }
+    .tw-panel.tw-target { background: var(--vellum-tint-3); }
+    .tw-panel:hover {
+      border-color: var(--vellum-shade-3);
+      box-shadow:
+        0 1px 2px rgba(0,0,0,0.04),
+        0 8px 24px rgba(50,50,93,0.08);
+    }
+
+    .tw-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--sp-2) var(--sp-3);
+      border-bottom: 1px solid var(--surface-divider);
+    }
+
+    .tw-lang {
       display: inline-flex;
       align-items: center;
-      gap: var(--sp-half);
-      color: var(--scarlet);
-      background: var(--scarlet-tint-7);
-      padding: var(--sp-half) var(--sp-1-5);
-      border-radius: var(--r-tag);
-      margin-bottom: var(--sp-2);
+      gap: var(--sp-1);
     }
+    .tw-flag { font-size: 18px; line-height: 1; }
+    .tw-lang-name {
+      font-family: 'Mallory', system-ui, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .tw-tag {
+      font-family: 'Mallory', system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+    .tw-target .tw-tag { color: var(--scarlet); }
+
+    .tw-body {
+      flex: 1;
+      padding: var(--sp-4);
+      overflow-y: auto;
+    }
+    .tw-body p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      text-wrap: pretty;
+    }
+    .tw-body p + p { margin-top: var(--sp-2); }
+
+    .tw-placeholder {
+      color: var(--text-tertiary) !important;
+      font-style: italic;
+    }
+    .tw-placeholder strong {
+      color: var(--text-primary);
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    .tw-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--sp-1-5) var(--sp-3);
+      border-top: 1px solid var(--surface-divider);
+      gap: var(--sp-2);
+    }
+
+    .tw-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-1);
+      font-family: 'Mallory', system-ui, sans-serif;
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+    .tw-num {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .tw-status::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--vellum-shade-3);
+      transition: background 160ms var(--ease);
+    }
+    .tw-target.is-adapted .tw-status::before { background: var(--scarlet); }
+
+    .tw-translate {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-1);
+      background: var(--scarlet);
+      color: var(--vellum);
+      border: none;
+      padding: 10px var(--sp-2-5);
+      border-radius: 8px;
+      font-family: 'Mallory', system-ui, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      min-height: 36px;
+      transition: background 120ms var(--ease), transform 120ms var(--ease);
+    }
+    .tw-translate:hover { background: var(--scarlet-shade-1); }
+    .tw-translate:active { background: var(--scarlet-shade-2); transform: scale(0.96); }
+    .tw-translate:disabled { opacity: 0.6; cursor: default; transform: none; }
+    .tw-translate.is-done { background: var(--ink); }
+    .tw-translate.is-done:hover { background: var(--ink-tint-1); }
+
+    .tw-fade { animation: fadeUp 0.5s var(--ease) both; }
 
     /* ── FOLD 2 — BENTO ──────────────────────────────────────── */
     .bento {
@@ -568,25 +643,49 @@
 
 <!-- ── FOLD 1 — HERO ── -->
 <section class="hero">
-  <div class="t-eyebrow hero-eyebrow">Introducing Pocket Atlas</div>
-  <h1 class="t-display hero-title">Season Mix</h1>
+  <h1 class="t-display hero-title">Translation changes words. We change worlds.</h1>
+  <p class="t-subheading hero-subhead">Reimagine your story across cultures and geographies so it truly belongs everywhere.</p>
 
-  <div class="story-wrapper" id="storyWrapper">
+  <div class="tw-window" id="twWindow">
 
-    <!-- Left — English original -->
-    <div class="story-box">
-      <div class="t-eyebrow box-lang">🇺🇸 English — Original</div>
-      <p>In a small coastal town, where the fog rolled in every morning like a gentle reminder of the sea's presence, lived a young lighthouse keeper named Elara. She had inherited the lighthouse from her grandmother, along with its ancient logbook filled with stories of ships guided safely home through the darkest storms.</p>
-      <button class="btn-brand" id="makeGlobalBtn" onclick="makeGlobal()">
-        🌍 Make it global
-      </button>
+    <!-- Source panel — original -->
+    <div class="tw-panel tw-source">
+      <div class="tw-head">
+        <div class="tw-lang">
+          <span class="tw-flag" aria-hidden="true">🇺🇸</span>
+          <span class="tw-lang-name">English</span>
+        </div>
+        <span class="tw-tag">Original</span>
+      </div>
+      <div class="tw-body">
+        <p>In a small coastal town, where the fog rolled in every morning like a gentle reminder of the sea's presence, lived a young lighthouse keeper named Elara.</p>
+        <p>She had inherited the lighthouse from her grandmother, along with its ancient logbook filled with stories of ships guided safely home through the darkest storms.</p>
+      </div>
+      <div class="tw-foot">
+        <span class="tw-meta"><span class="tw-num">247</span> words</span>
+        <button class="tw-translate" id="twTranslateBtn" onclick="adaptStory()">
+          Translate
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
     </div>
 
-    <!-- Right — adapted locale, hidden until click -->
-    <div class="story-box story-box-right" id="storyRight">
-      <div class="adapted-tag t-caption">✦ Culturally adapted</div>
-      <div class="t-eyebrow box-lang">🇮🇳 Hindi — Local Market</div>
-      <p>एक छोटे से तटीय गाँव में, जहाँ हर सुबह कोहरा समुद्र की याद दिलाता हुआ आता था, वहाँ एलारा नाम की एक युवा दीपस्तम्भ-रक्षक रहती थी। उसे यह विरासत अपनी नानी से मिली थी — साथ में एक पुरानी डायरी, जो सबसे भयानक तूफ़ानों में घर लौटे जहाज़ों की कहानियों से भरी थी।</p>
+    <!-- Target panel — adapted -->
+    <div class="tw-panel tw-target" id="twTargetPanel">
+      <div class="tw-head">
+        <div class="tw-lang">
+          <span class="tw-flag" aria-hidden="true">🇮🇳</span>
+          <span class="tw-lang-name">Hindi</span>
+        </div>
+        <span class="tw-tag">Local market</span>
+      </div>
+      <div class="tw-body" id="twTargetBody">
+        <p class="tw-placeholder">Click <strong>Translate</strong> to see your story adapted for a Hindi-speaking audience — not just in language, but in cultural texture.</p>
+      </div>
+      <div class="tw-foot">
+        <span class="tw-meta tw-status" id="twStatus">Awaiting adaptation</span>
+        <span class="tw-meta">Pocket Atlas</span>
+      </div>
     </div>
 
   </div>
@@ -680,18 +779,25 @@
 </footer>
 
 <script>
-  function makeGlobal() {
-    const btn   = document.getElementById('makeGlobalBtn');
-    const right = document.getElementById('storyRight');
+  function adaptStory() {
+    const btn        = document.getElementById('twTranslateBtn');
+    const targetBody = document.getElementById('twTargetBody');
+    const targetPanel = document.getElementById('twTargetPanel');
+    const status     = document.getElementById('twStatus');
 
     btn.disabled = true;
-    btn.innerHTML = '⏳ Adapting…';
+    btn.innerHTML = 'Adapting…';
 
     setTimeout(() => {
-      right.classList.add('visible');
-      btn.innerHTML = '✓ Adapted';
-      btn.style.background = 'var(--ink)';
-    }, 380);
+      targetBody.innerHTML = `
+        <p class="tw-fade">एक छोटे से तटीय गाँव में, जहाँ हर सुबह कोहरा समुद्र की याद दिलाता हुआ आता था, वहाँ एलारा नाम की एक युवा दीपस्तम्भ-रक्षक रहती थी।</p>
+        <p class="tw-fade" style="animation-delay:0.12s">उसे यह विरासत अपनी नानी से मिली थी — साथ में एक पुरानी डायरी, जो सबसे भयानक तूफ़ानों में घर लौटे जहाज़ों की कहानियों से भरी थी।</p>
+      `;
+      targetPanel.classList.add('is-adapted');
+      status.textContent = 'Adapted';
+      btn.classList.add('is-done');
+      btn.innerHTML = '✓ Translated';
+    }, 600);
   }
 
   /* Scroll-reveal stagger for bento cells and cards */
