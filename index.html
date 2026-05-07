@@ -262,13 +262,17 @@
       z-index: 100;
     }
     .nav-logo {
-      font-family: 'Season Mix', Georgia, serif;
-      font-weight: 400;
-      font-size: 18px;
-      letter-spacing: -0.02em;
-      color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      height: 32px;
     }
-    .nav-logo span { color: var(--scarlet); }
+    .nav-logo img { height: 28px; width: auto; display: block; }
+
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+    }
+    .footer-logo img { height: 22px; width: auto; display: block; }
 
     .nav-links {
       display: flex;
@@ -544,20 +548,15 @@
       justify-content: space-between;
       background: var(--surface-page);
     }
-    .footer-logo {
-      font-family: 'Season Mix', Georgia, serif;
-      font-weight: 400;
-      font-size: 15px;
-      letter-spacing: -0.02em;
-    }
-    .footer-logo span { color: var(--scarlet); }
   </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Pocket <span>Atlas</span></div>
+  <a class="nav-logo" href="#" aria-label="Pocket Atlas — home">
+    <img src="./assets/logo.svg" alt="Pocket Atlas" />
+  </a>
   <ul class="nav-links">
     <li><a href="#">Features</a></li>
     <li><a href="#">Stories</a></li>
@@ -674,7 +673,9 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Pocket <span>Atlas</span></div>
+  <a class="footer-logo" href="#" aria-label="Pocket Atlas — home">
+    <img src="./assets/logo.svg" alt="Pocket Atlas" />
+  </a>
   <p class="t-caption" style="color: var(--text-tertiary);">© 2025 Pocket FM. All rights reserved.</p>
 </footer>
 
