@@ -14,14 +14,14 @@
       font-display: swap;
     }
     @font-face {
-      font-family: 'Mallory';
+      font-family: 'Mallory Narrow';
       src: url('./fonts/Mallory-MP-Narrow-Book.ttf') format('truetype');
       font-weight: 400;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
-      font-family: 'Mallory';
+      font-family: 'Mallory Narrow';
       src: url('./fonts/Mallory-MP-Narrow-Bold.ttf') format('truetype');
       font-weight: 700;
       font-style: normal;
@@ -102,7 +102,7 @@
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Mallory', 'Inter', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', 'Inter', system-ui, sans-serif;
       background: var(--surface-page);
       color: var(--text-primary);
       font-size: 16px;
@@ -164,21 +164,21 @@
       text-wrap: balance;
     }
     .t-subheading {
-      font-family: 'Mallory', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
       font-weight: 400;
       font-size: 18px;
       line-height: 1.5;
       text-wrap: pretty;
     }
     .t-body {
-      font-family: 'Mallory', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
       font-weight: 400;
       font-size: 16px;
       line-height: 1.55;
       text-wrap: pretty;
     }
     .t-body-sm {
-      font-family: 'Mallory', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
       font-weight: 400;
       font-size: 14px;
       line-height: 1.45;
@@ -186,14 +186,14 @@
       text-wrap: pretty;
     }
     .t-label {
-      font-family: 'Mallory', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
       font-weight: 400;
       font-size: 13px;
       line-height: 1.4;
       letter-spacing: 0.005em;
     }
     .t-eyebrow {
-      font-family: 'Mallory', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
       font-weight: 700;
       font-size: 12px;
       line-height: 1.4;
@@ -201,7 +201,7 @@
       text-transform: uppercase;
     }
     .t-caption {
-      font-family: 'Mallory', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
       font-weight: 400;
       font-size: 11px;
       line-height: 1.4;
@@ -218,7 +218,7 @@
       border: none;
       padding: 10px var(--sp-2-5);
       border-radius: var(--r-pill);
-      font-family: 'Mallory', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
       font-size: 13px;
       font-weight: 400;
       cursor: pointer;
@@ -237,7 +237,7 @@
       border: none;
       padding: 10px var(--sp-3);
       border-radius: var(--r-btn);
-      font-family: 'Mallory', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
       font-size: 14px;
       font-weight: 400;
       cursor: pointer;
@@ -254,7 +254,6 @@
       align-items: center;
       justify-content: space-between;
       padding: var(--sp-2-5) var(--sp-8);
-      border-bottom: 1px solid var(--surface-divider);
       position: sticky;
       top: 0;
       background: rgba(250, 249, 241, 0.92);
@@ -320,13 +319,34 @@
       text-wrap: pretty;
     }
 
-    /* ── Translation window ──────────────────────────────────── */
+    /* ── Translation window ──────────────────────────────────
+       Outer frame encapsulates two distinct inner panels.
+       Filled with the same surface-card white as every other
+       card on the page so the globe sits cleanly behind it.
+       Concentric radii: 20px outer / 8px padding / 12px inner. */
     .tw-window {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--sp-3);
       max-width: 1080px;
       margin: 0 auto;
+      background: var(--surface-card);
+      border: 1px solid var(--surface-divider);
+      border-radius: 20px;
+      padding: var(--sp-1);
+      box-shadow:
+        0 1px 2px rgba(0,0,0,0.04),
+        0 4px 14px rgba(0,0,0,0.05);
+      transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease);
+    }
+    .tw-window:hover {
+      border-color: var(--vellum-shade-3);
+      box-shadow:
+        0 1px 2px rgba(0,0,0,0.04),
+        0 8px 24px rgba(50,50,93,0.08);
+    }
+
+    .tw-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-1);
       text-align: left;
     }
 
@@ -335,21 +355,11 @@
       flex-direction: column;
       min-height: 460px;
       border: 1px solid var(--surface-divider);
-      border-radius: 16px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow:
-        0 1px 2px rgba(0,0,0,0.04),
-        0 4px 14px rgba(0,0,0,0.05);
-      transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease);
     }
     .tw-panel.tw-source { background: var(--vellum-tint-7); }
     .tw-panel.tw-target { background: var(--vellum-tint-3); }
-    .tw-panel:hover {
-      border-color: var(--vellum-shade-3);
-      box-shadow:
-        0 1px 2px rgba(0,0,0,0.04),
-        0 8px 24px rgba(50,50,93,0.08);
-    }
 
     .tw-head {
       display: flex;
@@ -366,14 +376,14 @@
     }
     .tw-flag { font-size: 18px; line-height: 1; }
     .tw-lang-name {
-      font-family: 'Mallory', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
       font-size: 14px;
       font-weight: 700;
       color: var(--text-primary);
     }
 
     .tw-tag {
-      font-family: 'Mallory', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
       font-weight: 700;
       font-size: 11px;
       letter-spacing: 0.08em;
@@ -381,6 +391,41 @@
       color: var(--text-tertiary);
     }
     .tw-target .tw-tag { color: var(--scarlet); }
+
+    /* Target language tabs */
+    .tw-tabs {
+      display: inline-flex;
+      gap: var(--sp-half);
+    }
+    .tw-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      transition: background 120ms var(--ease), color 120ms var(--ease), transform 120ms var(--ease);
+    }
+    .tw-tab .tw-flag { font-size: 14px; }
+    .tw-tab:hover {
+      background: var(--vellum-shade-1);
+      color: var(--text-primary);
+    }
+    .tw-tab:active { transform: scale(0.96); }
+    .tw-tab.is-active {
+      background: var(--ink);
+      color: var(--vellum);
+    }
+    .tw-tab.is-active:hover {
+      background: var(--ink-tint-1);
+      color: var(--vellum);
+    }
 
     .tw-body {
       flex: 1;
@@ -418,7 +463,7 @@
       display: inline-flex;
       align-items: center;
       gap: var(--sp-1);
-      font-family: 'Mallory', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
       font-size: 12px;
       color: var(--text-tertiary);
     }
@@ -447,7 +492,7 @@
       border: none;
       padding: 10px var(--sp-2-5);
       border-radius: 8px;
-      font-family: 'Mallory', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
       font-size: 13px;
       font-weight: 700;
       letter-spacing: 0.01em;
@@ -504,20 +549,22 @@
     }
     .bcell.wide { grid-column: span 2; }
 
-    .bcell-icon {
-      font-size: 28px;
-      margin-bottom: var(--sp-3);
+    .bcell-graphic {
+      width: 100%;
+      height: 110px;
       display: block;
+      margin-bottom: var(--sp-3);
     }
+    .bcell.wide .bcell-graphic { height: 130px; }
     .bcell h3 { margin-bottom: var(--sp-1-5); }
     .bcell p  { color: var(--text-secondary); }
 
     .bcell-stat {
-      font-family: 'Season Mix', Georgia, serif;
-      font-size: 56px;
-      font-weight: 400;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
+      font-size: 48px;
+      font-weight: 700;
       line-height: 1;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.02em;
       color: var(--ink);
       margin-bottom: var(--sp-1);
       font-variant-numeric: tabular-nums;
@@ -606,7 +653,7 @@
       outline: none;
       color: var(--vellum);
       font-size: 15px;
-      font-family: 'Mallory', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
     }
     .prompt-box input::placeholder { color: rgba(250,249,241,0.4); }
 
@@ -616,7 +663,7 @@
       border: none;
       padding: var(--sp-1) var(--sp-3);
       border-radius: var(--r-btn);
-      font-family: 'Mallory', system-ui, sans-serif;
+      font-family: 'Mallory Narrow', system-ui, sans-serif;
       font-size: 13px;
       font-weight: 400;
       cursor: pointer;
@@ -651,7 +698,7 @@
     <li><a href="#">Pricing</a></li>
     <li><a href="#">Docs</a></li>
   </ul>
-  <button class="btn-primary">Get started</button>
+  <button class="btn-primary">Go global</button>
 </nav>
 
 <!-- ── FOLD 1 — HERO ── -->
@@ -661,6 +708,7 @@
   <p class="t-subheading hero-subhead">Reimagine your story across cultures and geographies so it truly belongs everywhere.</p>
 
   <div class="tw-window" id="twWindow">
+   <div class="tw-grid">
 
     <!-- Source panel — original -->
     <div class="tw-panel tw-source">
@@ -678,23 +726,32 @@
       <div class="tw-foot">
         <span class="tw-meta"><span class="tw-num">247</span> words</span>
         <button class="tw-translate" id="twTranslateBtn" onclick="adaptStory()">
-          Translate
+          Go global
           <span aria-hidden="true">→</span>
         </button>
       </div>
     </div>
 
-    <!-- Target panel — adapted -->
+    <!-- Target panel — multi-language adaptation -->
     <div class="tw-panel tw-target" id="twTargetPanel">
       <div class="tw-head">
-        <div class="tw-lang">
-          <span class="tw-flag" aria-hidden="true">🇮🇳</span>
-          <span class="tw-lang-name">Hindi</span>
+        <div class="tw-tabs" role="tablist" aria-label="Target language">
+          <button class="tw-tab is-active" data-lang="de" role="tab" aria-selected="true">
+            <span class="tw-flag" aria-hidden="true">🇩🇪</span>
+            <span>German</span>
+          </button>
+          <button class="tw-tab" data-lang="fr" role="tab" aria-selected="false">
+            <span class="tw-flag" aria-hidden="true">🇫🇷</span>
+            <span>French</span>
+          </button>
+          <button class="tw-tab" data-lang="es" role="tab" aria-selected="false">
+            <span class="tw-flag" aria-hidden="true">🇪🇸</span>
+            <span>Spanish</span>
+          </button>
         </div>
-        <span class="tw-tag">Local market</span>
       </div>
       <div class="tw-body" id="twTargetBody">
-        <p class="tw-placeholder">Click <strong>Translate</strong> to see your story adapted for a Hindi-speaking audience — not just in language, but in cultural texture.</p>
+        <p class="tw-placeholder">Click <strong>Go global</strong> to see your story adapted for the selected market — not just in language, but in cultural texture.</p>
       </div>
       <div class="tw-foot">
         <span class="tw-meta tw-status" id="twStatus">Awaiting adaptation</span>
@@ -702,6 +759,7 @@
       </div>
     </div>
 
+   </div>
   </div>
 </section>
 
@@ -714,22 +772,23 @@
 
   <div class="bento-grid">
     <div class="bcell wide">
-      <span class="bcell-icon">🌐</span>
+      <canvas class="bcell-graphic" data-scene="network" aria-hidden="true"></canvas>
       <h3 class="t-h3">Cultural Intelligence, Not Just Translation</h3>
       <p class="t-body-sm">Pocket Atlas goes beyond word-for-word translation. It adapts idioms, cultural references, humor, and emotional resonance so your story feels native — no matter where it lands.</p>
     </div>
     <div class="bcell">
+      <canvas class="bcell-graphic" data-scene="orbit" aria-hidden="true"></canvas>
       <div class="bcell-stat">100+</div>
       <h3 class="t-h4">Languages</h3>
       <p class="t-body-sm">Reach listeners across every major market on earth.</p>
     </div>
     <div class="bcell">
-      <span class="bcell-icon">⚡</span>
+      <canvas class="bcell-graphic" data-scene="wave" aria-hidden="true"></canvas>
       <h3 class="t-h4">Instant Adaptation</h3>
       <p class="t-body-sm">From English to any locale in seconds, powered by deep narrative AI.</p>
     </div>
     <div class="bcell wide">
-      <span class="bcell-icon">📖</span>
+      <canvas class="bcell-graphic" data-scene="cascade" aria-hidden="true"></canvas>
       <h3 class="t-h3">Story-Aware AI</h3>
       <p class="t-body-sm">Unlike generic translation tools, Pocket Atlas understands genre, tone, pacing, and character voice — preserving what makes your story uniquely yours across every market.</p>
     </div>
@@ -780,7 +839,7 @@
   <h2 class="t-h1">Bring your story to<br>Pocket today</h2>
   <div class="prompt-box">
     <input type="text" placeholder="Paste your story or describe what you're building…" />
-    <button class="prompt-submit">Get started →</button>
+    <button class="prompt-submit">Go global →</button>
   </div>
 </section>
 
@@ -793,24 +852,62 @@
 </footer>
 
 <script>
-  function adaptStory() {
-    const btn        = document.getElementById('twTranslateBtn');
+  /* Localised adaptations of the source story. */
+  const TW_TRANSLATIONS = {
+    de: [
+      'In einer kleinen Küstenstadt, in der jeden Morgen der Nebel hereinrollte wie eine sanfte Erinnerung an die Anwesenheit des Meeres, lebte eine junge Leuchtturmwärterin namens Elara.',
+      'Sie hatte den Leuchtturm von ihrer Großmutter geerbt — zusammen mit dessen altem Logbuch, voller Geschichten von Schiffen, die durch die dunkelsten Stürme sicher nach Hause geleitet wurden.'
+    ],
+    fr: [
+      'Dans une petite ville côtière, où le brouillard se déposait chaque matin comme un doux rappel de la présence de la mer, vivait une jeune gardienne de phare nommée Elara.',
+      'Elle avait hérité du phare de sa grand-mère, ainsi que de son ancien journal de bord, rempli d\'histoires de navires guidés sains et saufs à travers les tempêtes les plus sombres.'
+    ],
+    es: [
+      'En un pequeño pueblo costero, donde la niebla rodaba cada mañana como un suave recordatorio de la presencia del mar, vivía una joven farera llamada Elara.',
+      'Había heredado el faro de su abuela, junto con su antiguo cuaderno de bitácora, repleto de historias de barcos guiados a salvo a casa a través de las tormentas más oscuras.'
+    ]
+  };
+
+  let twActiveLang = 'de';
+  let twAdapted = false;
+
+  function twRender() {
     const targetBody = document.getElementById('twTargetBody');
+    const paras = TW_TRANSLATIONS[twActiveLang];
+    targetBody.innerHTML = paras
+      .map((p, i) => `<p class="tw-fade" style="animation-delay:${(i * 0.12).toFixed(2)}s">${p}</p>`)
+      .join('');
+  }
+
+  function twSetActiveTab(lang) {
+    twActiveLang = lang;
+    document.querySelectorAll('.tw-tab').forEach(tab => {
+      const on = tab.dataset.lang === lang;
+      tab.classList.toggle('is-active', on);
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    if (twAdapted) twRender();
+  }
+
+  document.querySelectorAll('.tw-tab').forEach(tab => {
+    tab.addEventListener('click', () => twSetActiveTab(tab.dataset.lang));
+  });
+
+  function adaptStory() {
+    const btn         = document.getElementById('twTranslateBtn');
     const targetPanel = document.getElementById('twTargetPanel');
-    const status     = document.getElementById('twStatus');
+    const status      = document.getElementById('twStatus');
 
     btn.disabled = true;
     btn.innerHTML = 'Adapting…';
 
     setTimeout(() => {
-      targetBody.innerHTML = `
-        <p class="tw-fade">एक छोटे से तटीय गाँव में, जहाँ हर सुबह कोहरा समुद्र की याद दिलाता हुआ आता था, वहाँ एलारा नाम की एक युवा दीपस्तम्भ-रक्षक रहती थी।</p>
-        <p class="tw-fade" style="animation-delay:0.12s">उसे यह विरासत अपनी नानी से मिली थी — साथ में एक पुरानी डायरी, जो सबसे भयानक तूफ़ानों में घर लौटे जहाज़ों की कहानियों से भरी थी।</p>
-      `;
+      twRender();
+      twAdapted = true;
       targetPanel.classList.add('is-adapted');
       status.textContent = 'Adapted';
       btn.classList.add('is-done');
-      btn.innerHTML = '✓ Translated';
+      btn.innerHTML = '✓ Adapted';
     }, 600);
   }
 
@@ -866,8 +963,9 @@
     window.addEventListener('resize', resize);
 
     /* Multi-script character pool — every major living script we
-       can fit so the globe reads as "stories from everywhere". */
-    const charPool = (
+       can fit so the globe reads as "stories from everywhere".
+       Exposed on window so the bento scenes share the same pool. */
+    const TW_POOL = window.TW_POOL = (
       // Latin
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' +
       // Greek
@@ -931,7 +1029,7 @@
         const lon = 2 * Math.PI * j / lonSteps;
         points.push({
           lat, lon,
-          char: charPool[Math.floor(Math.random() * charPool.length)],
+          char: TW_POOL[Math.floor(Math.random() * TW_POOL.length)],
           showChar: Math.random() < 0.32 && i > 0 && i < latSteps,
           ox: 0, oy: 0,
         });
@@ -1137,6 +1235,199 @@
       requestAnimationFrame(tick);
     }
     tick();
+  })();
+
+  /* ─── Bento cell graphics ─────────────────────────────────
+     Each bento cell gets a small canvas in the same visual
+     language as the globe — thin lines and multilingual
+     characters in low-alpha ink. Each scene runs only when
+     its canvas is in view. */
+  (function () {
+    const cells = document.querySelectorAll('.bcell-graphic');
+    if (!cells.length) return;
+    const POOL = window.TW_POOL || ['A','B','C'];
+    const pick = () => POOL[(Math.random() * POOL.length) | 0];
+
+    const scenes = {
+      /* Web of multilingual nodes drifting and connecting. */
+      network(ctx, w, h, t, s) {
+        if (!s.points) {
+          s.points = Array.from({ length: 14 }, () => ({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            char: pick(),
+            vx: (Math.random() - 0.5) * 0.18,
+            vy: (Math.random() - 0.5) * 0.14,
+          }));
+        }
+        for (const p of s.points) {
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 8 || p.x > w - 8) p.vx *= -1;
+          if (p.y < 12 || p.y > h - 12) p.vy *= -1;
+        }
+        ctx.lineWidth = 1;
+        const maxD = Math.min(w, h) * 0.55;
+        for (let i = 0; i < s.points.length; i++) {
+          for (let j = i + 1; j < s.points.length; j++) {
+            const a = s.points[i], b = s.points[j];
+            const d = Math.hypot(a.x - b.x, a.y - b.y);
+            if (d < maxD) {
+              const al = (1 - d / maxD) * 0.22;
+              ctx.strokeStyle = 'rgba(28,28,28,' + al.toFixed(3) + ')';
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+        ctx.font = '12px Mallory, system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'rgba(28,28,28,0.55)';
+        for (const p of s.points) ctx.fillText(p.char, p.x, p.y);
+      },
+
+      /* Concentric rings of characters orbiting at varied speeds. */
+      orbit(ctx, w, h, t, s) {
+        const cx = w / 2, cy = h / 2;
+        if (!s.rings) {
+          s.rings = [
+            { r: h * 0.20, count: 6,  speed:  0.36 },
+            { r: h * 0.34, count: 10, speed: -0.22 },
+            { r: h * 0.46, count: 14, speed:  0.13 },
+          ].map(r => ({ ...r, chars: Array.from({ length: r.count }, pick) }));
+        }
+        ctx.strokeStyle = 'rgba(28,28,28,0.10)';
+        ctx.lineWidth = 1;
+        for (const r of s.rings) {
+          ctx.beginPath();
+          ctx.arc(cx, cy, r.r, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        ctx.font = '11px Mallory, system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'rgba(28,28,28,0.5)';
+        for (const r of s.rings) {
+          for (let i = 0; i < r.count; i++) {
+            const a = (i / r.count) * Math.PI * 2 + t * r.speed;
+            ctx.fillText(r.chars[i], cx + Math.cos(a) * r.r, cy + Math.sin(a) * r.r);
+          }
+        }
+      },
+
+      /* Two phase-shifted waves with characters riding the crest. */
+      wave(ctx, w, h, t, s) {
+        const midY = h / 2;
+        const amp  = h * 0.28;
+        const freq = 0.045;
+        ctx.lineWidth = 1;
+        for (let pass = 0; pass < 2; pass++) {
+          const a = pass === 0 ? amp : amp * 0.7;
+          ctx.strokeStyle = pass === 0 ? 'rgba(28,28,28,0.18)' : 'rgba(28,28,28,0.10)';
+          ctx.beginPath();
+          for (let x = 0; x <= w; x += 2) {
+            const y = midY + Math.sin(x * freq + t * 1.3 + pass * Math.PI) * a;
+            if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+        if (!s.chars) {
+          s.chars = Array.from({ length: 10 }, () => ({
+            x: Math.random() * w, char: pick(), v: 0.4 + Math.random() * 0.3,
+          }));
+        }
+        ctx.font = '12px Mallory, system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'rgba(28,28,28,0.55)';
+        for (const c of s.chars) {
+          c.x += c.v;
+          if (c.x > w + 12) { c.x = -12; c.char = pick(); }
+          const y = midY + Math.sin(c.x * freq + t * 1.3) * amp;
+          ctx.fillText(c.char, c.x, y);
+        }
+      },
+
+      /* Vertical columns of characters cascading like quiet rain. */
+      cascade(ctx, w, h, t, s) {
+        if (!s.cols || s.cols._w !== w) {
+          const numCols = Math.max(4, Math.floor(w / 22));
+          const spacing = w / numCols;
+          const cols = Array.from({ length: numCols }, (_, i) => ({
+            x: spacing * 0.5 + i * spacing,
+            offset: Math.random() * h,
+            v: 0.25 + Math.random() * 0.45,
+            chars: Array.from({ length: 7 }, pick),
+          }));
+          cols._w = w;
+          s.cols = cols;
+        }
+        ctx.font = '11px Mallory, system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const charSpacing = 14;
+        for (const col of s.cols) {
+          col.offset += col.v;
+          for (let i = 0; i < col.chars.length; i++) {
+            const y = ((col.offset + i * charSpacing) % (h + 28)) - 14;
+            const fadeIn  = Math.min(1, y / 18);
+            const fadeOut = Math.min(1, (h - y) / 18);
+            const a = Math.max(0, Math.min(fadeIn, fadeOut)) * 0.55;
+            ctx.fillStyle = 'rgba(28,28,28,' + a.toFixed(3) + ')';
+            ctx.fillText(col.chars[i], col.x, y);
+          }
+        }
+      },
+    };
+
+    const dpr = window.devicePixelRatio || 1;
+
+    cells.forEach(canvas => {
+      const sceneFn = scenes[canvas.dataset.scene];
+      if (!sceneFn) return;
+      const ctx = canvas.getContext('2d');
+      const state = {};
+      let W = 0, H = 0, rafId = null, inView = false;
+      const t0 = performance.now();
+
+      function resize() {
+        const rect = canvas.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return;
+        canvas.width  = Math.floor(rect.width * dpr);
+        canvas.height = Math.floor(rect.height * dpr);
+        W = rect.width; H = rect.height;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        for (const k in state) delete state[k];
+      }
+
+      function tick() {
+        if (!inView) { rafId = null; return; }
+        const t = (performance.now() - t0) / 1000;
+        ctx.clearRect(0, 0, W, H);
+        sceneFn(ctx, W, H, t, state);
+        rafId = requestAnimationFrame(tick);
+      }
+
+      new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting && !inView) {
+            inView = true;
+            if (W === 0) resize();
+            if (!rafId) tick();
+          } else if (!e.isIntersecting && inView) {
+            inView = false;
+          }
+        }
+      }, { rootMargin: '60px' }).observe(canvas);
+
+      if (typeof ResizeObserver !== 'undefined') {
+        new ResizeObserver(resize).observe(canvas);
+      } else {
+        window.addEventListener('resize', resize);
+      }
+    });
   })();
 </script>
 
