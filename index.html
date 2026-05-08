@@ -909,12 +909,22 @@
     const hoverR   = 240;
     const hoverR2  = hoverR * hoverR;
 
+    /* Axial tilt — sphere leans 45° to the right around the
+       camera-facing axis, like a globe nudged off vertical. */
+    const tilt    = Math.PI / 4;
+    const cosTilt = Math.cos(tilt);
+    const sinTilt = Math.sin(tilt);
+
     function project(lat, lon, R, cx, cy) {
       const cl = Math.cos(lat);
       const x3 = cl * Math.cos(lon + rot);
       const y3 = Math.sin(lat);
       const z3 = cl * Math.sin(lon + rot);
-      return { x: cx + x3 * R, y: cy + y3 * R, z: z3 };
+      // Rotate (x, y) 45° clockwise in screen space so the
+      // pole leans to the upper-right.
+      const x4 = x3 * cosTilt - y3 * sinTilt;
+      const y4 = x3 * sinTilt + y3 * cosTilt;
+      return { x: cx + x4 * R, y: cy + y4 * R, z: z3 };
     }
 
     function tick() {
