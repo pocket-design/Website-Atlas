@@ -1,6 +1,8 @@
 /* Fonts loaded via next/font/local in app/layout.tsx and exposed as
    --font-season-mix and --font-mallory-narrow CSS variables. */
 
+@import 'flag-icons/css/flag-icons.min.css';
+
 /* ── Design tokens ───────────────────────────────────────── */
 :root {
   /* Ink */
@@ -14,13 +16,14 @@
   --ink-shade-2: #151515;
 
   /* Vellum */
-  --vellum-tint-7:  #FEFEFD;
-  --vellum-tint-3:  #FBFBF6;
-  --vellum:         #FAF9F1;
-  --vellum-shade-1: #DAD9D2;
-  --vellum-shade-2: #BBBAB4;
-  --vellum-shade-3: #9C9B96;
-  --vellum-shade-4: #7D7C78;
+  --vellum-tint-7:    #FEFEFD;
+  --vellum-tint-3:    #FBFBF6;
+  --vellum:           #FAF9F1;
+  --vellum-shade-half: #ECEBE4; /* whisper-soft hairline — default border/divider */
+  --vellum-shade-1:   #DAD9D2;
+  --vellum-shade-2:   #BBBAB4;
+  --vellum-shade-3:   #9C9B96;
+  --vellum-shade-4:   #7D7C78;
 
   /* Scarlet */
   --scarlet-tint-7:  #FDE2DF;
@@ -34,11 +37,12 @@
   --text-tertiary:   var(--ink-tint-4);
   --text-on-dark:    var(--vellum);
 
-  --surface-page:    var(--vellum);
-  --surface-card:    var(--vellum-tint-7);
-  --surface-alt:     var(--vellum-shade-1);
-  --surface-divider: var(--vellum-shade-2);
-  --surface-inverse: var(--ink);
+  --surface-page:           var(--vellum);
+  --surface-card:           var(--vellum-tint-7);
+  --surface-alt:            var(--vellum-shade-1);
+  --surface-divider:        var(--vellum-shade-half); /* default hairline — barely there on white and beige */
+  --surface-divider-hover:  var(--vellum-shade-1);    /* slight emphasis on hover/focus, still soft */
+  --surface-inverse:        var(--ink);
 
   /* Spacing (8px grid) */
   --sp-half: 4px;
@@ -61,45 +65,85 @@
   --container-narrow: 720px;
 
   /* Radii */
-  --r-btn:  4px;
-  --r-input: 4px;
-  --r-tag:  4px;
-  --r-card: 6px;
-  --r-pill: 32px;
+  --r-btn:         4px;
+  --r-input:       4px;
+  --r-tag:         4px;
+  --r-card:        14px; /* softened — see STYLEGUIDE §4 */
+  --r-card-inner:  8px;  /* nested elements inside cards */
+  --r-pill:        32px;
+  --r-input-outer: 16px;
+  --r-input-inner: 10px;
+  --r-tw-outer:    20px;
+  --r-tw-inner:    12px;
 
   /* Motion */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* Type-family aliases */
-  --ff-display: var(--font-season-mix), Georgia, serif;
-  --ff-sans:    var(--font-mallory-narrow), 'Inter', system-ui, sans-serif;
+  /* Type-family aliases — STYLEGUIDE §2.
+     `--ff-sans` is Mallory regular (UI: buttons, nav, eyebrows).
+     `--ff-sans-compact` is Mallory Compact (body copy).
+     Mallory Narrow is forbidden; it is not loaded.
+
+     Mallory + Mallory Compact font files are NOT yet present in
+     public/fonts/. Until they are added and registered via
+     next/font/local in app/layout.tsx, both --ff-sans and
+     --ff-sans-compact fall through to a system-ui stack
+     (SF Pro on macOS). When the files arrive:
+       1) Add them to public/fonts/
+       2) Register --font-mallory and --font-mallory-compact
+          in layout.tsx via localFont()
+       3) Prepend var(--font-mallory) / var(--font-mallory-compact)
+          to the relevant stacks below.
+     A var() fallback (`,sans-serif`) MUST be supplied when the
+     variable is referenced — otherwise an undefined variable
+     invalidates the whole font-family declaration and the
+     browser falls back to Times. */
+  --ff-display:      var(--font-season-mix, Georgia), Georgia, serif;
+  --ff-sans:         var(--font-mallory, sans-serif),         -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+  --ff-sans-compact: var(--font-mallory-compact, sans-serif), -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: var(--ff-sans);
+  position: relative;
+  font-family: var(--ff-sans-compact);
   background: var(--surface-page);
   color: var(--text-primary);
   font-size: 16px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ── Scroll reveal ───────────────────────────────────────── */
 .reveal { opacity: 0; }
 
-/* ── Hero entrance ───────────────────────────────────────── */
+/* ── Entrance animations — DISABLED ──────────────────────────
+   On-load fade/translate animations have been removed from
+   the entire page on instruction; everything renders static.
+   The @keyframes definition is kept so we can rewire entrance
+   timing once the page's info architecture is complete. */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.hero-title    { animation: fadeUp 0.7s var(--ease) 0.10s both; }
-.hero-subhead  { animation: fadeUp 0.7s var(--ease) 0.22s both; }
-#twWindow      { animation: fadeUp 0.7s var(--ease) 0.38s both; }
 
-/* ── Type scale ──────────────────────────────────────────── */
+/* ── Type scale — STYLEGUIDE §2 ───────────────────────────
+   Display tokens use Season Mix (--ff-display).
+   Body tokens use Mallory Compact (--ff-sans-compact).
+   UI/label tokens use Mallory regular (--ff-sans) with
+   line-height: 1 (trim-height) so text sits centered in
+   buttons, eyebrows and nav links. */
+.t-hero {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(56px, 7.5vw, 96px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
 .t-display {
   font-family: var(--ff-display);
   font-weight: 400;
@@ -141,41 +185,48 @@ body {
   text-wrap: balance;
 }
 .t-subheading {
-  font-family: var(--ff-sans);
+  font-family: var(--ff-sans-compact);
   font-weight: 400;
   font-size: 18px;
-  line-height: 1.5;
+  line-height: 1.50;
   text-wrap: pretty;
 }
 .t-body {
-  font-family: var(--ff-sans);
+  font-family: var(--ff-sans-compact);
   font-weight: 400;
   font-size: 16px;
   line-height: 1.55;
   text-wrap: pretty;
 }
 .t-body-sm {
-  font-family: var(--ff-sans);
+  font-family: var(--ff-sans-compact);
   font-weight: 400;
   font-size: 14px;
-  line-height: 1.45;
+  line-height: 1.55;
   letter-spacing: 0.003em;
   text-wrap: pretty;
 }
+/* UI / label tier — Mallory regular, trim-height applied */
 .t-label {
   font-family: var(--ff-sans);
-  font-weight: 400;
+  font-weight: 700;
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1;
   letter-spacing: 0.005em;
 }
 .t-eyebrow {
   font-family: var(--ff-sans);
   font-weight: 700;
   font-size: 12px;
-  line-height: 1.4;
+  line-height: 1;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+.t-nav {
+  font-family: var(--ff-sans);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1;
 }
 .t-caption {
   font-family: var(--ff-sans);
@@ -185,7 +236,10 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* ── Buttons ─────────────────────────────────────────────── */
+/* ── Buttons — STYLEGUIDE §6.1 ───────────────────────────
+   All button text uses --ff-sans (Mallory regular) with
+   line-height: 1 (trim-height) so glyphs sit centered in
+   the 40px min-height clickable surface. */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -197,7 +251,8 @@ body {
   border-radius: var(--r-pill);
   font-family: var(--ff-sans);
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 700;
+  line-height: 1;
   cursor: pointer;
   min-height: 40px;
   transition: background 120ms var(--ease), transform 120ms var(--ease);
@@ -216,7 +271,8 @@ body {
   border-radius: var(--r-btn);
   font-family: var(--ff-sans);
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 700;
+  line-height: 1;
   cursor: pointer;
   min-height: 40px;
   transition: background 120ms var(--ease), transform 120ms var(--ease);
@@ -225,17 +281,18 @@ body {
 .btn-brand:active   { background: var(--scarlet-shade-2); transform: scale(0.96); }
 .btn-brand:disabled { opacity: 0.5; cursor: default; }
 
-/* ── NAV ─────────────────────────────────────────────────── */
+/* ── NAV ─────────────────────────────────────────────────────
+   Transparent and non-sticky. The painted hero atmosphere
+   shows through behind it. The nav scrolls away with the
+   page — no sticky, no scroll-driven background fade. */
 nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: var(--sp-2-5) var(--sp-8);
-  position: sticky;
-  top: 0;
-  background: rgba(250, 249, 241, 0.92);
-  backdrop-filter: blur(16px);
-  z-index: 100;
+  position: relative;
+  z-index: 2;
+  background: transparent;
 }
 .nav-logo {
   display: inline-flex;
@@ -256,24 +313,105 @@ nav {
   list-style: none;
 }
 .nav-links a {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 4px;
   color: var(--text-secondary);
   text-decoration: none;
+  font-family: var(--ff-sans);
   font-size: 14px;
-  padding: 12px 4px;
+  line-height: 1;
   transition: color 120ms var(--ease);
 }
 .nav-links a:hover { color: var(--text-primary); }
 
 /* ── FOLD 1 — HERO ───────────────────────────────────────── */
 .hero {
-  padding: var(--sp-20) var(--sp-8);
+  /* Zero bottom padding so the cascade fold below starts
+     immediately at the story box's bottom edge — branch lines
+     anchor cleanly to the box rather than floating in space. */
+  padding: var(--sp-8) var(--sp-8) 0 var(--sp-8);
   text-align: center;
   position: relative;
   overflow: hidden;
 }
+
+/* ── FOLD 2 — CASCADE ────────────────────────────────────── */
+.cascade {
+  padding: 0 var(--sp-8) var(--sp-15);
+  text-align: center;
+  position: relative;
+}
 .hero > * { position: relative; z-index: 1; }
 
-/* Globe canvas — behind hero content */
+/* Page-top atmosphere — painted background that spans behind
+   the nav AND the hero so the entire top of the page shares
+   one continuous artwork. Sits at the document top, absolutely
+   positioned. The cascade fold and everything below has its
+   own solid vellum background which obscures this image once
+   the user scrolls past the hero.
+
+   The bottom of the painting dissolves into the vellum page
+   surface through a long multi-stop ::after gradient overlay
+   (vellum at the bottom, transparent up top). Irregular stops
+   so the transition reads as atmospheric rather than a hard
+   horizontal cut. */
+.page-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: min(100vh, 1024px);
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
+}
+.page-bg img { object-fit: cover; }
+.page-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Fade is calibrated against actual layout: page-bg is
+     900px tall, the story box's bottom edge sits at y=791
+     (≈88% of the page-bg height). The gradient reaches fully
+     opaque vellum at exactly 88%, so the painting dissolves
+     into vellum precisely where the story box ends. Irregular
+     stops keep the transition atmospheric. */
+  background: linear-gradient(
+    to bottom,
+    rgba(250, 249, 241, 0)    0%,
+    rgba(250, 249, 241, 0)    55%,
+    rgba(250, 249, 241, 0.18) 65%,
+    rgba(250, 249, 241, 0.42) 73%,
+    rgba(250, 249, 241, 0.70) 80%,
+    rgba(250, 249, 241, 0.92) 85%,
+    rgba(250, 249, 241, 1)    88%,
+    rgba(250, 249, 241, 1)    100%
+  );
+}
+
+/* Foreground stacking — make sure every page section sits
+   above .page-bg. Nav is excluded (it has its own
+   position: sticky + z-index: 100). The cascade and below
+   also need solid backgrounds to obscure the painted bg
+   once the user scrolls past the hero. */
+section.hero,
+section.cascade,
+section.bento,
+section.cards-section,
+section.final-cta,
+footer { position: relative; z-index: 1; }
+
+section.cascade,
+section.bento,
+section.cards-section,
+footer { background: var(--surface-page); }
+
+/* Globe canvas — currently unused; kept for when the globe
+   is reintroduced elsewhere on the page. */
 .globe-bg {
   position: absolute;
   inset: 0;
@@ -283,12 +421,66 @@ nav {
   pointer-events: none;
 }
 
+/* White halo so the title + eyebrow stay crisp over the
+   painted hero atmosphere. Four layered shadows: a tight
+   bright glow that separates each glyph from the painting,
+   a mid-spread for character-to-character cohesion, and
+   two wide ambient glows for atmospheric legibility. The
+   halo has to be aggressive — a subtle one disappears on
+   the painting's light-sky regions. */
+.hero-eyebrow,
 .hero-title {
-  margin-bottom: var(--sp-3);
-  max-width: 980px;
-  margin-left: auto;
-  margin-right: auto;
+  text-shadow:
+    0 0 6px  rgba(255, 255, 255, 1.00),
+    0 0 14px rgba(255, 255, 255, 0.95),
+    0 0 32px rgba(255, 255, 255, 0.85),
+    0 0 72px rgba(255, 255, 255, 0.65);
 }
+
+.hero-eyebrow {
+  margin: 0 auto var(--sp-2-5);
+  /* Wordmark-style brand label — Mallory regular, all caps,
+     wide letter-spacing. The product name announcing itself.
+     UI tier so trimmed line-height. */
+  font-family: var(--ff-sans);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+/* Calligraphic printer's ornament — a horizontal scrollwork
+   stroke with terminal dots at each end and a center diamond
+   medallion. Inspired by Penguin Classics / Folio Society
+   chapter-break dingbats. The whole ornament lives inside a
+   single SVG so the proportions stay locked across viewports. */
+.hero-divider {
+  display: flex;
+  justify-content: center;
+  margin: var(--sp-1) auto var(--sp-1-5);
+  color: var(--scarlet);
+}
+.hero-divider-ornament {
+  width: 240px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.hero-title {
+  margin: 0 auto var(--sp-6);
+  max-width: 1100px;
+  /* Slightly smaller than t-hero so the eyebrow + title
+     read as a balanced pair rather than one giant line
+     dwarfing the other. */
+  font-size: clamp(44px, 5.4vw, 68px);
+  line-height: 1.07;
+  letter-spacing: -0.03em;
+}
+
+/* Hero-subhead retained for legacy use; current hero variant
+   has no subhead — eyebrow + t-hero title only. */
 .hero-subhead {
   max-width: 580px;
   margin: 0 auto var(--sp-12);
@@ -314,7 +506,7 @@ nav {
   transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease);
 }
 .tw-window:hover {
-  border-color: var(--vellum-shade-3);
+  border-color: var(--surface-divider-hover);
   box-shadow:
     0 1px 2px rgba(0,0,0,0.04),
     0 8px 24px rgba(50,50,93,0.08);
@@ -483,7 +675,411 @@ nav {
 .tw-translate.is-done { background: var(--ink); }
 .tw-translate.is-done:hover { background: var(--ink-tint-1); }
 
-.tw-fade { animation: fadeUp 0.5s var(--ease) both; }
+/* .tw-fade — animation removed (page renders static) */
+.tw-fade { /* no-op for now */ }
+
+/* ── ADAPTATION FLOW ──────────────────────────────────────
+   The hero's interactive centerpiece + the cascade fold
+   beneath it. Visually one continuous design moment:
+   typing box at top, 5 SVG branches fanning out, 5 locale
+   cards side by side. Concentric padding follows the
+   existing translation-window pattern: vellum outer /
+   small padding / white inner. */
+/* Generic centered wrapper for adaptation flow content.
+   Sized to --container so the cascade (5 cards) gets full
+   horizontal room. Inside it, .adapt-input takes a tighter
+   --container-narrow so the story box reads as a focused
+   reading surface, not a wide form. */
+.adapt-flow {
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+.adapt-input {
+  max-width: 640px;
+  margin: 0 auto;
+  background: var(--vellum);
+  border: 1px solid var(--vellum-shade-1);
+  border-radius: var(--r-input-outer);
+  padding: var(--sp-1);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 4px 14px rgba(0,0,0,0.05);
+  transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease);
+}
+.adapt-input:hover,
+.adapt-input:focus-within {
+  border-color: var(--surface-divider-hover);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 8px 24px rgba(50,50,93,0.08);
+}
+
+.adapt-input-inner {
+  background: var(--vellum-tint-7);
+  border: 1px solid var(--surface-divider);
+  border-radius: var(--r-input-inner);
+  padding: var(--sp-3);
+  display: flex;
+}
+
+.adapt-input-textarea {
+  flex: 1;
+  width: 100%;
+  /* Sized to fit the canonical demo passage comfortably with
+     no overflow scroll — overflow:hidden ensures the textarea
+     never shows a scrollbar. */
+  min-height: 260px;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  overflow: hidden;
+  /* Body — Mallory Compact, normal line-height (no trim) */
+  font-family: var(--ff-sans-compact);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text-primary);
+  text-wrap: pretty;
+  text-align: left;
+}
+.adapt-input-textarea::placeholder { color: var(--text-tertiary); }
+
+.adapt-input-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--sp-1-5) var(--sp-1) var(--sp-half) var(--sp-1);
+}
+
+/* Demo-story button — surface-card white with ink text.
+   Mallory regular, line-height 1 (trimmed) so glyphs sit
+   centered in the 40px hit area. */
+.btn-demo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  background: var(--vellum-tint-7);
+  color: var(--text-primary);
+  border: 1px solid var(--surface-divider);
+  padding: 10px var(--sp-2-5);
+  border-radius: var(--r-pill);
+  font-family: var(--ff-sans);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  min-height: 40px;
+  transition: background 120ms var(--ease), border-color 120ms var(--ease), transform 120ms var(--ease);
+}
+.btn-demo:hover  { background: var(--vellum-shade-1); border-color: var(--surface-divider-hover); }
+.btn-demo:active { transform: scale(0.96); }
+
+/* Take-this-global — primary scarlet pill */
+.btn-global {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  background: var(--scarlet);
+  color: var(--vellum);
+  border: none;
+  padding: 10px var(--sp-3);
+  border-radius: var(--r-pill);
+  font-family: var(--ff-sans);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  min-height: 40px;
+  transition: background 120ms var(--ease), transform 120ms var(--ease);
+}
+.btn-global:hover    { background: var(--scarlet-shade-1); }
+.btn-global:active   { background: var(--scarlet-shade-2); transform: scale(0.96); }
+.btn-global:disabled { opacity: 0.6; cursor: default; transform: none; }
+
+/* SVG branch container — sits between the story box and the
+   locale strip, anchored to the bottom edge of the story box
+   (no negative margin so the branches don't poke up into the
+   button area). */
+.cascade-branches {
+  display: block;
+  width: 100%;
+  height: 96px;
+  margin-top: 0;
+  pointer-events: none;
+}
+.cascade-branches path {
+  stroke: var(--vellum-shade-1);
+  stroke-width: 1;
+  fill: none;
+}
+
+/* Scarlet shimmer overlay — a short bright segment travels
+   the length of each branch from origin to card. All four
+   paths animate simultaneously and only ONCE: the
+   IntersectionObserver in <CascadeBranches> adds the
+   `.is-active` class to the SVG when the cascade enters the
+   viewport, which triggers the keyframe. After the single
+   sweep completes (opacity: 0), the segment stays hidden.
+   Each path normalizes to pathLength=100 so the dasharray
+   and offset values stay branch-agnostic. */
+.cascade-branches .branch-shimmer path {
+  stroke: var(--scarlet);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  /* Longer visible streak (40 units of path-length 100) so
+     the pulse reads as a sustained shimmer rather than a
+     short dot. Same duration/easing — only the segment
+     length changes. */
+  stroke-dasharray: 40 100;
+  stroke-dashoffset: 40;
+  opacity: 0;
+  /* No animation by default — see .is-active rule below */
+}
+.cascade-branches.is-active .branch-shimmer path {
+  animation: shimmerPulse 1.6s var(--ease) both;
+}
+
+@keyframes shimmerPulse {
+  0%   { stroke-dashoffset:  40; opacity: 0; }
+  6%   {                          opacity: 1; }
+  90%  { stroke-dashoffset: -100; opacity: 1; }
+  100% { stroke-dashoffset: -100; opacity: 0; }
+}
+
+@keyframes branchDraw {
+  from { stroke-dashoffset: 600; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* The 5 locale cards — joined as one wide folio strip with
+   single-line dividers between columns. Outer border lives
+   on the grid wrapper; each card has only a right divider
+   (except the last). Adjacent borders never double up. */
+.cascade-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--surface-divider);
+  border-radius: var(--r-card);
+  overflow: hidden;
+  background: var(--surface-card);
+}
+
+.locale-card {
+  background: var(--surface-card);
+  border: none;
+  border-right: 1px solid var(--surface-divider);
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+}
+.locale-card:last-child { border-right: none; }
+
+.locale-card-locale {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border-bottom: 1px solid var(--surface-divider);
+  font-family: var(--ff-sans);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  background: var(--vellum-tint-3);
+}
+
+.locale-picker-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1-5);
+  width: 100%;
+  padding: var(--sp-2-5) var(--sp-3);
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  transition: background 120ms var(--ease);
+}
+.locale-picker-btn:hover {
+  background: var(--vellum-shade-half);
+}
+.locale-picker-name {
+  flex: 1;
+  text-align: left;
+}
+.locale-chevrons {
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+}
+
+.locale-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: var(--sp-1-5);
+  right: var(--sp-1-5);
+  z-index: 20;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-divider);
+  border-radius: var(--r-card);
+  padding: var(--sp-1);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    0 12px 32px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.locale-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1-5);
+  padding: var(--sp-2) var(--sp-2-5);
+  background: none;
+  border: none;
+  border-radius: var(--r-card-inner);
+  font-family: var(--ff-sans);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 120ms var(--ease);
+}
+.locale-dropdown-item:hover {
+  background: var(--vellum-shade-half);
+}
+.locale-dropdown-item:active {
+  background: var(--vellum-shade-1);
+}
+
+.locale-flag {
+  width: 20px;
+  height: 15px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  background-size: cover;
+}
+.locale-flag.fi-jp {
+  outline: 1px solid var(--surface-divider);
+}
+
+.locale-card-image {
+  position: relative;
+  margin: var(--sp-3) var(--sp-3) 0;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--r-card-inner);
+  overflow: hidden;
+}
+.locale-card-image img {
+  border-radius: var(--r-card-inner);
+}
+
+.locale-card-text {
+  padding: var(--sp-3);
+  /* Body — Mallory Compact, normal line-height (no trim) */
+  font-family: var(--ff-sans-compact);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  text-wrap: pretty;
+  flex: 1;
+  text-align: left;
+}
+
+/* ── Word-by-word sheen reveal ──────────────────────────── */
+.sheen-word,
+.locale-highlight {
+  color: var(--ink-tint-7);
+}
+.sheen-word.is-revealed,
+.locale-highlight.is-revealed {
+  color: var(--text-primary);
+  transition: color 0.3s var(--ease);
+}
+.sheen-word.is-sheen-current,
+.locale-highlight.is-sheen-current {
+  color: var(--scarlet);
+  transition: color 0.1s var(--ease);
+}
+
+/* Adapted-phrase highlights — soft scarlet wash on the words
+   the engine changed. Behavior is EXCLUSIVE: only the bucket
+   currently spotlighted by the tooltip is lit; everything
+   else returns to no-bg. As buckets advance, prior highlights
+   fade back out so the focus stays on what the tooltip is
+   actually pointing to. */
+.locale-highlight {
+  background-color: rgba(245, 29, 0, 0);
+  border-radius: 2px;
+  padding: 0 2px;
+  margin: 0 -2px;
+  transition: background-color 0.55s var(--ease), color 0.3s var(--ease);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.locale-highlight.is-active {
+  background-color: rgba(245, 29, 0, 0.22);
+}
+
+/* Cascade strip wrapper — establishes positioning context so
+   the tooltip can be anchored exactly to the highlighted text
+   it's pointing to. */
+.cascade-strip {
+  position: relative;
+}
+
+/* Tooltip pill — anchored to the actual highlighted phrase
+   in the owner locale via `top`/`left` set inline from
+   getBoundingClientRect. Bottom-center sits ~14px above the
+   highlight's top edge, with a small downward notch (::after)
+   pointing exactly to the phrase. Fades in/out on each
+   bucket; position is teleported while invisible so the
+   tooltip never visibly slides between buckets. */
+.cascade-tooltip {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 14px));
+  z-index: 5;
+  padding: 9px 14px;
+  background: var(--ink);
+  color: var(--vellum);
+  border-radius: var(--r-pill);
+  font-family: var(--ff-sans);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 6px 18px rgba(0, 0, 0, 0.14);
+  opacity: 0;
+  transition: opacity 0.55s var(--ease);
+}
+.cascade-tooltip.is-visible { opacity: 1; }
+.cascade-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--ink);
+}
 
 /* ── FOLD 2 — BENTO ──────────────────────────────────────── */
 .bento {
@@ -517,7 +1113,7 @@ nav {
   transition: border-color 120ms var(--ease), box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
 }
 .bcell:hover {
-  border-color: var(--vellum-shade-3);
+  border-color: var(--surface-divider-hover);
   box-shadow:
     0 4px 6px rgba(0,0,0,0.04),
     0 16px 32px rgba(50,50,93,0.10),
@@ -629,20 +1225,26 @@ nav {
   border: none;
   outline: none;
   color: var(--vellum);
+  /* Body — Mallory Compact, normal line-height (no trim) */
+  font-family: var(--ff-sans-compact);
   font-size: 15px;
-  font-family: var(--ff-sans);
+  line-height: 1.5;
 }
 .prompt-box input::placeholder { color: rgba(250,249,241,0.4); }
 
 .prompt-submit {
+  display: inline-flex;
+  align-items: center;
   background: var(--vellum);
   color: var(--ink);
   border: none;
-  padding: var(--sp-1) var(--sp-3);
-  border-radius: var(--r-btn);
+  padding: 10px var(--sp-3);
+  border-radius: var(--r-pill);
   font-family: var(--ff-sans);
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.005em;
   cursor: pointer;
   white-space: nowrap;
   min-height: 40px;

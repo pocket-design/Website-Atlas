@@ -1,11 +1,26 @@
-import Globe from '@/components/Globe';
-import TranslationWindow from '@/components/TranslationWindow';
+import Image from 'next/image';
+import { HeroAdapter, LocaleCascade } from '@/components/AdaptationFlow';
 import BentoGraphic from '@/components/BentoGraphic';
-import RevealOnScroll from '@/components/RevealOnScroll';
 
 export default function Home() {
   return (
     <>
+      {/* Page-top atmosphere — painted background sits behind
+          the nav and the hero so the entire top of the page
+          shares one continuous artwork. */}
+      <div className="page-bg" aria-hidden="true">
+        {/* eslint-disable-next-line jsx-a11y/alt-text */}
+        <Image
+          src="/assets/atlas-background.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          quality={88}
+          style={{ objectFit: 'cover', objectPosition: 'center top' }}
+        />
+      </div>
+
       {/* NAV */}
       <nav>
         <a className="nav-logo" href="#" aria-label="Pocket Atlas — home">
@@ -27,20 +42,52 @@ export default function Home() {
           </li>
         </ul>
         <button type="button" className="btn-primary">
-          Go global
+          Start writing
         </button>
       </nav>
 
       {/* FOLD 1 — HERO */}
       <section className="hero">
-        <Globe />
-        <h1 className="t-display hero-title">
-          Translation changes words. We change worlds.
+        <div className="hero-eyebrow">ATLAS BY POCKET</div>
+        <div className="hero-divider" aria-hidden="true">
+          <svg
+            className="hero-divider-ornament"
+            viewBox="0 0 220 18"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            preserveAspectRatio="xMidYMid meet"
+          >
+            {/* Outer terminal dots — left and right, equal */}
+            <circle cx="4"   cy="9" r="1.4" fill="currentColor" stroke="none" />
+            <circle cx="216" cy="9" r="1.4" fill="currentColor" stroke="none" />
+
+            {/* Hairline strokes — mirrored exactly across the
+                vertical axis x=110 */}
+            <line x1="10"  y1="9" x2="92"  y2="9" strokeWidth="1" />
+            <line x1="128" y1="9" x2="210" y2="9" strokeWidth="1" />
+
+            {/* Inner punctuation dots flanking the medallion */}
+            <circle cx="98"  cy="9" r="1.1" fill="currentColor" stroke="none" />
+            <circle cx="122" cy="9" r="1.1" fill="currentColor" stroke="none" />
+
+            {/* Center diamond medallion — symmetric around x=110 */}
+            <path
+              d="M110 3 L 117 9 L 110 15 L 103 9 Z"
+              fill="currentColor"
+              stroke="none"
+            />
+          </svg>
+        </div>
+        <h1 className="t-hero hero-title">
+          Incredibly powerful story adaptation engine for writers
         </h1>
-        <p className="t-subheading hero-subhead">
-          Reimagine your story across cultures and geographies so it truly belongs everywhere.
-        </p>
-        <TranslationWindow />
+        <HeroAdapter />
+      </section>
+
+      {/* FOLD 2 — Cascade: one English passage, five locales */}
+      <section className="cascade">
+        <LocaleCascade />
       </section>
 
       {/* FOLD 2 — BENTO */}
@@ -165,7 +212,6 @@ export default function Home() {
         </p>
       </footer>
 
-      <RevealOnScroll />
     </>
   );
 }
