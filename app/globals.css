@@ -1279,6 +1279,12 @@ section.cards-section { background: var(--surface-page); }
 .cascade-tooltip[data-bucket="4"]::after { border-top-color: rgb(220, 38, 38); }
 
 /* Category pills row — spans full width inside the locale grid box */
+.cascade-pills-sep {
+  width: 1px;
+  align-self: stretch;
+  margin: 4px 4px;
+  background: var(--surface-divider);
+}
 .cascade-pills {
   grid-column: 1 / -1;
   display: flex;
@@ -1518,7 +1524,7 @@ section.cards-section { background: var(--surface-page); }
   margin-bottom: var(--sp-6);
 }
 
-/* Thumbnail grid — 2 rows of 4, random fade cycle */
+/* Thumbnail grid — 2 rows of 6, pixelation swap cycle */
 .thumb-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -1532,17 +1538,26 @@ section.cards-section { background: var(--surface-page); }
   position: relative;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  opacity: 1;
-  transition: opacity 0.15s ease-out;
 }
 .thumb-cell img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  image-rendering: auto;
+  filter: blur(0px);
+  transition: filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.thumb-cell.is-fading {
-  opacity: 0;
+.thumb-cell.is-pixelating-out img {
+  filter: blur(8px) brightness(1.1);
+}
+.thumb-cell.is-pixelating-in img {
+  filter: blur(8px) brightness(1.1);
+  animation: thumbUnpixel 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes thumbUnpixel {
+  0%   { filter: blur(8px) brightness(1.1); }
+  100% { filter: blur(0px) brightness(1); }
 }
 .story-cta-grid {
   display: grid;

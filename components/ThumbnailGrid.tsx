@@ -20,22 +20,19 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export default function ThumbnailGrid() {
-  const [slots, setSlots] = useState<string[]>(() => {
-    const initial = shuffle(THUMBNAILS).slice(0, GRID_SIZE);
-    return initial;
-  });
-  const [fadingSlot, setFadingSlot] = useState(-1);
-  const visibleRef = useRef<Set<string>>(new Set());
+  const [slots, setSlots] = useState<string[]>(() =>
+    shuffle(THUMBNAILS).slice(0, GRID_SIZE)
+  );
+  const [pixelatingSlot, setPixelatingSlot] = useState(-1);
+  const [phase, setPhase] = useState<'out' | 'in' | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
-
-  useEffect(() => {
-    visibleRef.current = new Set(slots);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const cycle = () => {
       const slotIdx = Math.floor(Math.random() * GRID_SIZE);
-      setFadingSlot(slotIdx);
+
+      setPixelatingSlot(slotIdx);
+      setPhase('out');
 
       setTimeout(() => {
         setSlots((prev) => {
@@ -43,14 +40,16 @@ export default function ThumbnailGrid() {
           const currentlyVisible = new Set(prev);
           const available = THUMBNAILS.filter((t) => !currentlyVisible.has(t));
           const pool = available.length > 0 ? available : THUMBNAILS.filter((t) => t !== prev[slotIdx]);
-          const newThumb = pool[Math.floor(Math.random() * pool.length)];
-
-          next[slotIdx] = newThumb;
+          next[slotIdx] = pool[Math.floor(Math.random() * pool.length)];
           return next;
         });
+        setPhase('in');
 
-        setFadingSlot(-1);
-      }, 180);
+        setTimeout(() => {
+          setPixelatingSlot(-1);
+          setPhase(null);
+        }, 400);
+      }, 400);
 
       timeoutRef.current = setTimeout(cycle, 3000);
     };
@@ -62,7 +61,14 @@ export default function ThumbnailGrid() {
   return (
     <div className="thumb-grid" aria-hidden="true">
       {slots.map((src, i) => (
-        <div key={i} className={'thumb-cell' + (fadingSlot === i ? ' is-fading' : '')}>
+        <div
+          key={i}
+          className={
+            'thumb-cell' +
+            (pixelatingSlot === i && phase === 'out' ? ' is-pixelating-out' : '') +
+            (pixelatingSlot === i && phase === 'in' ? ' is-pixelating-in' : '')
+          }
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={src} alt="" />
         </div>
