@@ -399,7 +399,7 @@ body {
       transparent 65%,
       var(--vellum) 100%
     ),
-    url('/assets/backdrop.png') center top / cover no-repeat;
+    url('/assets/backdrop.jpg') center top / cover no-repeat;
 }
 
 /* Scroll offset for fixed nav (nav top 12px + nav height ~48px + breathing room) */
