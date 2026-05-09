@@ -1164,18 +1164,26 @@ section.cards-section { background: var(--surface-page); }
 
 /* Emphasis tier — tooltip focus brings bucket to full intensity.
    animation: none prevents the initial overshoot from replaying during cycling. */
+.locale-highlight.is-active {
+  color: var(--text-primary);
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
 .locale-highlight.is-active[data-bucket="0"] { background-color: rgba(59, 130, 246, 0.30); animation: none; }
 .locale-highlight.is-active[data-bucket="1"] { background-color: rgba(16, 185, 129, 0.30); animation: none; }
 .locale-highlight.is-active[data-bucket="2"] { background-color: rgba(245, 158, 11, 0.30); animation: none; }
 .locale-highlight.is-active[data-bucket="3"] { background-color: rgba(139, 92, 246, 0.30); animation: none; }
 .locale-highlight.is-active[data-bucket="4"] { background-color: rgba(245, 29, 0, 0.30); animation: none; }
 
-/* Dimmed tier — non-focused buckets recede but stay subtly visible */
-.locale-highlight.is-dimmed[data-bucket="0"] { background-color: rgba(59, 130, 246, 0.06); animation: none; }
-.locale-highlight.is-dimmed[data-bucket="1"] { background-color: rgba(16, 185, 129, 0.06); animation: none; }
-.locale-highlight.is-dimmed[data-bucket="2"] { background-color: rgba(245, 158, 11, 0.06); animation: none; }
-.locale-highlight.is-dimmed[data-bucket="3"] { background-color: rgba(139, 92, 246, 0.06); animation: none; }
-.locale-highlight.is-dimmed[data-bucket="4"] { background-color: rgba(245, 29, 0, 0.06); animation: none; }
+/* Dimmed tier — non-focused buckets recede: grey text, faint background */
+.locale-highlight.is-dimmed {
+  color: var(--ink-tint-5);
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.locale-highlight.is-dimmed[data-bucket="0"] { background-color: rgba(59, 130, 246, 0.04); animation: none; }
+.locale-highlight.is-dimmed[data-bucket="1"] { background-color: rgba(16, 185, 129, 0.04); animation: none; }
+.locale-highlight.is-dimmed[data-bucket="2"] { background-color: rgba(245, 158, 11, 0.04); animation: none; }
+.locale-highlight.is-dimmed[data-bucket="3"] { background-color: rgba(139, 92, 246, 0.04); animation: none; }
+.locale-highlight.is-dimmed[data-bucket="4"] { background-color: rgba(245, 29, 0, 0.04); animation: none; }
 
 /* Cascade strip wrapper — establishes positioning context so
    the tooltip can be anchored exactly to the highlighted text
@@ -1598,6 +1606,19 @@ footer {
 .footer-col a:hover {
   color: #fff;
 }
+/* ── ROUGH.JS UNDERLINES ─────────────────────────────────── */
+.rough-underline {
+  position: relative;
+  display: inline;
+}
+.rough-underline-svg {
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  pointer-events: none;
+  overflow: visible;
+}
+
 .footer-bottom {
   max-width: var(--container);
   margin: var(--sp-8) auto 0;

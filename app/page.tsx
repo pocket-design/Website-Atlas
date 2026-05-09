@@ -3,10 +3,37 @@ import { HeroAdapter, LocaleCascade } from '@/components/AdaptationFlow';
 import BentoGraphic from '@/components/BentoGraphic';
 import InteractiveGlobe from '@/components/InteractiveGlobe';
 import ThumbnailGrid from '@/components/ThumbnailGrid';
+import BentoHeader from '@/components/BentoHeader';
+import StoryCTAHeader from '@/components/StoryCTAHeader';
 
 export default function Home() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Atlas by Pocket',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    description:
+      'AI-powered story adaptation engine that adapts narratives for 100+ global locales while preserving emotional impact and cultural relevance.',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+    creator: {
+      '@type': 'Organization',
+      name: 'Pocket Entertainment Pvt Ltd',
+      url: 'https://pocketfm.com',
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* Page-top atmosphere — painted background sits behind
           the nav and the hero so the entire top of the page
           shares one continuous artwork. */}
@@ -31,10 +58,10 @@ export default function Home() {
         </a>
         <ul className="nav-links">
           <li>
-            <a href="#locale-cascade">Locales</a>
+            <a href="#locale-cascade">How it works</a>
           </li>
           <li>
-            <a href="#how-it-works">How it works</a>
+            <a href="#how-it-works">Features</a>
           </li>
           <li>
             <a href="#proof">Proof</a>
@@ -96,7 +123,7 @@ export default function Home() {
       {/* FOLD 2 — BENTO */}
       <section id="how-it-works" className="bento">
         <div className="section-header">
-          <h2 className="t-h2">You write the story once.<br />Atlas adapts it to the world.</h2>
+          <BentoHeader />
         </div>
 
         <div className="bento-grid">
@@ -177,7 +204,7 @@ export default function Home() {
 
       {/* FOLD 4 — HAVE A STORY */}
       <section id="writers" className="story-cta">
-        <h2 className="t-h2">Have a story?<br />Write it on Pocket.</h2>
+        <StoryCTAHeader />
 
         <ThumbnailGrid />
 

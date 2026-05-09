@@ -61,9 +61,54 @@ const malloryMPCompact = localFont({
 // Mallory Narrow is intentionally NOT loaded — see styleguide §2.
 
 export const metadata: Metadata = {
-  title: 'Atlas by Pocket — story adaptation engine for writers',
+  title: 'Atlas by Pocket',
   description:
-    "The world's first story adaptation engine for writers — built by Pocket. Translate words, transpose worlds.",
+    'Atlas is the AI adaptation engine by Pocket that adapts your story to resonate with readers in 100+ locales worldwide.',
+  keywords: [
+    'Atlas',
+    'Pocket FM',
+    'story adaptation',
+    'AI localization',
+    'global storytelling',
+    'content adaptation',
+    'writers platform',
+    'audio series',
+    'cultural adaptation',
+  ],
+  authors: [{ name: 'Pocket Entertainment Pvt Ltd' }],
+  creator: 'Pocket Entertainment Pvt Ltd',
+  publisher: 'Pocket Entertainment Pvt Ltd',
+  metadataBase: new URL('https://atlas.pocketfm.com'),
+  openGraph: {
+    title: 'Atlas by Pocket',
+    description:
+      'The AI adaptation engine that takes your story global. Write once, reach readers in 100+ locales.',
+    url: 'https://atlas.pocketfm.com',
+    siteName: 'Atlas by Pocket',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Atlas by Pocket',
+    description:
+      'The AI adaptation engine that takes your story global. Write once, reach readers in 100+ locales.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  icons: {
+    icon: '/icon.png',
+    apple: '/icon.png',
+  },
 };
 
 export default function RootLayout({

@@ -766,14 +766,14 @@ function LocaleCard({
           const isHighlight = token.bucket !== undefined;
           const cyclingStarted = currentBucket >= 0 && effectiveSheenDone;
           const isFocused = isActive && currentBucket === token.bucket;
-          const isDimmed = cyclingStarted && !isFocused;
+          const shouldDim = cyclingStarted && !isFocused;
           const cls =
             (isHighlight
               ? 'locale-highlight' +
                 (effectiveSheenDone ? ' is-highlighted' : '') +
                 (cyclingStarted && isFocused ? ' is-active' : '') +
-                (cyclingStarted && isDimmed ? ' is-dimmed' : '')
-              : 'sheen-word' + (cyclingStarted ? ' text-dimmed' : '')) +
+                (shouldDim ? ' is-dimmed' : '')
+              : 'sheen-word' + (shouldDim ? ' text-dimmed' : '')) +
             (revealed ? ' is-revealed' : '') +
             (isCurrent ? ' is-sheen-current' : '');
 
