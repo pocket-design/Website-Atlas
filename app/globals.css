@@ -5,6 +5,9 @@
 
 /* ── Design tokens ───────────────────────────────────────── */
 :root {
+  /* Hero gradient — controlled live by DialKit; see HeroBackground.tsx */
+  --hero-gradient-start: 67%;
+
   /* Ink */
   --ink-tint-7:  #E2E2E2;
   --ink-tint-6:  #C6C6C6;
@@ -61,8 +64,8 @@
   --sp-20:   160px;
 
   /* Container */
-  --container:        1200px;
-  --container-narrow: 720px;
+  --container:        1400px;
+  --container-narrow: 820px;
 
   /* Radii */
   --r-btn:         4px;
@@ -364,14 +367,60 @@ body {
 }
 
 /* ── FOLD 1 — HERO ───────────────────────────────────────── */
+/* Three-column hero. Column 1 (hero-text) spans both rows so
+   the eyebrow / title / subtitle anchor the left side. Column
+   2 (hero-story) sits in row 1, column 3 (cascade-strip) sits
+   in row 1 next to it, and the cascade-pills bar spans cols
+   2 and 3 in row 2 below them. Pills are a sibling of the
+   cascade-strip (LocaleCascade returns a fragment) so they
+   can break out of the cards grid. */
 .hero {
-  /* Extra top padding creates breathing room for the floating
-     nav pill to sit in. Zero bottom so the cascade fold starts
-     at the story box's bottom edge. */
-  padding: calc(var(--sp-8) + 150px) var(--sp-8) 0 var(--sp-8);
-  text-align: center;
+  padding: calc(var(--sp-8) + 110px) 0 var(--sp-10);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  column-gap: var(--sp-6);
+  align-items: stretch;
+  /* Match the nav pill's horizontal sizing so the hero content
+     edges line up with the nav. */
+  width: min(calc(100% - var(--sp-8) * 2), var(--container));
+  margin: 0 auto;
+  /* Hero always fills the viewport so the painted bg behind it
+     reaches its full height before the next fold begins. */
+  min-height: 100vh;
+}
+
+.hero-text {
+  text-align: left;
+  padding-top: 0;
+  align-self: start;
+}
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+/* Pull the pills tight to the cards above. */
+.hero-right > .cascade-pills {
+  padding: var(--sp-2) var(--sp-2);
+  margin-top: var(--sp-1);
+}
+/* Story stays content-sized; cascade-strip stretches to fill
+   the remaining vertical room so the locale cards reach the
+   bottom of the viewport-tall hero. */
+.hero-right > .cascade-strip { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.hero-right > .cascade-strip > .cascade-grid { flex: 1; min-height: 0; }
+
+@media (max-width: 1024px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: var(--sp-6);
+    padding-top: calc(var(--sp-6) + 110px);
+  }
+  .hero-text { text-align: center; padding-top: 0; }
 }
 
 /* Scroll offset for fixed nav (nav top 12px + nav height ~48px + breathing room) */
@@ -428,7 +477,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: min(100vh, 1024px);
+  height: 100vh;
   z-index: 0;
   pointer-events: none;
   user-select: none;
@@ -440,21 +489,28 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  /* --hero-soft-strength (default 0): scales the soft white
+     gradient. The dither overlay is now the primary transition
+     mechanism; this gradient is opt-in via a DialKit slider for
+     a hybrid look. */
+  opacity: var(--hero-soft-strength, 0);
   /* Fade is calibrated against actual layout: page-bg is
      900px tall, the story box's bottom edge sits at y=791
      (≈88% of the page-bg height). The gradient reaches fully
      opaque vellum at exactly 88%, so the painting dissolves
      into vellum precisely where the story box ends. Irregular
      stops keep the transition atmospheric. */
+  /* --hero-gradient-start (default 67%, declared on :root so
+     JS can override it via a DialKit slider) — controls where
+     the fade begins. Lower values pull the gradient further
+     up, making the white blend region taller. Mid/end stops
+     are interpolated between the start and 100%. */
   background: linear-gradient(
     to bottom,
     rgba(250, 249, 241, 0)    0%,
-    rgba(250, 249, 241, 0)    55%,
-    rgba(250, 249, 241, 0.18) 65%,
-    rgba(250, 249, 241, 0.42) 73%,
-    rgba(250, 249, 241, 0.70) 80%,
-    rgba(250, 249, 241, 0.92) 85%,
-    rgba(250, 249, 241, 1)    88%,
+    rgba(250, 249, 241, 0)    var(--hero-gradient-start),
+    rgba(250, 249, 241, 0.25) calc(var(--hero-gradient-start) + (100% - var(--hero-gradient-start)) * 0.24),
+    rgba(250, 249, 241, 0.65) calc(var(--hero-gradient-start) + (100% - var(--hero-gradient-start)) * 0.64),
     rgba(250, 249, 241, 1)    100%
   );
 }
@@ -487,15 +543,8 @@ section.cards-section { background: var(--surface-page); }
   pointer-events: none;
 }
 
-/* White halo so the title + eyebrow stay crisp over the
-   painted hero atmosphere. Four layered shadows: a tight
-   bright glow that separates each glyph from the painting,
-   a mid-spread for character-to-character cohesion, and
-   two wide ambient glows for atmospheric legibility. The
-   halo has to be aggressive — a subtle one disappears on
-   the painting's light-sky regions. */
-.hero-eyebrow,
-.hero-title {
+/* White halo so the eyebrow stays crisp over the painted hero atmosphere. */
+.hero-eyebrow {
   text-shadow:
     0 0 6px  rgba(255, 255, 255, 1.00),
     0 0 14px rgba(255, 255, 255, 0.95),
@@ -504,15 +553,15 @@ section.cards-section { background: var(--surface-page); }
 }
 
 .hero-eyebrow {
-  margin: 0 auto var(--sp-1);
+  margin: 0 0 var(--sp-2);
   font-family: var(--ff-display);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   line-height: 1;
   letter-spacing: 0.02em;
   color: var(--text-primary);
-  transform: translateY(-16px);
 }
+.hero-text > .hero-eyebrow { transform: none; }
 
 /* Calligraphic printer's ornament — a horizontal scrollwork
    stroke with terminal dots at each end and a center diamond
@@ -531,23 +580,27 @@ section.cards-section { background: var(--surface-page); }
 }
 
 .hero-title {
-  margin: 0 auto var(--sp-6);
-  max-width: 1100px;
-  /* Slightly smaller than t-hero so the eyebrow + title
-     read as a balanced pair rather than one giant line
-     dwarfing the other. */
-  font-size: clamp(44px, 5.4vw, 68px);
-  line-height: 1.07;
-  letter-spacing: 0; /* was: -0.03em */
+  margin: 0 0 var(--sp-3);
+  max-width: 100%;
+  font-size: clamp(40px, 4.4vw, 60px);
+  line-height: 1.05;
+  letter-spacing: 0;
 }
 
-/* Hero-subhead retained for legacy use; current hero variant
-   has no subhead — eyebrow + t-hero title only. */
 .hero-subhead {
-  max-width: 580px;
-  margin: 0 auto var(--sp-12);
+  max-width: 480px;
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.5;
   color: var(--text-secondary);
   text-wrap: pretty;
+}
+.hero-text .hero-subhead { margin: 0; }
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  margin-top: var(--sp-3);
 }
 
 /* ── Translation window ──────────────────────────────────
@@ -757,6 +810,15 @@ section.cards-section { background: var(--surface-page); }
   margin: 0 auto;
 }
 
+/* When the adapter lives in the hero's middle column, strip
+   auto-centering and inner max-widths so it fills the column. */
+.hero-right .adapt-flow { max-width: none; margin: 0; }
+.hero-right .adapt-input { max-width: none; margin: 0; }
+/* Let the story passage size the box. min-height was forcing
+   ~320px of empty space below the last line — drop it so the
+   card hugs the text. */
+.hero-right .adapt-input-textarea { min-height: 0; }
+
 .adapt-input {
   max-width: 640px;
   margin: 0 auto;
@@ -882,59 +944,48 @@ section.cards-section { background: var(--surface-page); }
 .btn-global:disabled { opacity: 0.6; cursor: default; transform: none; }
 
 /* SVG branch container — sits between the story box and the
-   locale strip, anchored to the bottom edge of the story box
-   (no negative margin so the branches don't poke up into the
-   button area). */
+   locale strip. Hero-right has no gap so the SVG's top/bottom
+   edges sit flush with the box above/below, making the curves
+   visually meet both endpoints. */
 .cascade-branches {
   display: block;
   width: 100%;
-  height: 96px;
-  margin-top: 0;
+  height: 56px;
+  margin: 0;
   pointer-events: none;
 }
 .cascade-branches path {
-  stroke: var(--vellum-shade-1);
-  stroke-width: 1;
+  stroke: var(--vellum-shade-3);
+  stroke-width: 1.4;
   fill: none;
 }
 
 /* Scarlet shimmer overlay — a short bright segment travels
-   the length of each branch from origin to card. All four
-   paths animate simultaneously and only ONCE: the
-   IntersectionObserver in <CascadeBranches> adds the
-   `.is-active` class to the SVG when the cascade enters the
-   viewport, which triggers the keyframe. After the single
-   sweep completes (opacity: 0), the segment stays hidden.
-   Each path normalizes to pathLength=100 so the dasharray
-   and offset values stay branch-agnostic. */
+   the length of each branch from the story-box origin out to
+   each card, looping forever. Each branch is staggered so the
+   four paths read as a continuous "connection pulse" radiating
+   outward. Each path normalizes to pathLength=100 so the
+   dasharray and offset values stay branch-agnostic. */
 .cascade-branches .branch-shimmer path {
   stroke: var(--scarlet);
-  stroke-width: 1.4;
+  stroke-width: 1.5;
   stroke-linecap: round;
-  /* Longer visible streak (40 units of path-length 100) so
-     the pulse reads as a sustained shimmer rather than a
-     short dot. Same duration/easing — only the segment
-     length changes. */
-  stroke-dasharray: 40 100;
-  stroke-dashoffset: 40;
+  stroke-dasharray: 30 100;
+  stroke-dashoffset: 30;
   opacity: 0;
-  /* No animation by default — see .is-active rule below */
+  animation: shimmerPulse 2.4s ease-in-out infinite;
 }
-.cascade-branches .branch-dots circle {
-  opacity: 1;
-  transition: opacity 0.5s ease-out;
-}
-.cascade-branches.is-active .branch-dots circle {
-  opacity: 0;
-}
-.cascade-branches.is-active .branch-shimmer path {
-  animation: shimmerPulse 1.6s var(--ease) both;
-}
+.cascade-branches .branch-shimmer path:nth-child(1) { animation-delay: 0s; }
+.cascade-branches .branch-shimmer path:nth-child(2) { animation-delay: 0.18s; }
+.cascade-branches .branch-shimmer path:nth-child(3) { animation-delay: 0.36s; }
+.cascade-branches .branch-shimmer path:nth-child(4) { animation-delay: 0.54s; }
+
+.cascade-branches .branch-dots circle { opacity: 0; }
 
 @keyframes shimmerPulse {
-  0%   { stroke-dashoffset:  40; opacity: 0; }
-  6%   {                          opacity: 1; }
-  90%  { stroke-dashoffset: -100; opacity: 1; }
+  0%   { stroke-dashoffset:  30; opacity: 0; }
+  10%  {                          opacity: 1; }
+  85%  { stroke-dashoffset: -100; opacity: 1; }
   100% { stroke-dashoffset: -100; opacity: 0; }
 }
 
@@ -958,6 +1009,49 @@ section.cards-section { background: var(--surface-page); }
     0 1px 3px rgba(0, 0, 0, 0.03),
     0 4px 12px rgba(0, 0, 0, 0.04);
   background: var(--surface-card);
+}
+
+/* Cards sit in a single row of 4 below the story box, sharing
+   the same width. The 2x2 dividers from the prior layout are
+   reset so only the right-side dividers (default) remain. */
+.hero-right .cascade-strip .cascade-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+.hero-right .cascade-strip .cascade-grid .locale-card {
+  border-top: none;
+}
+.hero-right .cascade-strip .cascade-grid .locale-card:nth-child(2n) {
+  border-right: 1px solid var(--surface-divider);
+}
+.hero-right .cascade-strip .cascade-grid .locale-card:last-child {
+  border-right: none;
+}
+/* Cards now stretch to fill hero height — show more lines of
+   the adapted passage and a taller image. Line-clamp is bumped
+   high so the ellipsis only appears when text genuinely
+   overflows the available height. */
+.hero-right .cascade-strip .locale-card-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 14;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.55;
+  padding: var(--sp-2-5);
+}
+.hero-right .cascade-strip .locale-card-image {
+  aspect-ratio: 4 / 3;
+  margin: var(--sp-2-5) var(--sp-2-5) 0;
+}
+.hero-right .cascade-strip .locale-picker-btn {
+  padding: var(--sp-2) var(--sp-2);
+  font-size: 11px;
+}
+.hero-right .cascade-strip .locale-picker-name {
+  /* Truncate long country names so the flag + chevron fit. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .locale-card {
@@ -1286,20 +1380,18 @@ section.cards-section { background: var(--surface-page); }
   background: var(--surface-divider);
 }
 .cascade-pills {
-  grid-column: 1 / -1;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   gap: 8px;
-  padding: 0 var(--sp-4);
-  border-top: 1px solid var(--surface-divider);
-  max-height: 0;
-  overflow: hidden;
-  animation: pillsExpand 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  padding: var(--sp-3) var(--sp-2);
+  opacity: 0;
+  animation: pillsFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
-@keyframes pillsExpand {
-  from { max-height: 0; padding-top: 0; padding-bottom: 0; }
-  to   { max-height: 80px; padding-top: var(--sp-3); padding-bottom: var(--sp-3); }
+@keyframes pillsFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .cascade-pill {
   font-family: var(--ff-sans);

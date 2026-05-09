@@ -22,7 +22,8 @@
       "Bash(mv fonts/* public/fonts/)",
       "Bash(mv assets/* public/assets/)",
       "Bash(npm install *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(npm view *)"
     ]
   }
 }

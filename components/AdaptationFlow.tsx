@@ -1,7 +1,6 @@
 'use client';
 
-import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import Image from 'next/image';
+import { Fragment, useEffect, useRef, useState } from 'react';
 
 const DEMO_STORY = `After class, Maya ducked into the corner store and picked up her grandmother's afternoon usual, a pack of biscuits and a carton of tea. The shopkeeper, who had known three generations of the family, slid an extra packet of toffees across the counter without being asked. Outside, the late afternoon rain hadn't quite let up, and Maya's bag thumped against her hip as she ran the four blocks home. Her grandmother would already be on the porch, watching the road, ready to scold her for being late and then ask, in the same breath, whether she'd remembered the tea.`;
 
@@ -331,17 +330,6 @@ export function HeroAdapter() {
             })}
           </div>
         </div>
-        <div className="adapt-input-actions">
-          <button
-            type="button"
-            className="btn-global"
-            onClick={() => {
-              document.getElementById('locale-cascade')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }}
-          >
-            Make my story global
-          </button>
-        </div>
       </div>
     </div>
   );
@@ -556,9 +544,8 @@ export function LocaleCascade() {
   const hasTooltip = currentBucket >= 0 && currentBucket < BUCKETS.length && tooltipPos;
 
   return (
-    <div className="adapt-flow">
+    <>
       <CascadeBranches />
-
       <div ref={stripRef} className="cascade-strip">
         <div
           className={'cascade-tooltip' + (hasTooltip && isActive ? ' is-visible' : '')}
@@ -584,30 +571,30 @@ export function LocaleCascade() {
               onReady={handleSlotReady}
             />
           ))}
-          {sheenDone && (
-            <div className="cascade-pills">
-              <button
-                className={`cascade-pill${manualBucket === -2 ? ' is-selected-all' : ''}`}
-                onClick={() => handlePillClick(-2)}
-              >
-                All
-              </button>
-              <span className="cascade-pills-sep" />
-              {BUCKETS.map((label, i) => (
-                <button
-                  key={i}
-                  className={`cascade-pill${manualBucket === i ? ' is-selected' : currentBucket === i && manualBucket === null ? ' is-active' : ''}`}
-                  data-bucket={i}
-                  onClick={() => handlePillClick(i)}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          )}
         </div>
       </div>
-    </div>
+      {sheenDone && (
+        <div className="cascade-pills">
+          <button
+            className={`cascade-pill${manualBucket === -2 ? ' is-selected-all' : ''}`}
+            onClick={() => handlePillClick(-2)}
+          >
+            All
+          </button>
+          <span className="cascade-pills-sep" />
+          {BUCKETS.map((label, i) => (
+            <button
+              key={i}
+              className={`cascade-pill${manualBucket === i ? ' is-selected' : currentBucket === i && manualBucket === null ? ' is-active' : ''}`}
+              data-bucket={i}
+              onClick={() => handlePillClick(i)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+    </>
   );
 }
 
@@ -788,15 +775,6 @@ function LocaleCard({
         )}
       </div>
 
-      <div className={'locale-card-image' + (globalProgress > -1 ? ' is-revealed' : '')} aria-hidden="true">
-        <Image
-          src={l.image}
-          alt={l.imageLabel}
-          fill
-          sizes="(max-width: 768px) 100vw, 25vw"
-          style={{ objectFit: 'cover' }}
-        />
-      </div>
       <div className="locale-card-text">
         {tokens.map((token, idx) => {
           const isWhitespace = /^\s+$/.test(token.text);
@@ -847,17 +825,16 @@ export default function AdaptationFlow() {
 }
 
 /**
- * Five SVG paths fanning out from a single anchor at the top
- * (just below the input box) into the centers of the 5 cards.
- * viewBox 0..1080 horizontally with preserveAspectRatio="none"
- * lets the paths stretch to whatever width the grid lands at.
+ * Four curved SVG paths fanning from a single anchor at the
+ * top (story input bottom edge) into the centers of the 4
+ * cards below. viewBox 0..1080 horizontally with
+ * preserveAspectRatio="none" lets the paths stretch to
+ * whatever width the cascade grid lands at. Two layers: a
+ * static hairline base, plus a scarlet shimmer pulse that
+ * loops continuously per branch (CSS-driven) so the user
+ * reads the connection from story → each locale.
  */
 function CascadeBranches() {
-  // Origin (540, 0) at center-top fanning to four column
-  // centers (135, 405, 675, 945) for the 4-column grid.
-  // Two layers: a static base hairline, plus a scarlet
-  // shimmer overlay that fires once — all four pulses
-  // simultaneously — when the cascade enters the viewport.
   const branches = [
     'M 540 0 C 540 56, 135 40, 135 96',
     'M 540 0 C 540 56, 405 40, 405 96',
@@ -865,86 +842,13 @@ function CascadeBranches() {
     'M 540 0 C 540 56, 945 40, 945 96',
   ];
 
-  const svgRef = useRef<SVGSVGElement>(null);
-  const dotRef = useRef<SVGCircleElement>(null);
-  const dotStoppedRef = useRef(false);
-
-  useEffect(() => {
-    const svg = svgRef.current;
-    if (!svg) return;
-
-    const handleScroll = () => {
-      const rect = svg.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.5) {
-        svg.classList.add('is-active');
-        dotStoppedRef.current = true;
-        window.removeEventListener('scroll', handleScroll);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const svg = svgRef.current;
-    const dot = dotRef.current;
-    if (!svg || !dot) return;
-
-    let cancelled = false;
-
-    const animateDot = (pathEl: SVGPathElement) => {
-      const length = pathEl.getTotalLength();
-      const duration = 1200;
-      const start = performance.now();
-      dot.setAttribute('opacity', '1');
-
-      const step = (now: number) => {
-        if (cancelled || dotStoppedRef.current) {
-          dot.setAttribute('opacity', '0');
-          return;
-        }
-        const t = Math.min((now - start) / duration, 1);
-        const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-        const pt = pathEl.getPointAtLength(eased * length);
-        dot.setAttribute('cx', String(pt.x));
-        dot.setAttribute('cy', String(pt.y));
-        if (t < 1) {
-          requestAnimationFrame(step);
-        } else {
-          dot.setAttribute('opacity', '0');
-          if (!dotStoppedRef.current) {
-            setTimeout(fireNext, 1000);
-          }
-        }
-      };
-      requestAnimationFrame(step);
-    };
-
-    const fireNext = () => {
-      if (cancelled || dotStoppedRef.current) return;
-      const paths = svg.querySelectorAll<SVGPathElement>('defs path');
-      const idx = Math.floor(Math.random() * paths.length);
-      animateDot(paths[idx]);
-    };
-
-    const t = setTimeout(fireNext, 500);
-    return () => { cancelled = true; clearTimeout(t); };
-  }, []);
-
   return (
     <svg
-      ref={svgRef}
       className="cascade-branches"
       viewBox="0 0 1080 96"
       preserveAspectRatio="none"
       aria-hidden="true"
     >
-      <defs>
-        {branches.map((d, i) => (
-          <path key={`def-${i}`} id={`branch-path-${i}`} d={d} />
-        ))}
-      </defs>
       <g className="branch-base">
         {branches.map((d) => (
           <path key={d} d={d} />
@@ -954,9 +858,6 @@ function CascadeBranches() {
         {branches.map((d) => (
           <path key={d} d={d} pathLength="100" />
         ))}
-      </g>
-      <g className="branch-dots">
-        <circle ref={dotRef} r="1" fill="var(--scarlet)" opacity="0" />
       </g>
     </svg>
   );

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { DialRoot } from 'dialkit';
+import 'dialkit/styles.css';
 import './globals.css';
 
 // Display family — Season Mix (Regular 400, Medium 500).
@@ -119,7 +121,10 @@ export default function RootLayout({
       lang="en"
       className={`${seasonMix.variable} ${malloryMP.variable} ${malloryMPCompact.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <DialRoot />
+      </body>
     </html>
   );
 }
