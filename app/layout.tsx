@@ -6,12 +6,12 @@ import './globals.css';
 const seasonMix = localFont({
   src: [
     {
-      path: '../public/fonts/SeasonMix-Regular.ttf',
+      path: '../public/fonts/season-mix/SeasonMix-Regular.ttf',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../public/fonts/SeasonMix-Medium.ttf',
+      path: '../public/fonts/season-mix/SeasonMix-Medium.ttf',
       weight: '500',
       style: 'normal',
     },
@@ -25,12 +25,12 @@ const seasonMix = localFont({
 const malloryMP = localFont({
   src: [
     {
-      path: '../public/fonts/Mallory-MP-Book.ttf',
+      path: '../public/fonts/mallory-mp/Mallory-MP-Book.ttf',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../public/fonts/Mallory-MP-Bold.ttf',
+      path: '../public/fonts/mallory-mp/Mallory-MP-Bold.ttf',
       weight: '700',
       style: 'normal',
     },
@@ -44,12 +44,12 @@ const malloryMP = localFont({
 const malloryMPCompact = localFont({
   src: [
     {
-      path: '../public/fonts/Mallory-MP-Compact-Book.ttf',
+      path: '../public/fonts/mallory-mp-compact/Mallory-MP-Compact-Book.ttf',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../public/fonts/Mallory-MP-Compact-Bold.ttf',
+      path: '../public/fonts/mallory-mp-compact/Mallory-MP-Compact-Bold.ttf',
       weight: '700',
       style: 'normal',
     },
