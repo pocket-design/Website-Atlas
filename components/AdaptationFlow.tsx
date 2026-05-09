@@ -1,6 +1,7 @@
 'use client';
 
 import { Fragment, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 const DEMO_STORY = `After class, Maya ducked into the corner store and picked up her grandmother's afternoon usual, a pack of biscuits and a carton of tea. The shopkeeper, who had known three generations of the family, slid an extra packet of toffees across the counter without being asked. Outside, the late afternoon rain hadn't quite let up, and Maya's bag thumped against her hip as she ran the four blocks home. Her grandmother would already be on the porch, watching the road, ready to scold her for being late and then ask, in the same breath, whether she'd remembered the tea.`;
 
@@ -13,11 +14,13 @@ const DEMO_STORY = `After class, Maya ducked into the corner store and picked up
  * tooltip naming the bucket as it activates. Capped at 5.
  */
 const BUCKETS = [
-  'Names',            // 0 — character names
-  'Places',           // 1 — corner store + porch/window
-  'Food & drink',     // 2 — biscuits, drink, bonus, callback
-  'Family terms',     // 3 — kin
-  'Everyday objects', // 4 — shopkeeper + bag
+  'Names',         // 0 — character names
+  'Places',        // 1 — corner store + porch/window
+  'Food & drink',  // 2 — biscuits, drink, bonus, callback
+  'Family terms',  // 3 — kin
+  // 'Everyday objects' (b:4) is still tagged in the locale
+  // segments so highlights remain in the cards, but its pill
+  // is intentionally omitted to even the 2L+2R flank layout.
 ] as const;
 
 type Segment = string | { hl: string; b: number };
@@ -381,7 +384,18 @@ const SHEEN_TOTAL_MS = 2400;
 const SHEEN_STEPS = 120;
 const SHEEN_SETTLE_PAUSE_MS = 3000;
 
-export function LocaleCascade() {
+export function LocaleCascade({
+  pillsContainer = null,
+  scrollBucket,
+}: {
+  // When provided, the cascade-pills bar renders into this DOM
+  // node via React Portal instead of inline below the strip.
+  pillsContainer?: HTMLElement | null;
+  // When provided (even as -1 / null), the auto-cycle is
+  // skipped and the active bucket is driven by this prop —
+  // typically wired to scroll progress upstream.
+  scrollBucket?: number | null;
+} = {}) {
   const stripRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const [currentBucket, setCurrentBucket] = useState(-1);
@@ -393,6 +407,10 @@ export function LocaleCascade() {
   const [slotReady, setSlotReady] = useState([false, false, false, false]);
   const [manualBucket, setManualBucket] = useState<number | null>(null);
   const cycleRef = useRef<{ cancel: () => void } | null>(null);
+  // Latched once at mount — flips the cycle effect into "no
+  // auto-cycle" mode when the parent has opted into driving
+  // bucket selection via scrollBucket.
+  const scrollDrivenRef = useRef(scrollBucket !== undefined);
 
   const handleSwap = (slotIndex: number, newKey: string) => {
     setSelectedKeys((prev) => {
@@ -498,12 +516,14 @@ export function LocaleCascade() {
             setTimeout(() => {
               if (cancelled) return;
               setSheenDone(true);
-              timeouts.push(
-                setTimeout(() => {
-                  if (cancelled) return;
-                  cycleAt(0);
-                }, SHEEN_SETTLE_PAUSE_MS),
-              );
+              if (!scrollDrivenRef.current) {
+                timeouts.push(
+                  setTimeout(() => {
+                    if (cancelled) return;
+                    cycleAt(0);
+                  }, SHEEN_SETTLE_PAUSE_MS),
+                );
+              }
             }, 200),
           );
         }
@@ -541,7 +561,38 @@ export function LocaleCascade() {
     setTooltipPos(null);
   };
 
+  // Scroll-driven bucket sync: when the parent wires up
+  // scrollBucket, mirror it into currentBucket / isActive on
+  // every change. -1 / null means "no bucket selected yet"
+  // (e.g. before the first pill threshold during the morph).
+  useEffect(() => {
+    if (scrollBucket === undefined) return;
+    setManualBucket(null);
+    if (scrollBucket === null || scrollBucket < 0) {
+      setCurrentBucket(-1);
+      setIsActive(false);
+      return;
+    }
+    setCurrentBucket(scrollBucket);
+    setIsActive(true);
+  }, [scrollBucket]);
+
   const hasTooltip = currentBucket >= 0 && currentBucket < BUCKETS.length && tooltipPos;
+
+  const pillsNode = sheenDone ? (
+    <div className="cascade-pills">
+      {BUCKETS.map((label, i) => (
+        <button
+          key={i}
+          className={`cascade-pill${manualBucket === i ? ' is-selected' : currentBucket === i && manualBucket === null ? ' is-active' : ''}`}
+          data-bucket={i}
+          onClick={() => handlePillClick(i)}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  ) : null;
 
   return (
     <>
@@ -573,27 +624,8 @@ export function LocaleCascade() {
           ))}
         </div>
       </div>
-      {sheenDone && (
-        <div className="cascade-pills">
-          <button
-            className={`cascade-pill${manualBucket === -2 ? ' is-selected-all' : ''}`}
-            onClick={() => handlePillClick(-2)}
-          >
-            All
-          </button>
-          <span className="cascade-pills-sep" />
-          {BUCKETS.map((label, i) => (
-            <button
-              key={i}
-              className={`cascade-pill${manualBucket === i ? ' is-selected' : currentBucket === i && manualBucket === null ? ' is-active' : ''}`}
-              data-bucket={i}
-              onClick={() => handlePillClick(i)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      )}
+      {pillsNode &&
+        (pillsContainer ? createPortal(pillsNode, pillsContainer) : pillsNode)}
     </>
   );
 }

@@ -423,6 +423,211 @@ body {
   .hero-text { text-align: center; padding-top: 0; }
 }
 
+/* Pin & morph variant — hero section is 2x viewport tall.
+   .hero-pin is a single sticky container that holds both the
+   painted HeroBackground and the .hero-stage so they pin
+   together for one viewport of scroll. JS measures and writes:
+     --hero-progress         (0→1 across the sticky range)
+     --hero-right-shift-x/y  (px deltas to land .hero-right at
+                              viewport center)
+   At progress=1, .hero-text is fully faded and .hero-right is
+   centered on screen; the painting is still pinned behind it.
+   Past progress=1, the whole pin scrolls up into the bento. */
+.hero.hero--morph {
+  display: block;
+  padding: 0;
+  min-height: 500vh;
+  width: 100%;
+}
+.hero.hero--morph > .hero-pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  z-index: 1;
+}
+.hero.hero--morph .hero-pin > .hero-stage {
+  position: relative;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  column-gap: var(--sp-6);
+  align-items: stretch;
+  width: min(calc(100% - var(--sp-8) * 2), var(--container));
+  margin: 0 auto;
+  padding: calc(var(--sp-8) + 110px) 0 var(--sp-10);
+  z-index: 1;
+}
+.hero--morph .hero-text {
+  /* Fade completes by ~progress 0.35 so the text is gone well
+     before the right column reaches center. clamp() guards
+     against negative opacity past the cutoff. */
+  opacity: clamp(0, calc(1 - var(--hero-progress, 0) * 2.85), 1);
+  transform: translate3d(
+    clamp(-32px, calc(var(--hero-progress, 0) * -91px), 0px),
+    0,
+    0
+  );
+  will-change: opacity, transform;
+}
+.hero--morph .hero-right {
+  transform: translate3d(
+    calc(var(--hero-progress, 0) * var(--hero-right-shift-x, 0px)),
+    calc(var(--hero-progress, 0) * var(--hero-right-shift-y, 0px)),
+    0
+  );
+  will-change: transform;
+}
+
+/* Pills slot — sits over the FULL pin (viewport-wide), not
+   inside the container-width stage, so pills can anchor to
+   the true viewport edges and clear the centered cards. */
+.hero.hero--morph .hero-pin > .hero-pills-slot {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.hero-pills-slot > .cascade-pills {
+  position: absolute;
+  inset: 0;
+  display: block;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  pointer-events: none;
+  /* Override the inline mode's container fade-in: progress
+     drives reveal per pill, the container itself stays open. */
+  opacity: 1;
+  animation: none;
+  transform: none;
+  /* Inline mode (.cascade-pills outside this slot) keeps its
+     existing flex/animation layout; everything below targets
+     ONLY pills inside the slot. */
+}
+.hero-pills-slot .cascade-pills-sep { display: none; }
+
+/* Each pill is absolutely positioned via per-pill --col/--row
+   anchors. Reveal is driven entirely by --hero-progress: each
+   pill defines a --p-start and the band [--p-start,
+   --p-start+0.15] maps to opacity 0→1 and a 24px slide-up.
+   Animation override (cascade-pill base has fadeUp) is
+   neutralised so progress-driven reveal isn't fighting it. */
+.hero-pills-slot .cascade-pill {
+  position: absolute;
+  pointer-events: auto;
+  animation: none;
+  /* Big, hero-flank scale — roughly 5x the inline default,
+     fully rounded into a stadium shape. Forced onto a single
+     line so labels never wrap. */
+  font-size: 32px;
+  padding: 18px 40px;
+  border-width: 2px;
+  border-radius: 999px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  /* Reveal is driven by the pill phase, NOT the centering
+     phase, so pills appear after the cards have parked at
+     viewport center. Each pill defines its own --p-start
+     within the pill-phase 0..1 timeline; the band
+     [--p-start, --p-start + 0.15] maps to opacity 0→1. */
+  --p-start: 0;
+  --p-reveal: clamp(
+    0,
+    calc((var(--hero-pill-progress, 0) - var(--p-start)) * 6.67),
+    1
+  );
+  opacity: var(--p-reveal);
+  /* translateX(-50%) anchors each pill's CENTER to its `left`
+     value so all 3 pills in a column share a vertical
+     centerline regardless of label width. The translateY
+     piece is the scroll-driven slide-up reveal. */
+  transform: translate3d(-50%, calc((1 - var(--p-reveal)) * 24px), 0);
+  transition: background 180ms var(--ease), color 180ms var(--ease),
+    border-color 180ms var(--ease), box-shadow 180ms var(--ease);
+}
+/* Default (not selected / not active) — outline + white text.
+   The :not() trio lifts specificity above .cascade-pill:hover
+   and the existing surface-card defaults so the outline look
+   wins, while colored-fill is_active / is_selected rules
+   continue to apply when the cycler or user picks a bucket. */
+.hero-pills-slot
+  .cascade-pill:not(.is-active):not(.is-selected):not(.is-selected-all) {
+  /* White-filled pill with dark text — matches the original
+     inline cascade-pill look. */
+  background: #fff;
+  border-color: var(--surface-divider);
+  color: var(--text-primary);
+}
+.hero-pills-slot
+  .cascade-pill:not(.is-active):not(.is-selected):not(.is-selected-all):hover {
+  border-color: var(--surface-divider-hover);
+}
+/* Press state — preserve translateX(-50%) centering and the
+   scroll-driven reveal Y, just compose a small scale. Without
+   this, the base .cascade-pill:active rule overrides our
+   transform and the pill snaps off its column line. */
+.hero-pills-slot .cascade-pill:active {
+  transform: translate3d(
+      -50%,
+      calc((1 - var(--p-reveal)) * 24px),
+      0
+    )
+    scale(0.96);
+}
+
+/* Column centerlines: anchored to viewport center (where the
+   centered cards live) so the offsets adapt to viewport width.
+   Cards are ~789px wide (half = 394px). Widest left pill
+   ("Names" — 196px wide, half = 98px); widest right pill
+   ("Family terms" — ~294px, half ≈ 147px). Equal 100px gap to
+   the card edges:
+     Lc = 50% − (394 + 100 + 98)  = 50% − 592px
+     Rc = 50% + (394 + 100 + 147) = 50% + 641px
+   Pills in a column share the same `left`; translateX(-50%)
+   centers each pill on its column line.
+   Layout: 4 pills — Names + Places left, Food & drink +
+   Family terms right (Everyday objects pill omitted). */
+.hero-pills-slot .cascade-pill:nth-child(1),
+.hero-pills-slot .cascade-pill:nth-child(2) {
+  left: calc(50% - 592px);
+}
+.hero-pills-slot .cascade-pill:nth-child(3),
+.hero-pills-slot .cascade-pill:nth-child(4) {
+  left: calc(50% + 641px);
+}
+
+/* Reveal staggers (in pill-phase progress) + row positions —
+   both columns mirrored at 38% / 56% for a clean 2-row
+   symmetry. All four are fully revealed by pill-progress
+   ≈ 0.30, well before the first selection at 0.40. */
+.hero-pills-slot .cascade-pill:nth-child(1) { --p-start: 0.00; top: 38%; }
+.hero-pills-slot .cascade-pill:nth-child(2) { --p-start: 0.10; top: 56%; }
+.hero-pills-slot .cascade-pill:nth-child(3) { --p-start: 0.05; top: 38%; }
+.hero-pills-slot .cascade-pill:nth-child(4) { --p-start: 0.15; top: 56%; }
+@media (max-width: 1024px) {
+  /* Mobile: collapse to single column, drop the pin + morph
+     so the page reads as a normal stacked hero. */
+  .hero.hero--morph { min-height: auto; }
+  .hero.hero--morph > .hero-pin {
+    position: static;
+    height: auto;
+  }
+  .hero.hero--morph .hero-pin > .hero-stage {
+    height: auto;
+    grid-template-columns: 1fr;
+    gap: var(--sp-6);
+    padding: calc(var(--sp-6) + 110px) 0 var(--sp-8);
+  }
+  .hero--morph .hero-text { opacity: 1; transform: none; }
+  .hero--morph .hero-right { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero--morph .hero-text { opacity: 1; transform: none; }
+  .hero--morph .hero-right { transform: none; }
+}
+
 /* Scroll offset for fixed nav (nav top 12px + nav height ~48px + breathing room) */
 [id="locale-cascade"],
 [id="how-it-works"],

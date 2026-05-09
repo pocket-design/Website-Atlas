@@ -1,10 +1,8 @@
-import { HeroAdapter, LocaleCascade } from '@/components/AdaptationFlow';
 import BentoGraphic from '@/components/BentoGraphic';
-import HeroBackground from '@/components/HeroBackground';
+import HeroSection from '@/components/HeroSection';
 import ThumbnailGrid from '@/components/ThumbnailGrid';
 import BentoHeader from '@/components/BentoHeader';
 import StoryCTAHeader from '@/components/StoryCTAHeader';
-import RoughUnderline from '@/components/RoughUnderline';
 import CountUp from '@/components/CountUp';
 
 export default function Home() {
@@ -35,12 +33,6 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Page-top atmosphere — painted background sits behind
-          the nav and the hero so the entire top of the page
-          shares one continuous artwork. The image is toggleable
-          via DialKit (panel "Hero" → background). */}
-      <HeroBackground />
-
       {/* NAV */}
       <nav className="site-nav">
         <a className="nav-logo" href="#" aria-label="Pocket Atlas — home">
@@ -67,23 +59,7 @@ export default function Home() {
       </nav>
 
       {/* FOLD 1 — HERO (left: text · right: story stacked over 2x2 cards + pills) */}
-      <section id="locale-cascade" className="hero">
-        <div className="hero-text">
-          <h1 className="t-hero hero-title">
-            Incredibly powerful story adaptation engine for{' '}
-            <RoughUnderline delay={3000}>writers</RoughUnderline>
-          </h1>
-          <p className="hero-subhead">
-            Atlas adapts your stories naturally for global audiences—preserving tone,
-            meaning, and cultural nuance.
-          </p>
-          <a href="#" className="btn-brand hero-cta">Start writing</a>
-        </div>
-        <div className="hero-right">
-          <HeroAdapter />
-          <LocaleCascade />
-        </div>
-      </section>
+      <HeroSection />
 
       {/* FOLD 2 — BENTO */}
       <section id="how-it-works" className="bento">
