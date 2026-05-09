@@ -374,9 +374,17 @@ body {
   overflow: hidden;
 }
 
+/* Scroll offset for fixed nav (nav top 12px + nav height ~48px + breathing room) */
+[id="locale-cascade"],
+[id="how-it-works"],
+[id="proof"],
+[id="writers"] {
+  scroll-margin-top: 88px;
+}
+
 /* ── FOLD 2 — CASCADE ────────────────────────────────────── */
 .cascade {
-  padding: 0 var(--sp-8) var(--sp-10);
+  padding: 0 var(--sp-8) var(--sp-6);
   text-align: center;
   position: relative;
 }
@@ -912,6 +920,13 @@ section.cards-section { background: var(--surface-page); }
   opacity: 0;
   /* No animation by default — see .is-active rule below */
 }
+.cascade-branches .branch-dots circle {
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+.cascade-branches.is-active .branch-dots circle {
+  opacity: 0;
+}
 .cascade-branches.is-active .branch-shimmer path {
   animation: shimmerPulse 1.6s var(--ease) both;
 }
@@ -1054,7 +1069,7 @@ section.cards-section { background: var(--surface-page); }
 .locale-card-image {
   position: relative;
   margin: var(--sp-3) var(--sp-3) 0;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 9;
   border-radius: var(--r-card-inner);
   overflow: hidden;
 }
@@ -1129,6 +1144,13 @@ section.cards-section { background: var(--surface-page); }
 .locale-highlight.is-highlighted[data-bucket="3"] { animation-delay: 0.45s; }
 .locale-highlight.is-highlighted[data-bucket="4"] { animation-delay: 0.6s; }
 
+/* Once cycling has begun, never replay the entrance animation */
+.locale-highlight.hl-settled {
+  animation: none !important;
+  background-color: var(--hl-color-rest);
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @keyframes hlReveal {
   0%   { background-color: var(--hl-color-peak-zero); }
   35%  { background-color: var(--hl-color-peak); }
@@ -1138,28 +1160,28 @@ section.cards-section { background: var(--surface-page); }
 /* Per-bucket color tokens (peak = vivid entrance, rest = persistent) */
 .locale-highlight[data-bucket="0"] {
   --hl-color-peak-zero: rgba(59, 130, 246, 0);
-  --hl-color-peak: rgba(59, 130, 246, 0.32);
-  --hl-color-rest: rgba(59, 130, 246, 0.16);
+  --hl-color-peak: rgba(59, 130, 246, 0.38);
+  --hl-color-rest: rgba(59, 130, 246, 0.22);
 }
 .locale-highlight[data-bucket="1"] {
   --hl-color-peak-zero: rgba(16, 185, 129, 0);
-  --hl-color-peak: rgba(16, 185, 129, 0.32);
-  --hl-color-rest: rgba(16, 185, 129, 0.16);
+  --hl-color-peak: rgba(16, 185, 129, 0.38);
+  --hl-color-rest: rgba(16, 185, 129, 0.22);
 }
 .locale-highlight[data-bucket="2"] {
   --hl-color-peak-zero: rgba(245, 158, 11, 0);
-  --hl-color-peak: rgba(245, 158, 11, 0.32);
-  --hl-color-rest: rgba(245, 158, 11, 0.16);
+  --hl-color-peak: rgba(245, 158, 11, 0.38);
+  --hl-color-rest: rgba(245, 158, 11, 0.22);
 }
 .locale-highlight[data-bucket="3"] {
   --hl-color-peak-zero: rgba(139, 92, 246, 0);
-  --hl-color-peak: rgba(139, 92, 246, 0.32);
-  --hl-color-rest: rgba(139, 92, 246, 0.16);
+  --hl-color-peak: rgba(139, 92, 246, 0.38);
+  --hl-color-rest: rgba(139, 92, 246, 0.22);
 }
 .locale-highlight[data-bucket="4"] {
   --hl-color-peak-zero: rgba(245, 29, 0, 0);
-  --hl-color-peak: rgba(245, 29, 0, 0.32);
-  --hl-color-rest: rgba(245, 29, 0, 0.16);
+  --hl-color-peak: rgba(245, 29, 0, 0.38);
+  --hl-color-rest: rgba(245, 29, 0, 0.22);
 }
 
 /* Emphasis tier — tooltip focus brings bucket to full intensity.
@@ -1256,10 +1278,79 @@ section.cards-section { background: var(--surface-page); }
 .cascade-tooltip[data-bucket="3"]::after { border-top-color: rgb(109, 40, 217); }
 .cascade-tooltip[data-bucket="4"]::after { border-top-color: rgb(220, 38, 38); }
 
+/* Category pills row — spans full width inside the locale grid box */
+.cascade-pills {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 var(--sp-4);
+  border-top: 1px solid var(--surface-divider);
+  max-height: 0;
+  overflow: hidden;
+  animation: pillsExpand 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes pillsExpand {
+  from { max-height: 0; padding-top: 0; padding-bottom: 0; }
+  to   { max-height: 80px; padding-top: var(--sp-3); padding-bottom: var(--sp-3); }
+}
+.cascade-pill {
+  font-family: var(--ff-sans);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--surface-divider);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: pillFadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transition: background 150ms var(--ease), border-color 150ms var(--ease), color 150ms var(--ease), transform 120ms var(--ease);
+}
+.cascade-pill:nth-child(1) { animation-delay: 0.25s; }
+.cascade-pill:nth-child(2) { animation-delay: 0.35s; }
+.cascade-pill:nth-child(3) { animation-delay: 0.45s; }
+.cascade-pill:nth-child(4) { animation-delay: 0.55s; }
+.cascade-pill:nth-child(5) { animation-delay: 0.65s; }
+.cascade-pill:nth-child(6) { animation-delay: 0.75s; }
+@keyframes pillFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.cascade-pill:hover {
+  background: var(--vellum-tint-7);
+  border-color: var(--surface-divider-hover);
+}
+.cascade-pill:active {
+  transform: scale(0.96);
+}
+.cascade-pill.is-active,
+.cascade-pill.is-selected {
+  color: #fff;
+  border-color: transparent;
+}
+.cascade-pill.is-selected-all {
+  background: var(--text-primary);
+  color: #fff;
+  border-color: transparent;
+}
+.cascade-pill.is-active[data-bucket="0"],
+.cascade-pill.is-selected[data-bucket="0"] { background: rgb(37, 99, 235); }
+.cascade-pill.is-active[data-bucket="1"],
+.cascade-pill.is-selected[data-bucket="1"] { background: rgb(5, 150, 105); }
+.cascade-pill.is-active[data-bucket="2"],
+.cascade-pill.is-selected[data-bucket="2"] { background: rgb(217, 119, 6); }
+.cascade-pill.is-active[data-bucket="3"],
+.cascade-pill.is-selected[data-bucket="3"] { background: rgb(109, 40, 217); }
+.cascade-pill.is-active[data-bucket="4"],
+.cascade-pill.is-selected[data-bucket="4"] { background: rgb(220, 38, 38); }
+
 /* ── FOLD 2 — BENTO ──────────────────────────────────────── */
 .bento {
-  padding: var(--sp-10) var(--sp-8);
-  border-top: 1px solid var(--surface-divider);
+  padding: var(--sp-6) var(--sp-8);
 }
 
 .section-header {
@@ -1420,7 +1511,7 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── FOLD 4 — HAVE A STORY ────────────────────────────────── */
 .story-cta {
-  padding: var(--sp-6) var(--sp-8) var(--sp-10);
+  padding: var(--sp-6) var(--sp-8);
   text-align: center;
 }
 .story-cta h2 {
@@ -1481,7 +1572,7 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── FOLD 4 — FINAL CTA ──────────────────────────────────── */
 .final-cta {
-  padding: var(--sp-10) var(--sp-8);
+  padding: var(--sp-6) var(--sp-8);
   text-align: center;
   background: var(--surface-inverse);
 }

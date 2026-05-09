@@ -5,6 +5,8 @@ import InteractiveGlobe from '@/components/InteractiveGlobe';
 import ThumbnailGrid from '@/components/ThumbnailGrid';
 import BentoHeader from '@/components/BentoHeader';
 import StoryCTAHeader from '@/components/StoryCTAHeader';
+import RoughUnderline from '@/components/RoughUnderline';
+import CountUp from '@/components/CountUp';
 
 export default function Home() {
   const jsonLd = {
@@ -109,7 +111,10 @@ export default function Home() {
           </svg>
         </div>
         <h1 className="t-hero hero-title">
-          Incredibly powerful story adaptation engine for writers
+          Incredibly powerful story{' '}
+          <RoughUnderline delay={3000}>adaptation</RoughUnderline>{' '}
+          <RoughUnderline delay={3150}>engine</RoughUnderline>{' '}
+          for writers
         </h1>
         <HeroAdapter />
       </section>
@@ -179,21 +184,21 @@ export default function Home() {
 
         <div className="proof-grid">
           <div className="proof-card">
-            <div className="proof-stat">10,000+</div>
+            <div className="proof-stat"><CountUp end={10000} suffix="+" /></div>
             <h3 className="t-h4">Stories adapted</h3>
             <p className="t-body-sm">
               From short fiction to 200-chapter epics. Every genre, every length, every narrative structure refined through Atlas.
             </p>
           </div>
           <div className="proof-card">
-            <div className="proof-stat">50+</div>
+            <div className="proof-stat"><CountUp end={50} suffix="+" /></div>
             <h3 className="t-h4">Locales supported</h3>
             <p className="t-body-sm">
               Each with deep cultural intelligence. Not just language swaps, but full cultural transposition tuned by region.
             </p>
           </div>
           <div className="proof-card">
-            <div className="proof-stat">99.2%</div>
+            <div className="proof-stat"><CountUp end={99.2} suffix="%" decimals={1} /></div>
             <h3 className="t-h4">Consistency score</h3>
             <p className="t-body-sm">
               Entity names, relationships, and references stay coherent across every chapter and every locale, verified end to end.

@@ -14,11 +14,11 @@ const DEMO_STORY = `After class, Maya ducked into the corner store and picked up
  * tooltip naming the bucket as it activates. Capped at 5.
  */
 const BUCKETS = [
-  'Names localized',            // 0 — character names
-  'Places localized',           // 1 — corner store + porch/window
-  'Food & drink localized',     // 2 — biscuits, drink, bonus, callback
-  'Family terms localized',     // 3 — kin
-  'Everyday objects localized', // 4 — shopkeeper + bag
+  'Names',            // 0 — character names
+  'Places',           // 1 — corner store + porch/window
+  'Food & drink',     // 2 — biscuits, drink, bonus, callback
+  'Family terms',     // 3 — kin
+  'Everyday objects', // 4 — shopkeeper + bag
 ] as const;
 
 type Segment = string | { hl: string; b: number };
@@ -403,6 +403,8 @@ export function LocaleCascade() {
   const [sheenDone, setSheenDone] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState(DEFAULT_LOCALE_KEYS);
   const [slotReady, setSlotReady] = useState([false, false, false, false]);
+  const [manualBucket, setManualBucket] = useState<number | null>(null);
+  const cycleRef = useRef<{ cancel: () => void } | null>(null);
 
   const handleSwap = (slotIndex: number, newKey: string) => {
     setSelectedKeys((prev) => {
@@ -429,30 +431,35 @@ export function LocaleCascade() {
     (key) => ALL_LOCALES.find((l) => l.key === key)!,
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    if (manualBucket !== null) return;
     if (currentBucket < 0 || currentBucket >= BUCKETS.length) return;
     const strip = stripRef.current;
     if (!strip) return;
     const owner = BUCKET_OWNERS[currentBucket];
-    // If the owner slot isn't ready, hide tooltip
     if (!slotReady[owner]) {
       setTooltipPos(null);
       return;
     }
-    const card = strip.querySelectorAll<HTMLElement>('.locale-card')[owner];
-    if (!card) return;
-    const hl = card.querySelector<HTMLElement>(
-      `.locale-highlight[data-bucket="${currentBucket}"]`,
-    );
-    if (!hl) return;
-    const fragments = hl.getClientRects();
-    const hlRect = fragments.length > 0 ? fragments[0] : hl.getBoundingClientRect();
-    const stripRect = strip.getBoundingClientRect();
-    setTooltipPos({
-      x: hlRect.left + hlRect.width / 2 - stripRect.left,
-      y: hlRect.top - stripRect.top,
-    });
-  }, [currentBucket, slotReady]);
+
+    const measure = () => {
+      const card = strip.querySelectorAll<HTMLElement>('.locale-card')[owner];
+      if (!card) return;
+      const hl = card.querySelector<HTMLElement>(
+        `.locale-highlight[data-bucket="${currentBucket}"]`,
+      );
+      if (!hl) return;
+      const fragments = hl.getClientRects();
+      const hlRect = fragments.length > 0 ? fragments[0] : hl.getBoundingClientRect();
+      const stripRect = strip.getBoundingClientRect();
+      setTooltipPos({
+        x: hlRect.left + hlRect.width / 2 - stripRect.left,
+        y: hlRect.top - stripRect.top,
+      });
+    };
+
+    requestAnimationFrame(measure);
+  }, [currentBucket, slotReady, manualBucket, isActive]);
 
   useEffect(() => {
     const grid = gridRef.current;
@@ -462,6 +469,7 @@ export function LocaleCascade() {
 
     const cycleAt = (b: number) => {
       if (cancelled) return;
+      setManualBucket(null);
       setCurrentBucket(b);
       setIsActive(true);
       timeouts.push(
@@ -476,6 +484,13 @@ export function LocaleCascade() {
           );
         }, BUCKET_ACTIVE_MS),
       );
+    };
+
+    cycleRef.current = {
+      cancel: () => {
+        cancelled = true;
+        timeouts.forEach(clearTimeout);
+      },
     };
 
     const startSheen = () => {
@@ -512,7 +527,6 @@ export function LocaleCascade() {
       ([entry]) => {
         if (!entry.isIntersecting) return;
         io.disconnect();
-        // Unblur images immediately on scroll-in
         grid.querySelectorAll('.locale-card-image').forEach((el) => {
           el.classList.add('is-revealed');
         });
@@ -530,6 +544,14 @@ export function LocaleCascade() {
       timeouts.forEach(clearTimeout);
     };
   }, []);
+
+  const handlePillClick = (bucketIdx: number) => {
+    if (cycleRef.current) cycleRef.current.cancel();
+    setManualBucket(bucketIdx);
+    setCurrentBucket(bucketIdx);
+    setIsActive(bucketIdx !== -2);
+    setTooltipPos(null);
+  };
 
   const hasTooltip = currentBucket >= 0 && currentBucket < BUCKETS.length && tooltipPos;
 
@@ -562,6 +584,26 @@ export function LocaleCascade() {
               onReady={handleSlotReady}
             />
           ))}
+          {sheenDone && (
+            <div className="cascade-pills">
+              <button
+                className={`cascade-pill${manualBucket === -2 ? ' is-selected-all' : ''}`}
+                onClick={() => handlePillClick(-2)}
+              >
+                All
+              </button>
+              {BUCKETS.map((label, i) => (
+                <button
+                  key={i}
+                  className={`cascade-pill${manualBucket === i ? ' is-selected' : currentBucket === i && manualBucket === null ? ' is-active' : ''}`}
+                  data-bucket={i}
+                  onClick={() => handlePillClick(i)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -765,12 +807,14 @@ function LocaleCard({
 
           const isHighlight = token.bucket !== undefined;
           const cyclingStarted = currentBucket >= 0 && effectiveSheenDone;
+          const hasEverCycled = effectiveSheenDone && (currentBucket >= 0 || currentBucket === -2);
           const isFocused = isActive && currentBucket === token.bucket;
           const shouldDim = cyclingStarted && !isFocused;
           const cls =
             (isHighlight
               ? 'locale-highlight' +
                 (effectiveSheenDone ? ' is-highlighted' : '') +
+                (hasEverCycled ? ' hl-settled' : '') +
                 (cyclingStarted && isFocused ? ' is-active' : '') +
                 (shouldDim ? ' is-dimmed' : '')
               : 'sheen-word' + (shouldDim ? ' text-dimmed' : '')) +
@@ -821,24 +865,70 @@ function CascadeBranches() {
   ];
 
   const svgRef = useRef<SVGSVGElement>(null);
+  const dotRef = useRef<SVGCircleElement>(null);
+  const dotStoppedRef = useRef(false);
+
   useEffect(() => {
     const svg = svgRef.current;
     if (!svg) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          svg.classList.add('is-active');
-          io.disconnect();
+
+    const handleScroll = () => {
+      const rect = svg.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.5) {
+        svg.classList.add('is-active');
+        dotStoppedRef.current = true;
+        window.removeEventListener('scroll', handleScroll);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const svg = svgRef.current;
+    const dot = dotRef.current;
+    if (!svg || !dot) return;
+
+    let cancelled = false;
+
+    const animateDot = (pathEl: SVGPathElement) => {
+      const length = pathEl.getTotalLength();
+      const duration = 1200;
+      const start = performance.now();
+      dot.setAttribute('opacity', '1');
+
+      const step = (now: number) => {
+        if (cancelled || dotStoppedRef.current) {
+          dot.setAttribute('opacity', '0');
+          return;
         }
-      },
-      // Delayed trigger — the cascade has to be ~30% above
-      // the viewport bottom before the shimmer fires, so the
-      // user has clearly arrived at the fold rather than just
-      // glimpsing its top edge.
-      { threshold: 0.6, rootMargin: '0px 0px -28% 0px' },
-    );
-    io.observe(svg);
-    return () => io.disconnect();
+        const t = Math.min((now - start) / duration, 1);
+        const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        const pt = pathEl.getPointAtLength(eased * length);
+        dot.setAttribute('cx', String(pt.x));
+        dot.setAttribute('cy', String(pt.y));
+        if (t < 1) {
+          requestAnimationFrame(step);
+        } else {
+          dot.setAttribute('opacity', '0');
+          if (!dotStoppedRef.current) {
+            setTimeout(fireNext, 1000);
+          }
+        }
+      };
+      requestAnimationFrame(step);
+    };
+
+    const fireNext = () => {
+      if (cancelled || dotStoppedRef.current) return;
+      const paths = svg.querySelectorAll<SVGPathElement>('defs path');
+      const idx = Math.floor(Math.random() * paths.length);
+      animateDot(paths[idx]);
+    };
+
+    const t = setTimeout(fireNext, 500);
+    return () => { cancelled = true; clearTimeout(t); };
   }, []);
 
   return (
@@ -849,6 +939,11 @@ function CascadeBranches() {
       preserveAspectRatio="none"
       aria-hidden="true"
     >
+      <defs>
+        {branches.map((d, i) => (
+          <path key={`def-${i}`} id={`branch-path-${i}`} d={d} />
+        ))}
+      </defs>
       <g className="branch-base">
         {branches.map((d) => (
           <path key={d} d={d} />
@@ -858,6 +953,9 @@ function CascadeBranches() {
         {branches.map((d) => (
           <path key={d} d={d} pathLength="100" />
         ))}
+      </g>
+      <g className="branch-dots">
+        <circle ref={dotRef} r="1" fill="var(--scarlet)" opacity="0" />
       </g>
     </svg>
   );
