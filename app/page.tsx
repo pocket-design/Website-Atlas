@@ -136,42 +136,42 @@ export default function Home() {
             <BentoGraphic scene="transpose" />
             <h3 className="t-h3">Full cultural transposition, not translation</h3>
             <p className="t-body-sm">
-              Names become culturally native. A corner store becomes a Späti in Berlin, a konbini in Tokyo, a duka in Nairobi. Food, humor, family dynamics, and street-level details are rebuilt from scratch for each locale. The entire social fabric shifts so every scene feels like it was written by a local author. <strong>Readers never sense a foreign origin.</strong>
+              Names become culturally native. A corner store becomes a Späti in Berlin, a konbini in Tokyo, a duka in Nairobi. Food, humor, family dynamics, and street-level details are rebuilt from scratch. <strong>Readers never sense a foreign origin.</strong>
             </p>
           </div>
           <div className="bcell span-2">
             <BentoGraphic scene="knowledge" />
             <h3 className="t-h3">Knowledge graph memory</h3>
             <p className="t-body-sm">
-              Every character, relationship, nickname, and pronoun is tracked across hundreds of chapters. <strong>Chapter 40 stays perfectly consistent with chapter 1.</strong>
+              Every character and relationship tracked across hundreds of chapters. <strong>Chapter 40 stays consistent with chapter 1.</strong>
             </p>
           </div>
           <div className="bcell span-3">
             <BentoGraphic scene="strategy" />
             <h3 className="t-h3">Strategy-first architecture</h3>
             <p className="t-body-sm">
-              Before changing a single name, Atlas generates a comprehensive cultural transposition strategy. Genre, tone, naming conventions, geographic mappings, institutional equivalents. <strong>This document becomes the constitution that governs every downstream decision.</strong>
+              Before changing a single word, Atlas generates a full strategy: tone, naming rules, geographic mappings. <strong>One document governs every downstream decision.</strong>
             </p>
           </div>
           <div className="bcell span-3">
             <BentoGraphic scene="triage" />
             <h3 className="t-h3">Three-tier entity triage</h3>
             <p className="t-body-sm">
-              Every cultural element is classified: preserve and explain (plot-critical concepts that can&apos;t be swapped), find an analogy (a Korean chaebol becomes an American dynasty), or fully replace (onigiri becomes a tartine). <strong>No element is left half-translated.</strong>
+              Every element is classified: preserve, analogize, or fully replace. A chaebol becomes a dynasty, onigiri becomes a tartine. <strong>Nothing is left half-translated.</strong>
             </p>
           </div>
           <div className="bcell" style={{gridColumn: 'span 2'}}>
             <BentoGraphic scene="validation" />
             <h3 className="t-h3">Self-healing validation</h3>
             <p className="t-body-sm">
-              After thousands of LLM calls, a verification pass flags naming conflicts, cultural mixing (&ldquo;Morrison-sama&rdquo;), and gaps. <strong>Only broken items are surgically regenerated.</strong>
+              A verification pass flags conflicts and cultural mixing. <strong>Only broken items are surgically regenerated.</strong>
             </p>
           </div>
           <div className="bcell" style={{gridColumn: 'span 4'}}>
             <BentoGraphic scene="graph" />
             <h3 className="t-h3">Graph-segmented dependency resolution</h3>
             <p className="t-body-sm">
-              Entity names form a directed graph. &ldquo;Tanaka-tei&rdquo; depends on the Tanaka surname, which depends on target naming conventions. Atlas uses Louvain community detection to keep related entities in the same batch, localizing in topological order so nothing contradicts. <strong>Graph-aware segmentation keeps related entities together where random batching would tear them apart.</strong>
+              Entity names form a directed graph. &ldquo;Tanaka-tei&rdquo; depends on the Tanaka surname, which depends on target naming conventions. Atlas resolves them in topological order so nothing contradicts. <strong>Related entities stay together where random batching would tear them apart.</strong>
             </p>
           </div>
         </div>
