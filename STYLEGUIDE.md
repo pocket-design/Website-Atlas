@@ -66,10 +66,9 @@ Three families: **Ink** (near-black neutrals), **Vellum** (cream surfaces and wa
 | Family | CSS variable | Role | Files |
 | --- | --- | --- | --- |
 | **Season Mix** | `--ff-display` | All display text (hero, headings, eyebrows in display register, image-card city labels) | `SeasonMix-Regular.ttf` (400), `SeasonMix-Medium.ttf` (500) — both in `public/fonts/` |
-| **Mallory** (regular) | `--ff-sans` | UI text: buttons, nav links, eyebrows, locale-card labels — anything where trim-height is applied | ⚠️ **MISSING** — needs `Mallory-Regular.ttf` and `Mallory-Bold.ttf` in `public/fonts/` |
-| **Mallory Compact** | `--ff-sans-compact` | Body copy: paragraphs, story passages, sub-headlines, locale-card text | ⚠️ **MISSING** — needs `Mallory-Compact-Regular.ttf` and `Mallory-Compact-Bold.ttf` in `public/fonts/` |
+| **Mallory Compact** | `--ff-sans` / `--ff-sans-compact` | ALL non-display text across the entire page: buttons, nav, body, labels, eyebrows, cards, footer. No exceptions. Both variables resolve to the same Mallory Compact font. | Loaded via `next/font/local` in `app/layout.tsx` |
 
-**Mallory Narrow is forbidden** in this codebase — it's not loaded and not referenced anywhere. The CSS variables fall back to a system-ui stack (`-apple-system, BlinkMacSystemFont, system-ui, sans-serif`) until the real Mallory files are added.
+**Mallory Narrow and Mallory Regular are forbidden** in this codebase. Only Mallory Compact is used site-wide for all non-display text. No exceptions.
 
 When the missing files arrive, register them via `next/font/local` in `app/layout.tsx` and the existing `--ff-sans` / `--ff-sans-compact` variables will start using them — no other CSS changes needed.
 

@@ -24,7 +24,7 @@ export default function Home() {
       </div>
 
       {/* NAV */}
-      <nav>
+      <nav className="site-nav">
         <a className="nav-logo" href="#" aria-label="Pocket Atlas — home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/assets/logo.svg" alt="Pocket Atlas" />
@@ -188,7 +188,7 @@ export default function Home() {
             </svg>
             <h3 className="t-h4">Write freely</h3>
             <p className="t-body-sm">
-              Our AI-native editor gets out of your way. Just write. Formatting, structure, and flow are handled for you.
+              Just write. Our AI editor handles the rest.
             </p>
           </div>
           <div className="story-cta-cell">
@@ -197,7 +197,7 @@ export default function Home() {
             </svg>
             <h3 className="t-h4">Go global instantly</h3>
             <p className="t-body-sm">
-              One tap and Atlas adapts your story for readers in dozens of locales. No translators, no waiting.
+              One tap. Atlas adapts your story for dozens of locales.
             </p>
           </div>
           <div className="story-cta-cell">
@@ -206,7 +206,7 @@ export default function Home() {
             </svg>
             <h3 className="t-h4">Reach millions</h3>
             <p className="t-body-sm">
-              Pocket&apos;s global distribution puts your work in front of readers who would never have found it otherwise.
+              Global distribution puts your work in front of new readers everywhere.
             </p>
           </div>
           <div className="story-cta-cell">
@@ -215,7 +215,7 @@ export default function Home() {
             </svg>
             <h3 className="t-h4">Earn from day one</h3>
             <p className="t-body-sm">
-              Every locale is a new revenue stream. Your story earns across every market it reaches, automatically.
+              Every locale is a new revenue stream. Earn automatically.
             </p>
           </div>
         </div>
@@ -224,33 +224,51 @@ export default function Home() {
       </section>
 
       {/* FOLD 4 — FINAL CTA */}
-      <section className="final-cta">
-        <h2 className="t-h1">
-          Bring your story to
-          <br />
-          Pocket today
-        </h2>
-        <div className="prompt-box">
-          <input
-            type="text"
-            placeholder="Paste your story or describe what you're building…"
-            aria-label="Your story or project description"
-          />
-          <button type="button" className="prompt-submit">
-            Go global →
-          </button>
-        </div>
-      </section>
-
       {/* FOOTER */}
       <footer>
-        <a className="footer-logo" href="#" aria-label="Pocket Atlas — home">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/logo.svg" alt="Pocket Atlas" />
-        </a>
-        <p className="t-caption" style={{ color: 'var(--text-tertiary)' }}>
-          © 2025 Pocket FM. All rights reserved.
-        </p>
+        <div className="footer-inner">
+          <div className="footer-brand">
+            <div className="footer-brand-top">
+              <div className="footer-logo" aria-label="Pocket Atlas">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/assets/logo.svg" alt="Pocket Atlas" />
+              </div>
+              <p className="footer-byline">Home of the world&apos;s stories.</p>
+            </div>
+          </div>
+
+          <nav className="footer-nav">
+            <div className="footer-col">
+              <h4 className="footer-col-title">Product</h4>
+              <a href="https://pocketfm.com">Pocket FM</a>
+              <a href="https://www.pocket-fm-writers.com/write">For Writers</a>
+              <a href="https://pocketfm.com/pricing">Pricing</a>
+              <a href="https://pocketfm.com/affiliate-program">Affiliates</a>
+            </div>
+            <div className="footer-col">
+              <h4 className="footer-col-title">Company</h4>
+              <a href="https://pocketfm.com/about-us">About</a>
+              <a href="https://www.linkedin.com/company/pocket-fm">LinkedIn</a>
+              <a href="https://jobs.weekday.works/pocket-fm-careers-at-pocket-fm">Careers</a>
+            </div>
+            <div className="footer-col">
+              <h4 className="footer-col-title">Resources</h4>
+              <a href="https://pocketfm.com/subscription-terms-of-use">Subscriptions</a>
+              <a href="https://pocketfm.com/security-advice-policy">Security</a>
+              <a href="mailto:security@pocketfm.com">Contact</a>
+            </div>
+            <div className="footer-col">
+              <h4 className="footer-col-title">Legal</h4>
+              <a href="https://pocketfm.com/us/privacy-policy">Privacy Policy</a>
+              <a href="https://pocketfm.com/us/terms-and-conditions">Terms</a>
+              <a href="https://pocketfm.com/personnel-privacy-policy">Personnel Privacy</a>
+            </div>
+          </nav>
+        </div>
+
+        <div className="footer-bottom">
+          <p>&copy; 2026 Pocket Entertainment Pvt Ltd</p>
+        </div>
       </footer>
 
     </>
