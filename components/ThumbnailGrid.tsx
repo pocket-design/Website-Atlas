@@ -20,18 +20,26 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export default function ThumbnailGrid() {
-  const [slots, setSlots] = useState<string[]>(() =>
-    shuffle(THUMBNAILS).slice(0, GRID_SIZE)
-  );
-  const [pixelatingSlot, setPixelatingSlot] = useState(-1);
-  const [phase, setPhase] = useState<'out' | 'in' | null>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const [slots, setSlots] = useState<string[]>(THUMBNAILS.slice(0, GRID_SIZE));
+  const [activeSlot, setActiveSlot] = useState(-1);
+  const [phase, setPhase] = useState<'idle' | 'out' | 'in'>('idle');
+  const slotsRef = useRef(slots);
+  slotsRef.current = slots;
+  const initialized = useRef(false);
 
   useEffect(() => {
+    if (!initialized.current) {
+      initialized.current = true;
+      setSlots(shuffle(THUMBNAILS).slice(0, GRID_SIZE));
+    }
+  }, []);
+
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+
     const cycle = () => {
       const slotIdx = Math.floor(Math.random() * GRID_SIZE);
-
-      setPixelatingSlot(slotIdx);
+      setActiveSlot(slotIdx);
       setPhase('out');
 
       setTimeout(() => {
@@ -46,16 +54,16 @@ export default function ThumbnailGrid() {
         setPhase('in');
 
         setTimeout(() => {
-          setPixelatingSlot(-1);
-          setPhase(null);
-        }, 400);
-      }, 400);
+          setActiveSlot(-1);
+          setPhase('idle');
+        }, 600);
+      }, 600);
 
-      timeoutRef.current = setTimeout(cycle, 3000);
+      timeout = setTimeout(cycle, 3000);
     };
 
-    timeoutRef.current = setTimeout(cycle, 1500);
-    return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
+    timeout = setTimeout(cycle, 1500);
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
@@ -65,8 +73,8 @@ export default function ThumbnailGrid() {
           key={i}
           className={
             'thumb-cell' +
-            (pixelatingSlot === i && phase === 'out' ? ' is-pixelating-out' : '') +
-            (pixelatingSlot === i && phase === 'in' ? ' is-pixelating-in' : '')
+            (activeSlot === i && phase === 'out' ? ' thumb-out' : '') +
+            (activeSlot === i && phase === 'in' ? ' thumb-in' : '')
           }
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
