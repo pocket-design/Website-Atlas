@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { HeroAdapter, LocaleCascade } from '@/components/AdaptationFlow';
 import BentoGraphic from '@/components/BentoGraphic';
 import InteractiveGlobe from '@/components/InteractiveGlobe';
@@ -7,6 +6,8 @@ import BentoHeader from '@/components/BentoHeader';
 import StoryCTAHeader from '@/components/StoryCTAHeader';
 import RoughUnderline from '@/components/RoughUnderline';
 import CountUp from '@/components/CountUp';
+import NavBar from '@/components/NavBar';
+import TryItSection from '@/components/TryItSection';
 
 export default function Home() {
   const jsonLd = {
@@ -36,46 +37,9 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Page-top atmosphere — painted background sits behind
-          the nav and the hero so the entire top of the page
-          shares one continuous artwork. */}
-      <div className="page-bg" aria-hidden="true">
-        {/* eslint-disable-next-line jsx-a11y/alt-text */}
-        <Image
-          src="/assets/atlas-background.jpg"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          quality={88}
-          style={{ objectFit: 'cover', objectPosition: 'center top' }}
-        />
-      </div>
 
       {/* NAV */}
-      <nav className="site-nav">
-        <a className="nav-logo" href="#" aria-label="Pocket Atlas — home">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/logo.svg" alt="Pocket Atlas" />
-        </a>
-        <ul className="nav-links">
-          <li>
-            <a href="#locale-cascade">How it works</a>
-          </li>
-          <li>
-            <a href="#how-it-works">Features</a>
-          </li>
-          <li>
-            <a href="#proof">Proof</a>
-          </li>
-          <li>
-            <a href="#writers">Writers</a>
-          </li>
-        </ul>
-        <button type="button" className="btn-primary">
-          Start writing
-        </button>
-      </nav>
+      <NavBar />
 
       {/* FOLD 1 — HERO */}
       <section className="hero">
@@ -125,7 +89,15 @@ export default function Home() {
         <LocaleCascade />
       </section>
 
-      {/* FOLD 2 — BENTO */}
+      {/* FOLD — TRY IT */}
+      <section id="try-it" className="try-it">
+        <div className="section-header">
+          <h2 className="t-h3">Write it <RoughUnderline>once</RoughUnderline>,<br />adapt it for the world.</h2>
+        </div>
+        <TryItSection />
+      </section>
+
+      {/* FOLD — BENTO */}
       <section id="how-it-works" className="bento">
         <div className="section-header">
           <BentoHeader />
@@ -134,42 +106,42 @@ export default function Home() {
         <div className="bento-grid">
           <div className="bcell span-4">
             <BentoGraphic scene="transpose" />
-            <h3 className="t-h3">Full cultural transposition, not translation</h3>
+            <h3 className="t-h4">Full cultural transposition, not translation</h3>
             <p className="t-body-sm">
               Names become culturally native. A corner store becomes a Späti in Berlin, a konbini in Tokyo, a duka in Nairobi. Food, humor, family dynamics, and street-level details are rebuilt from scratch. <strong>Readers never sense a foreign origin.</strong>
             </p>
           </div>
           <div className="bcell span-2">
             <BentoGraphic scene="knowledge" />
-            <h3 className="t-h3">Knowledge graph memory</h3>
+            <h3 className="t-h4">Knowledge graph memory</h3>
             <p className="t-body-sm">
               Every character and relationship tracked across hundreds of chapters. <strong>Chapter 40 stays consistent with chapter 1.</strong>
             </p>
           </div>
           <div className="bcell span-3">
             <BentoGraphic scene="strategy" />
-            <h3 className="t-h3">Strategy-first architecture</h3>
+            <h3 className="t-h4">Strategy-first architecture</h3>
             <p className="t-body-sm">
               Before changing a single word, Atlas generates a full strategy: tone, naming rules, geographic mappings. <strong>One document governs every downstream decision.</strong>
             </p>
           </div>
           <div className="bcell span-3">
             <BentoGraphic scene="triage" />
-            <h3 className="t-h3">Fully genre-aware</h3>
+            <h3 className="t-h4">Fully genre-aware</h3>
             <p className="t-body-sm">
               Atlas reads your genre and adapts accordingly. Humor lands differently in comedy, tension builds differently in suspense, intimacy shifts in romance. <strong>A romance adapts differently from a thriller.</strong>
             </p>
           </div>
           <div className="bcell" style={{gridColumn: 'span 2'}}>
             <BentoGraphic scene="validation" />
-            <h3 className="t-h3">Self-healing validation</h3>
+            <h3 className="t-h4">Self-healing validation</h3>
             <p className="t-body-sm">
               A verification pass flags conflicts and cultural mixing. <strong>Only broken items are surgically regenerated.</strong>
             </p>
           </div>
           <div className="bcell" style={{gridColumn: 'span 4'}}>
             <BentoGraphic scene="graph" />
-            <h3 className="t-h3">Deep knowledge of dependencies</h3>
+            <h3 className="t-h4">Deep knowledge of dependencies</h3>
             <p className="t-body-sm">
               Every story is a web of interconnected decisions. A character's workplace depends on their city, their title depends on local hierarchy, their nickname depends on their name. Atlas maps these dependencies and resolves them in the right order. <strong>One change cascades correctly across the entire story.</strong>
             </p>
@@ -180,7 +152,7 @@ export default function Home() {
       {/* FOLD 3 — BATTLE-TESTED */}
       <section id="proof" className="proof-section">
         <div className="section-header">
-          <h2 className="t-h2">Battle-tested at global scale.</h2>
+          <h2 className="t-h3">Battle-tested at global scale.</h2>
         </div>
 
         <div className="proof-grid">

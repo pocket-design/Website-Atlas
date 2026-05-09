@@ -25,7 +25,7 @@ export default function BentoHeader() {
   }, []);
 
   return (
-    <h2 ref={ref} className="t-h2">
+    <h2 ref={ref} className="t-h3">
       Atlas adapts your story{' '}
       <RoughUnderline trigger={visible} delay={300}>better than</RoughUnderline><br />
       any general-purpose LLMs.

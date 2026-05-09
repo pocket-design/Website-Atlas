@@ -2,8 +2,9 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  output: 'export',
   images: {
-    qualities: [75, 88],
+    unoptimized: true,
   },
 };
 

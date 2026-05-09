@@ -261,11 +261,14 @@ Globe rotation honors `prefers-reduced-motion`. New animations should too — se
 - Padding `10px var(--sp-3)`, border-radius `var(--r-pill)`, min-height **40px**
 - Hover → `--scarlet-shade-1`, active → `--scarlet-shade-2` + `scale(0.96)`
 
-**Secondary white pill** (`btn-demo`):
-- Same type spec as primary
-- Background `--vellum-tint-7`, color `--text-primary`, 1px border `--surface-divider`
-- Padding `10px var(--sp-2-5)`, min-height **40px**
-- Hover → background `--vellum-shade-1`, border `--vellum-shade-3`; active → `scale(0.96)`
+**Secondary white pill** (`btn-secondary`):
+- Same type spec as primary (14px, 700, line-height 1, trimmed)
+- Background `linear-gradient(to bottom, #ffffff, #f7f7f5)` — subtle top-to-bottom gradient for depth
+- Color `--ink`, 1px border `--surface-divider`
+- Padding `10px var(--sp-2-5)`, border-radius `var(--r-pill)`, min-height **40px**
+- Box-shadow `0 1px 2px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.03)`
+- Hover → gradient darkens to `#f7f7f5 → #f0f0ec`, border `--surface-divider-hover`
+- Active → gradient `#f0f0ec → #eaeae6` + `scale(0.95)` with spring bounce
 
 **Ink primary pill** (`btn-primary`, e.g. nav "Go global"):
 - Same shape as primary scarlet, swap background to `--ink`, hover `--ink-tint-1`, active `--ink-shade-2`

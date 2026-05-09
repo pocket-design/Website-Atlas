@@ -25,7 +25,7 @@ export default function StoryCTAHeader() {
   }, []);
 
   return (
-    <h2 ref={ref} className="t-h2">
+    <h2 ref={ref} className="t-h3">
       Have a story?<br />
       <RoughUnderline trigger={visible} delay={400}>Write it on Pocket</RoughUnderline>.
     </h2>

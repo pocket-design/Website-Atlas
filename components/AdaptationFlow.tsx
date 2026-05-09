@@ -588,9 +588,7 @@ export function LocaleCascade() {
 
     const LOADING_MESSAGES = [
       'Kicking things off',
-      'Reading your narrative',
       'Contextualizing for 4 locales',
-      'Transposing cultural elements',
       'Localizing names and places',
       'Finalizing your adapted stories',
     ];

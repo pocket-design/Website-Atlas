@@ -279,6 +279,33 @@ body {
 .btn-primary:hover  { background: linear-gradient(to bottom, var(--ink), var(--ink-shade-2)); }
 .btn-primary:active { background: linear-gradient(to bottom, var(--ink-shade-2), var(--ink-shade-2)); transform: scale(0.95); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); }
 
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  background: linear-gradient(to bottom, #ffffff, #f7f7f5);
+  color: var(--ink);
+  border: 1px solid var(--surface-divider);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  padding: 10px var(--sp-2-5);
+  border-radius: var(--r-pill);
+  font-family: var(--ff-sans);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  min-height: 40px;
+  text-box-trim: both;
+  text-box-edge: cap alphabetic;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    0 2px 4px rgba(0, 0, 0, 0.03);
+  transition: background 120ms var(--ease), transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 120ms var(--ease), border-color 120ms var(--ease);
+}
+.btn-secondary:hover  { background: linear-gradient(to bottom, #f7f7f5, #f0f0ec); border-color: var(--surface-divider-hover); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04); }
+.btn-secondary:active { background: linear-gradient(to bottom, #f0f0ec, #eaeae6); transform: scale(0.95); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06); }
+
 .btn-brand {
   display: inline-flex;
   align-items: center;
@@ -404,6 +431,7 @@ body {
 
 /* Scroll offset for fixed nav (nav top 12px + nav height ~48px + breathing room) */
 [id="locale-cascade"],
+[id="try-it"],
 [id="how-it-works"],
 [id="proof"],
 [id="writers"] {
@@ -439,53 +467,6 @@ body {
 }
 .hero > * { position: relative; z-index: 1; }
 
-/* Page-top atmosphere — painted background that spans behind
-   the nav AND the hero so the entire top of the page shares
-   one continuous artwork. Sits at the document top, absolutely
-   positioned. The cascade fold and everything below has its
-   own solid vellum background which obscures this image once
-   the user scrolls past the hero.
-
-   The bottom of the painting dissolves into the vellum page
-   surface through a long multi-stop ::after gradient overlay
-   (vellum at the bottom, transparent up top). Irregular stops
-   so the transition reads as atmospheric rather than a hard
-   horizontal cut. */
-.page-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: min(100vh, 1024px);
-  z-index: 0;
-  pointer-events: none;
-  user-select: none;
-  overflow: hidden;
-}
-.page-bg img { object-fit: cover; }
-.page-bg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  /* Fade is calibrated against actual layout: page-bg is
-     900px tall, the story box's bottom edge sits at y=791
-     (≈88% of the page-bg height). The gradient reaches fully
-     opaque vellum at exactly 88%, so the painting dissolves
-     into vellum precisely where the story box ends. Irregular
-     stops keep the transition atmospheric. */
-  background: linear-gradient(
-    to bottom,
-    rgba(250, 249, 241, 0)    0%,
-    rgba(250, 249, 241, 0)    55%,
-    rgba(250, 249, 241, 0.18) 65%,
-    rgba(250, 249, 241, 0.42) 73%,
-    rgba(250, 249, 241, 0.70) 80%,
-    rgba(250, 249, 241, 0.92) 85%,
-    rgba(250, 249, 241, 1)    88%,
-    rgba(250, 249, 241, 1)    100%
-  );
-}
 
 /* Foreground stacking — make sure every page section sits
    above .page-bg. Nav is excluded (it has its own
@@ -1031,7 +1012,7 @@ section.cards-section { background: var(--surface-page); }
 .cascade-loader-text {
   font-family: var(--ff-sans);
   font-size: 14px;
-  color: var(--ink-tint-5);
+  color: var(--ink-tint-3);
   letter-spacing: 0;
 }
 .square-loader-grid {
@@ -1445,14 +1426,88 @@ section.cards-section { background: var(--surface-page); }
 .cascade-pill.is-active[data-bucket="4"],
 .cascade-pill.is-selected[data-bucket="4"] { background: rgb(220, 38, 38); }
 
-/* ── FOLD 2 — BENTO ──────────────────────────────────────── */
+/* ── TRY IT SECTION ─────────────────────────────────────── */
+.try-it {
+  padding: var(--sp-8) var(--sp-8);
+}
+.tryit-wrapper {
+  max-width: var(--container);
+  margin: 0 auto;
+}
+.tryit-box-container {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  background: var(--vellum-tint-7);
+  border: 1px solid var(--surface-divider);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.tryit-pane {
+  display: flex;
+  flex-direction: column;
+}
+.tryit-separator {
+  width: 1px;
+  background: var(--surface-divider);
+}
+.tryit-pane .locale-card-locale {
+  z-index: 2;
+  border-bottom: 1px solid var(--surface-divider);
+}
+.tryit-pane .locale-dropdown {
+  top: auto;
+  bottom: calc(100% + 4px);
+}
+.tryit-textarea {
+  flex: 1;
+  min-height: 360px;
+  padding: var(--sp-3);
+  font-family: var(--ff-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  resize: none;
+  outline: none;
+}
+.tryit-textarea::placeholder { color: var(--text-tertiary); }
+.tryit-pane-right {
+  background: var(--vellum);
+}
+.tryit-pane-right.is-empty {
+  background: var(--vellum-tint-3);
+}
+.tryit-result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tryit-empty {
+  color: var(--text-secondary);
+  font-family: var(--ff-sans);
+  font-size: 15px;
+}
+.tryit-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-1-5);
+}
+.tryit-actions button {
+  min-width: 160px;
+  justify-content: center;
+}
+
+/* ── FOLD — BENTO ───────────────────────────────────────── */
 .bento {
-  padding: var(--sp-6) var(--sp-8);
+  padding: var(--sp-8) var(--sp-8);
 }
 
 .section-header {
   max-width: var(--container);
-  margin: 0 auto var(--sp-8);
+  margin: 0 auto var(--sp-4);
 }
 .section-eyebrow {
   color: var(--scarlet);
@@ -1567,11 +1622,11 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── FOLD 3 — BATTLE-TESTED ───────────────────────────────── */
 .proof-section {
-  padding: var(--sp-6) var(--sp-8);
+  padding: var(--sp-8) var(--sp-8);
 }
 .proof-section .section-header {
   max-width: var(--container);
-  margin: 0 auto var(--sp-8);
+  margin: 0 auto var(--sp-4);
   text-align: left;
 }
 .proof-grid {
@@ -1611,7 +1666,7 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── FOLD 4 — HAVE A STORY ────────────────────────────────── */
 .story-cta {
-  padding: var(--sp-6) var(--sp-8);
+  padding: var(--sp-8) var(--sp-8);
   text-align: center;
 }
 .story-cta h2 {
@@ -1708,7 +1763,7 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── FOLD 4 — FINAL CTA ──────────────────────────────────── */
 .final-cta {
-  padding: var(--sp-6) var(--sp-8);
+  padding: var(--sp-8) var(--sp-8);
   text-align: center;
   background: var(--surface-inverse);
 }
