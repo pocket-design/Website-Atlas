@@ -25,7 +25,7 @@ export default function ThumbnailGrid() {
   );
   const [pixelatingSlot, setPixelatingSlot] = useState(-1);
   const [phase, setPhase] = useState<'out' | 'in' | null>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     const cycle = () => {

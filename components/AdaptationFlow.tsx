@@ -347,6 +347,66 @@ export function HeroAdapter() {
   );
 }
 
+function SquareLoader({ finishing }: { finishing: boolean }) {
+  const [squares, setSquares] = useState<boolean[]>(() => Array(9).fill(false));
+  const minRedRef = useRef(2);
+
+  useEffect(() => {
+    if (finishing) {
+      let fill = minRedRef.current;
+      let cancelled = false;
+      const ramp = () => {
+        if (cancelled) return;
+        fill = Math.min(fill + 2, 9);
+        setSquares(() => {
+          const next = Array(9).fill(false);
+          const indices = new Set<number>();
+          while (indices.size < fill) {
+            indices.add(Math.floor(Math.random() * 9));
+          }
+          indices.forEach((i) => { next[i] = true; });
+          return next;
+        });
+        if (fill < 9) setTimeout(ramp, 140);
+        else setSquares(Array(9).fill(true));
+      };
+      ramp();
+      return () => { cancelled = true; };
+    }
+  }, [finishing]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const step = () => {
+      if (cancelled) return;
+      setSquares((prev) => {
+        const redCount = prev.filter(Boolean).length;
+        minRedRef.current = redCount;
+        const next = Array(9).fill(false);
+        const count = 2 + Math.floor(Math.random() * 4);
+        const indices = new Set<number>();
+        while (indices.size < count) {
+          indices.add(Math.floor(Math.random() * 9));
+        }
+        indices.forEach((i) => { next[i] = true; });
+        return next;
+      });
+      setTimeout(step, 160);
+    };
+    step();
+    return () => { cancelled = true; };
+  }, []);
+
+  return (
+    <div className="square-loader-grid">
+      {squares.map((isRed, i) => (
+        <div key={i} className={`square-loader-cell${isRed ? ' is-red' : ''}`} />
+      ))}
+    </div>
+  );
+}
+
 /**
  * Cascade fold: SVG branches fanning into 4 locale cards.
  * On scroll into view, a bucket sequence kicks off:
@@ -405,6 +465,9 @@ export function LocaleCascade() {
   const [slotReady, setSlotReady] = useState([false, false, false, false]);
   const [manualBucket, setManualBucket] = useState<number | null>(null);
   const cycleRef = useRef<{ cancel: () => void } | null>(null);
+  const [overlayPhase, setOverlayPhase] = useState<'loading' | 'fading' | 'collapsing' | 'done'>('loading');
+  const [loadingText, setLoadingText] = useState('Kicking things off');
+  const [loaderFinishing, setLoaderFinishing] = useState(false);
 
   const handleSwap = (slotIndex: number, newKey: string) => {
     setSelectedKeys((prev) => {
@@ -523,18 +586,72 @@ export function LocaleCascade() {
       tick();
     };
 
+    const LOADING_MESSAGES = [
+      'Kicking things off',
+      'Reading your narrative',
+      'Contextualizing for 4 locales',
+      'Transposing cultural elements',
+      'Localizing names and places',
+      'Finalizing your adapted stories',
+    ];
+
+    const runLoadingSequence = () => {
+      if (cancelled) return;
+      setLoadingText(LOADING_MESSAGES[0]);
+
+      let msgIdx = 0;
+      const scheduleNext = () => {
+        if (cancelled) return;
+        const delay = 800 + Math.random() * 1200;
+        timeouts.push(setTimeout(() => {
+          if (cancelled) return;
+          msgIdx++;
+          if (msgIdx < LOADING_MESSAGES.length) {
+            setLoadingText(LOADING_MESSAGES[msgIdx]);
+            if (msgIdx === LOADING_MESSAGES.length - 1) {
+              setLoaderFinishing(true);
+              timeouts.push(setTimeout(() => {
+                if (!cancelled) finishOverlay();
+              }, 1000));
+            } else {
+              scheduleNext();
+            }
+          }
+        }, delay));
+      };
+      scheduleNext();
+
+      const finishOverlay = () => {
+        if (cancelled) return;
+        setOverlayPhase('fading');
+        timeouts.push(setTimeout(() => {
+          if (cancelled) return;
+          // Hold blank white state for 300ms
+          timeouts.push(setTimeout(() => {
+            if (cancelled) return;
+            setOverlayPhase('collapsing');
+            grid.querySelectorAll('.locale-card-image').forEach((el) => {
+              el.classList.add('is-revealed');
+            });
+            startSheen();
+            timeouts.push(setTimeout(() => {
+              if (cancelled) return;
+              setOverlayPhase('done');
+            }, 500));
+          }, 300));
+        }, 250));
+      };
+    };
+
     const io = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
         io.disconnect();
-        grid.querySelectorAll('.locale-card-image').forEach((el) => {
-          el.classList.add('is-revealed');
-        });
         timeouts.push(setTimeout(() => {
-          if (!cancelled) startSheen();
-        }, 1000));
+          if (!cancelled) runLoadingSequence();
+        }, 300));
       },
-      { threshold: 0.4, rootMargin: '0px 0px -22% 0px' },
+      { threshold: 0.15 },
     );
     io.observe(grid);
 
@@ -584,13 +701,21 @@ export function LocaleCascade() {
               onReady={handleSlotReady}
             />
           ))}
+          {overlayPhase !== 'done' && (
+            <div className={`cascade-overlay${overlayPhase === 'fading' ? ' is-fading' : ''}${overlayPhase === 'collapsing' ? ' is-collapsing' : ''}`}>
+              <div className="cascade-loader">
+                <SquareLoader finishing={loaderFinishing} />
+                <p className="cascade-loader-text">{loadingText}</p>
+              </div>
+            </div>
+          )}
           {sheenDone && (
             <div className="cascade-pills">
               <button
                 className={`cascade-pill${manualBucket === -2 ? ' is-selected-all' : ''}`}
                 onClick={() => handlePillClick(-2)}
               >
-                All
+                All adaptations
               </button>
               <span className="cascade-pills-sep" />
               {BUCKETS.map((label, i) => (

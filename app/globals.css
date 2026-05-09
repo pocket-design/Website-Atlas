@@ -948,6 +948,7 @@ section.cards-section { background: var(--surface-page); }
    on the grid wrapper; each card has only a right divider
    (except the last). Adjacent borders never double up. */
 .cascade-grid {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
@@ -958,6 +959,62 @@ section.cards-section { background: var(--surface-page); }
     0 1px 3px rgba(0, 0, 0, 0.03),
     0 4px 12px rgba(0, 0, 0, 0.04);
   background: var(--surface-card);
+}
+
+/* Adaptation loading overlay — covers locale card content below headers */
+.cascade-overlay {
+  position: absolute;
+  top: 54px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-card);
+  border-radius: 0 0 var(--r-card) var(--r-card);
+}
+.cascade-overlay .cascade-loader {
+  transition: opacity 0.25s ease-out;
+}
+.cascade-overlay.is-fading .cascade-loader,
+.cascade-overlay.is-collapsing .cascade-loader {
+  opacity: 0;
+}
+.cascade-overlay.is-collapsing {
+  animation: overlayCollapse 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes overlayCollapse {
+  0%   { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(100% 0 0 0); }
+}
+.cascade-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.cascade-loader-text {
+  font-family: var(--ff-sans);
+  font-size: 14px;
+  color: var(--ink-tint-5);
+  letter-spacing: 0;
+}
+.square-loader-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  width: 42px;
+  height: 42px;
+}
+.square-loader-cell {
+  border-radius: 0;
+  background: var(--vellum-shade-1);
+  transition: background 0.15s ease;
+}
+.square-loader-cell.is-red {
+  background: var(--scarlet);
 }
 
 .locale-card {
@@ -972,6 +1029,7 @@ section.cards-section { background: var(--surface-page); }
 
 .locale-card-locale {
   position: relative;
+  z-index: 4;
   display: flex;
   align-items: center;
   padding: 0;
