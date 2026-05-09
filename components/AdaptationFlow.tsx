@@ -3,7 +3,7 @@
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
-const DEMO_STORY = `After class, Maya ducked into the corner store and picked up her grandmother's afternoon usual — a pack of biscuits and a carton of tea. The shopkeeper, who had known three generations of the family, slid an extra packet of toffees across the counter without being asked. Outside, the late afternoon rain hadn't quite let up, and Maya's bag thumped against her hip as she ran the four blocks home. Her grandmother would already be on the porch, watching the road, ready to scold her for being late and then ask, in the same breath, whether she'd remembered the tea.`;
+const DEMO_STORY = `After class, Maya ducked into the corner store and picked up her grandmother's afternoon usual, a pack of biscuits and a carton of tea. The shopkeeper, who had known three generations of the family, slid an extra packet of toffees across the counter without being asked. Outside, the late afternoon rain hadn't quite let up, and Maya's bag thumped against her hip as she ran the four blocks home. Her grandmother would already be on the porch, watching the road, ready to scold her for being late and then ask, in the same breath, whether she'd remembered the tea.`;
 
 /**
  * Each locale's adapted passage is broken into segments so we
@@ -283,23 +283,62 @@ const DEFAULT_LOCALE_KEYS = ['de', 'br', 'jp', 'ke'];
  * .hero section so the globe sits behind it.
  */
 export function HeroAdapter() {
-  const [source, setSource] = useState(DEMO_STORY);
+  const [revealedWords, setRevealedWords] = useState(0);
+  const [done, setDone] = useState(false);
+  const words = useRef(DEMO_STORY.split(/(\s+)/)).current;
+  const totalWords = useRef(words.filter((w) => !/^\s+$/.test(w)).length).current;
+
+  useEffect(() => {
+    let cancelled = false;
+    let wordIdx = 0;
+
+    const reveal = () => {
+      if (cancelled) return;
+      wordIdx++;
+      setRevealedWords(wordIdx);
+
+      if (wordIdx >= totalWords) {
+        setDone(true);
+        return;
+      }
+
+      const progress = wordIdx / totalWords;
+      const delay = Math.max(10, 45 * (1 - progress * 0.85));
+      setTimeout(reveal, delay);
+    };
+
+    reveal();
+    return () => { cancelled = true; };
+  }, [totalWords]);
+
+  let wordCounter = 0;
 
   return (
     <div className="adapt-flow">
       <div className="adapt-input">
         <div className="adapt-input-inner">
-          <textarea
-            className="adapt-input-textarea"
-            value={source}
-            onChange={(e) => setSource(e.target.value)}
-            placeholder="Paste a passage from your story…"
-            aria-label="Source story"
-            spellCheck={false}
-          />
+          <div className="adapt-input-textarea story-stream" aria-label="Source story">
+            {words.map((word, i) => {
+              const isSpace = /^\s+$/.test(word);
+              if (isSpace) return <Fragment key={i}>{word}</Fragment>;
+              const idx = wordCounter++;
+              const revealed = done || idx < revealedWords;
+              return (
+                <span key={i} className={revealed ? 'stream-word is-visible' : 'stream-word'}>
+                  {word}
+                </span>
+              );
+            })}
+          </div>
         </div>
         <div className="adapt-input-actions">
-          <button type="button" className="btn-global">
+          <button
+            type="button"
+            className="btn-global"
+            onClick={() => {
+              document.getElementById('locale-cascade')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }}
+          >
             Go global
           </button>
         </div>
