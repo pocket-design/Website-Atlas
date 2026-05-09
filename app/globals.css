@@ -1428,7 +1428,7 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── TRY IT SECTION ─────────────────────────────────────── */
 .try-it {
-  padding: var(--sp-8) var(--sp-8);
+  padding: var(--sp-12) var(--sp-8);
 }
 .tryit-wrapper {
   max-width: var(--container);
@@ -1502,7 +1502,7 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── FOLD — BENTO ───────────────────────────────────────── */
 .bento {
-  padding: var(--sp-8) var(--sp-8);
+  padding: var(--sp-12) var(--sp-8);
 }
 
 .section-header {
@@ -1622,7 +1622,7 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── FOLD 3 — BATTLE-TESTED ───────────────────────────────── */
 .proof-section {
-  padding: var(--sp-8) var(--sp-8);
+  padding: var(--sp-12) var(--sp-8);
 }
 .proof-section .section-header {
   max-width: var(--container);
@@ -1666,7 +1666,7 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── FOLD 4 — HAVE A STORY ────────────────────────────────── */
 .story-cta {
-  padding: var(--sp-8) var(--sp-8);
+  padding: var(--sp-12) var(--sp-8);
   text-align: center;
 }
 .story-cta h2 {
@@ -1763,7 +1763,7 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── FOLD 4 — FINAL CTA ──────────────────────────────────── */
 .final-cta {
-  padding: var(--sp-8) var(--sp-8);
+  padding: var(--sp-12) var(--sp-8);
   text-align: center;
   background: var(--surface-inverse);
 }
@@ -1825,7 +1825,7 @@ footer {
   z-index: 1;
   background: #000;
   color: #fff;
-  padding: var(--sp-10) var(--sp-8) var(--sp-6);
+  padding: var(--sp-10) var(--sp-8) 0;
 }
 .footer-inner {
   display: grid;
@@ -1906,11 +1906,14 @@ footer {
 .footer-bottom {
   max-width: var(--container);
   margin: var(--sp-8) auto 0;
-  padding-top: var(--sp-4);
+  padding: 24px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.footer-bottom p {
+.footer-bottom span {
+  font-family: var(--ff-sans);
   font-size: 14px;
   color: rgba(255, 255, 255, 0.5);
 }

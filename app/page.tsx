@@ -283,7 +283,8 @@ export default function Home() {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; 2026 Pocket Entertainment Pvt Ltd</p>
+          <span>Pocket Entertainment Pvt Ltd.</span>
+          <span>&copy; 2026 All rights reserved</span>
         </div>
       </footer>
 
