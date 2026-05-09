@@ -79,7 +79,7 @@ export default function Home() {
 
       {/* FOLD 1 — HERO */}
       <section className="hero">
-        <div className="hero-eyebrow">Meet the all-new Atlas</div>
+        <div className="hero-eyebrow">Meet Atlas by Pocket</div>
         <div className="hero-divider" aria-hidden="true">
           <svg
             className="hero-divider-ornament"
@@ -155,9 +155,9 @@ export default function Home() {
           </div>
           <div className="bcell span-3">
             <BentoGraphic scene="triage" />
-            <h3 className="t-h3">Three-tier entity triage</h3>
+            <h3 className="t-h3">Fully genre-aware</h3>
             <p className="t-body-sm">
-              Every element is classified: preserve, analogize, or fully replace. A chaebol becomes a dynasty, onigiri becomes a tartine. <strong>Nothing is left half-translated.</strong>
+              Atlas reads your genre and adapts accordingly. Humor lands differently in comedy, tension builds differently in suspense, intimacy shifts in romance. <strong>A romance adapts differently from a thriller.</strong>
             </p>
           </div>
           <div className="bcell" style={{gridColumn: 'span 2'}}>
@@ -169,9 +169,9 @@ export default function Home() {
           </div>
           <div className="bcell" style={{gridColumn: 'span 4'}}>
             <BentoGraphic scene="graph" />
-            <h3 className="t-h3">Graph-segmented dependency resolution</h3>
+            <h3 className="t-h3">Deep knowledge of dependencies</h3>
             <p className="t-body-sm">
-              Entity names form a directed graph. &ldquo;Tanaka-tei&rdquo; depends on the Tanaka surname, which depends on target naming conventions. Atlas resolves them in topological order so nothing contradicts. <strong>Related entities stay together where random batching would tear them apart.</strong>
+              Every story is a web of interconnected decisions. A character's workplace depends on their city, their title depends on local hierarchy, their nickname depends on their name. Atlas maps these dependencies and resolves them in the right order. <strong>One change cascades correctly across the entire story.</strong>
             </p>
           </div>
         </div>
@@ -180,7 +180,7 @@ export default function Home() {
       {/* FOLD 3 — BATTLE-TESTED */}
       <section id="proof" className="proof-section">
         <div className="section-header">
-          <h2 className="t-h2">Battle-tested at the global scale.</h2>
+          <h2 className="t-h2">Battle-tested at global scale.</h2>
         </div>
 
         <div className="proof-grid">
@@ -188,21 +188,21 @@ export default function Home() {
             <div className="proof-stat"><CountUp end={10000} suffix="+" /></div>
             <h3 className="t-h4">Stories adapted</h3>
             <p className="t-body-sm">
-              From short fiction to 200-chapter epics. Every genre, every length, every narrative structure refined through Atlas.
+              From short fiction to 200-chapter epics. Every genre, every length.
             </p>
           </div>
           <div className="proof-card">
             <div className="proof-stat"><CountUp end={50} suffix="+" /></div>
             <h3 className="t-h4">Locales supported</h3>
             <p className="t-body-sm">
-              Each with deep cultural intelligence. Not just language swaps, but full cultural transposition tuned by region.
+              Deep cultural intelligence, not just language swaps.
             </p>
           </div>
           <div className="proof-card">
             <div className="proof-stat"><CountUp end={99.2} suffix="%" decimals={1} /></div>
             <h3 className="t-h4">Consistency score</h3>
             <p className="t-body-sm">
-              Entity names, relationships, and references stay coherent across every chapter and every locale, verified end to end.
+              Names, relationships, and references stay coherent across every chapter.
             </p>
           </div>
         </div>

@@ -393,6 +393,13 @@ body {
   text-align: center;
   position: relative;
   overflow: hidden;
+  background:
+    linear-gradient(to bottom,
+      transparent 0%,
+      transparent 65%,
+      var(--vellum) 100%
+    ),
+    url('/assets/backdrop.png') center top / cover no-repeat;
 }
 
 /* Scroll offset for fixed nav (nav top 12px + nav height ~48px + breathing room) */
@@ -527,7 +534,7 @@ section.cards-section { background: var(--surface-page); }
 .hero-eyebrow {
   margin: 0 auto var(--sp-1);
   font-family: var(--ff-display);
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 500;
   line-height: 1;
   font-variation-settings: "SERF" 65, "slnt" 0;
@@ -558,7 +565,7 @@ section.cards-section { background: var(--surface-page); }
   /* Slightly smaller than t-hero so the eyebrow + title
      read as a balanced pair rather than one giant line
      dwarfing the other. */
-  font-size: clamp(44px, 5.4vw, 68px);
+  font-size: clamp(40px, 4.8vw, 60px);
   line-height: 1.07;
   letter-spacing: 0; /* was: -0.03em */
 }

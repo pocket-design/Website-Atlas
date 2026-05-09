@@ -26,10 +26,9 @@ export default function BentoHeader() {
 
   return (
     <h2 ref={ref} className="t-h2">
-      You write the story{' '}
-      <RoughUnderline trigger={visible} delay={300}>once</RoughUnderline>.<br />
-      Atlas adapts it to{' '}
-      <RoughUnderline trigger={visible} delay={800}>the world</RoughUnderline>.
+      Atlas adapts your story{' '}
+      <RoughUnderline trigger={visible} delay={300}>better than</RoughUnderline><br />
+      any general-purpose LLMs.
     </h2>
   );
 }
