@@ -172,7 +172,7 @@ body {
 }
 .t-h2 {
   font-family: var(--ff-display);
-  font-weight: 500;
+  font-weight: 600;
   font-size: clamp(28px, 3.4vw, 36px);
   line-height: 1.30;
   letter-spacing: 0; /* was: -0.02em */
@@ -180,7 +180,7 @@ body {
 }
 .t-h3 {
   font-family: var(--ff-display);
-  font-weight: 500;
+  font-weight: 600;
   font-size: clamp(22px, 2.4vw, 28px);
   line-height: 1.35;
   letter-spacing: 0; /* was: -0.015em */
@@ -188,7 +188,7 @@ body {
 }
 .t-h4 {
   font-family: var(--ff-display);
-  font-weight: 500;
+  font-weight: 600;
   font-size: 20px;
   line-height: 1.40;
   letter-spacing: 0; /* was: -0.01em */
@@ -259,6 +259,8 @@ body {
   background: linear-gradient(to bottom, var(--ink-tint-1), var(--ink));
   color: var(--vellum);
   border: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   padding: 10px var(--sp-2-5);
   border-radius: var(--r-pill);
   font-family: var(--ff-sans);
@@ -275,7 +277,7 @@ body {
   transition: background 120ms var(--ease), transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 120ms var(--ease);
 }
 .btn-primary:hover  { background: linear-gradient(to bottom, var(--ink), var(--ink-shade-2)); }
-.btn-primary:active { background: var(--ink-shade-2); transform: scale(0.95); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); }
+.btn-primary:active { background: linear-gradient(to bottom, var(--ink-shade-2), var(--ink-shade-2)); transform: scale(0.95); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); }
 
 .btn-brand {
   display: inline-flex;
@@ -284,6 +286,8 @@ body {
   background: linear-gradient(to bottom, #ff3318, var(--scarlet));
   color: var(--vellum);
   border: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   padding: 10px var(--sp-3);
   border-radius: var(--r-pill);
   font-family: var(--ff-sans);
@@ -362,15 +366,22 @@ body {
   font-weight: 600;
   line-height: 1;
   border-radius: var(--r-pill);
-  transition: background-color 120ms var(--ease);
+  transition: background-color 120ms var(--ease), transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .nav-links a:hover {
   background-color: rgba(0, 0, 0, 0.04);
+}
+.nav-links a:active {
+  transform: scale(0.95);
 }
 .site-nav .btn-primary {
   min-height: 34px;
   padding: 8px 16px;
   font-size: 14px;
+  will-change: transform;
+  isolation: isolate;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* ── FOLD 1 — HERO ───────────────────────────────────────── */
@@ -873,6 +884,8 @@ section.cards-section { background: var(--surface-page); }
   gap: var(--sp-1);
   background: linear-gradient(to bottom, #ff3318, var(--scarlet));
   color: var(--vellum);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   border: none;
   padding: 10px var(--sp-3);
   border-radius: var(--r-pill);
@@ -891,7 +904,7 @@ section.cards-section { background: var(--surface-page); }
   transition: background 120ms var(--ease), transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 120ms var(--ease);
 }
 .btn-global:hover    { background: linear-gradient(to bottom, var(--scarlet), var(--scarlet-shade-1)); }
-.btn-global:active   { background: var(--scarlet-shade-2); transform: scale(0.95); box-shadow: 0 1px 2px rgba(245, 29, 0, 0.12); }
+.btn-global:active   { background: linear-gradient(to bottom, var(--scarlet-shade-1), var(--scarlet-shade-2)); transform: scale(0.95); box-shadow: 0 1px 2px rgba(245, 29, 0, 0.12); }
 .btn-global:disabled { opacity: 0.6; cursor: default; transform: none; }
 
 /* SVG branch container — sits between the story box and the
@@ -1476,7 +1489,7 @@ section.cards-section { background: var(--surface-page); }
   margin-bottom: var(--sp-3);
 }
 .bcell.wide .bcell-graphic { height: 130px; }
-.bcell h3 { margin-bottom: var(--sp-1-5); font-weight: 500; }
+.bcell h3 { margin-bottom: var(--sp-1-5); font-weight: 600; }
 .bcell p  { color: var(--text-secondary); }
 
 .bcell-stat {

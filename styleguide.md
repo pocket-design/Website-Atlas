@@ -65,29 +65,36 @@ Three families: **Ink** (near-black neutrals), **Vellum** (cream surfaces and wa
 
 | Family | CSS variable | Role | Files |
 | --- | --- | --- | --- |
-| **Season Mix** | `--ff-display` | All display text (hero, headings, eyebrows in display register, image-card city labels) | `SeasonMix-Regular.ttf` (400), `SeasonMix-Medium.ttf` (500) — both in `public/fonts/` |
-| **Mallory Compact** | `--ff-sans` / `--ff-sans-compact` | ALL non-display text across the entire page: buttons, nav, body, labels, eyebrows, cards, footer. No exceptions. Both variables resolve to the same Mallory Compact font. | Loaded via `next/font/local` in `app/layout.tsx` |
+| **Season Collection VF** | `--ff-display` | All display text (hero, headings, eyebrows in display register). Variable font with axes: `wght` 300–900, `SERF` 0–100 (sans→serif), `slnt` -11–0. Set to `SERF 65` for a slight serif lean past the Mix midpoint. | `public/fonts/season-mix/SeasonCollectionVF.woff2` |
+| **Mallory MP Compact** | `--ff-sans` / `--ff-sans-compact` | ALL non-display text across the entire page: buttons, nav, body, labels, eyebrows, cards, footer. No exceptions. Both variables resolve to the same Mallory MP Compact font. | `public/fonts/mallory-mp-compact/Mallory-MP-Compact-Book.ttf` (400), `Mallory-MP-Compact-Bold.ttf` (700) |
 
-**Mallory Narrow and Mallory Regular are forbidden** in this codebase. Only Mallory Compact is used site-wide for all non-display text. No exceptions.
+**Mallory Narrow, Mallory Regular, and non-compact Mallory MP are all forbidden** in this codebase. Only Mallory MP Compact is used site-wide for all non-display text. No exceptions.
 
-When the missing files arrive, register them via `next/font/local` in `app/layout.tsx` and the existing `--ff-sans` / `--ff-sans-compact` variables will start using them — no other CSS changes needed.
+### Variable font axis settings
+
+All display-tier text uses:
+```css
+font-variation-settings: "SERF" 65, "slnt" 0;
+```
+- `SERF 0` = pure sans, `50` = mix (midpoint), `100` = full serif. We use **65** for a subtle serif character.
+- Weight is controlled via standard `font-weight` (maps to `wght` axis automatically).
 
 ### Type scale — the canonical system
 
 The scale has three tiers. Each token has a fixed identity and a single job. Don't invent new sizes inline — if you need something not in the scale, add it here first, then to globals.css.
 
-#### Display tier — Season Mix (`--ff-display`)
+#### Display tier — Season Collection VF (`--ff-display`)
 
-Headings and editorial display. Always uses `text-wrap: balance` so multi-line breaks fall naturally. Letter-spacing tightens as size grows (large display type rendered at body letter-spacing looks loose).
+Headings and editorial display. Always uses `text-wrap: balance` so multi-line breaks fall naturally. All display text uses `font-weight: 500` (Medium) and `font-variation-settings: "SERF" 65, "slnt" 0`. Letter-spacing is currently set to `0` across all sizes (negative spacing disabled for testing).
 
 | Token | Size | Line-height | Letter-spacing | Use |
 | --- | --- | --- | --- | --- |
-| `t-hero` | `clamp(56px, 7.5vw, 96px)` | `1.05` | `-0.035em` | The largest line on the page. **Reserved.** One per page, max — used by the page's primary headline. |
-| `t-display` | `clamp(40px, 5.4vw, 56px)` | `1.07` | `-0.03em` | Section openers below the hero. The "next biggest" tier after the hero headline. |
-| `t-h1` | `clamp(36px, 4.5vw, 48px)` | `1.10` | `-0.025em` | Final-CTA heading, large feature opener. |
-| `t-h2` | `clamp(28px, 3.4vw, 36px)` | `1.15` | `-0.02em` | Section h2s ("Built for stories that cross borders"). |
-| `t-h3` | `clamp(22px, 2.4vw, 28px)` | `1.20` | `-0.015em` | Bento-cell titles, mid-level headings. |
-| `t-h4` | `20px` | `1.25` | `-0.01em` | Card titles, in-card headings. |
+| `t-hero` | `clamp(56px, 7.5vw, 96px)` | `1.05` | `0` | The largest line on the page. **Reserved.** One per page, max — used by the page's primary headline. |
+| `t-display` | `clamp(40px, 5.4vw, 56px)` | `1.07` | `0` | Section openers below the hero. The "next biggest" tier after the hero headline. |
+| `t-h1` | `clamp(36px, 4.5vw, 48px)` | `1.10` | `0` | Final-CTA heading, large feature opener. |
+| `t-h2` | `clamp(28px, 3.4vw, 36px)` | `1.30` | `0` | Section h2s ("Built for stories that cross borders"). |
+| `t-h3` | `clamp(22px, 2.4vw, 28px)` | `1.35` | `0` | Bento-cell titles, mid-level headings. |
+| `t-h4` | `20px` | `1.40` | `0` | Card titles, in-card headings. |
 
 #### Body tier — Mallory MP Compact (`--ff-sans-compact`)
 
@@ -101,9 +108,9 @@ Reading text. `text-wrap: pretty` to avoid orphans. Normal line-height (1.50–1
 | `t-body-sm` | `14px` | `1.55` | `0.003em` | Card body, locale-card story text, secondary copy. |
 | `t-body-xs` | `12px` | `1.50` | `0.005em` | Micro copy: footnotes, legal, dense data. Use sparingly. |
 
-#### UI tier — Mallory MP regular (`--ff-sans`), trimmed
+#### UI tier — Mallory MP Compact (`--ff-sans`), trimmed
 
-Buttons, eyebrows, nav, labels — anywhere a label sits in a fixed-height container. Always `line-height: 1` so glyphs sit centered. Vertical centering is handled by `min-height` + flex centering on the parent, not by line-height padding. Bold (700) by default for visual weight at small sizes.
+Buttons, eyebrows, nav, labels — anywhere a label sits in a fixed-height container. Always `line-height: 1` so glyphs sit centered. Vertical centering is handled by `min-height` + flex centering on the parent, not by line-height padding. Bold (700) by default for visual weight at small sizes. All button and nav text also uses `text-box-trim: both; text-box-edge: cap alphabetic` for optical centering.
 
 | Token | Size | Line-height | Letter-spacing | Weight | Use |
 | --- | --- | --- | --- | --- | --- |
@@ -141,13 +148,7 @@ Never stack two tokens of the same tier directly (e.g. two `t-h2`s adjacent). Th
 
 For elements that need a fixed visible height (buttons, eyebrow strips), enforce it via `min-height` so the trim-height change doesn't shrink the click target. Buttons must hit the **40px minimum** specified in §6.
 
-### Trim-height rule
-
-**All non-body Mallory text uses `line-height: 1`** with vertical padding chosen so the visible glyph sits centered in its container. This applies to every token marked "trim" above. The reason: Mallory regular at non-body sizes loaded with the default browser line-height adds top/bottom space that makes the glyph float above the optical center of buttons, eyebrow strips, and tabs. Setting `line-height: 1` collapses that gap; matched padding restores vertical breathing room.
-
-**Body text (Mallory Compact) keeps a normal line-height** (1.50–1.65). Trim is for UI labels, not paragraphs.
-
-For elements that need a fixed visible height (buttons, eyebrow strips), enforce it via `min-height` so the trim-height change doesn't shrink the click target. Buttons must hit the **40px minimum** specified in §6.
+Additionally, all buttons and nav links apply `text-box-trim: both; text-box-edge: cap alphabetic` for CSS-native optical centering (supported in Chrome 133+, Safari 18.2+).
 
 ---
 
@@ -238,7 +239,7 @@ Use **CSS transitions** for interactive state changes (hover, focus, active) so 
 
 ### Scale on press (spring bounce)
 
-Every interactive button shrinks to `transform: scale(0.94)` on `:active` with a fast 100ms ease-in, then bounces back on release with a spring overshoot easing (`300ms cubic-bezier(0.34, 1.56, 0.64, 1)`). This creates a satisfying press-and-bounce feel. Applied universally to `btn-primary`, `btn-brand`, `btn-global`, `btn-demo`, and `tw-translate`.
+Every interactive button shrinks to `transform: scale(0.95)` on `:active` with a spring overshoot easing on release (`200ms cubic-bezier(0.34, 1.56, 0.64, 1)`). This creates a satisfying press-and-bounce feel. Applied universally to `btn-primary`, `btn-brand`, `btn-global`, `btn-demo`, and `tw-translate`.
 
 ### `will-change`
 
@@ -328,7 +329,7 @@ These ride on top of every component, drawn from the [make-interfaces-feel-bette
 | 9 | **Tabular numbers** | Any numeric counter uses `font-variant-numeric: tabular-nums`. The "247 words" counter and stat numbers (`bcell-stat`) already do. |
 | 10 | **Text wrapping** | All headings get `text-wrap: balance`. All body text gets `text-wrap: pretty`. Defined in the type scale tokens. |
 | 11 | **Image outlines** | Once real photography lands in locale cards, add `outline: 1px solid rgba(0,0,0,0.1)` — pure black at low opacity. Never tinted (slate, zinc, etc.) — those pick up surface color and read as dirt. |
-| 12 | **Scale on press** | All buttons `transform: scale(0.96)` on `:active`. Always 0.96, never lower. |
+| 12 | **Scale on press** | All buttons `transform: scale(0.95)` on `:active` with spring-bounce release (`200ms cubic-bezier(0.34, 1.56, 0.64, 1)`). |
 | 13 | **Skip animation on page-load** for already-visible content | When framer-motion arrives, use `initial={false}` on `AnimatePresence` for default-state elements. Today the page has no `AnimatePresence` so this is documentation-only. |
 | 14 | **Never `transition: all`** | Always specify properties: `transition: background 120ms var(--ease), transform 120ms var(--ease)`. Confirmed in code review. |
 | 15 | **Sparse `will-change`** | Only on `.bcell`, `.card`, `.locale-card` for `transform`. Never `will-change: all`. |
@@ -340,31 +341,28 @@ All non-body Mallory uses `line-height: 1`. See §2. This is the rule that keeps
 
 ---
 
-## 8. Font file requirements
+## 8. Font file inventory
 
-**Files needed in `public/fonts/`:**
+**All fonts in `public/fonts/`:**
 
-✅ Already present:
-- `SeasonMix-Regular.ttf`
-- `SeasonMix-Medium.ttf`
+| File | Family | Weight/Axis | Status |
+| --- | --- | --- | --- |
+| `season-mix/SeasonCollectionVF.woff2` | Season Collection VF | wght 300–900, SERF 0–100, slnt -11–0 | ✅ Active |
+| `mallory-mp-compact/Mallory-MP-Compact-Book.ttf` | Mallory MP Compact | 400 | ✅ Active |
+| `mallory-mp-compact/Mallory-MP-Compact-Bold.ttf` | Mallory MP Compact | 700 | ✅ Active |
+| `season-mix/SeasonMix-Regular.ttf` | Season Mix (static) | 400 | 🗄️ Archived (superseded by VF) |
+| `season-mix/SeasonMix-Medium.ttf` | Season Mix (static) | 500 | 🗄️ Archived (superseded by VF) |
+| `mallory-mp/Mallory-MP-Book.ttf` | Mallory MP (non-compact) | 400 | 🚫 Not loaded |
+| `mallory-mp/Mallory-MP-Bold.ttf` | Mallory MP (non-compact) | 700 | 🚫 Not loaded |
 
-❌ Missing — please add:
-- `Mallory-Regular.ttf` (weight 400)
-- `Mallory-Bold.ttf` (weight 700)
-- `Mallory-Compact-Regular.ttf` (weight 400)
-- `Mallory-Compact-Bold.ttf` (weight 700)
-
-🚫 Removed:
-- Mallory Narrow files are no longer registered. Files can stay on disk for reference but are not loaded.
-
-When the four missing files are added, register them in `app/layout.tsx` via `next/font/local` and the `--ff-sans` and `--ff-sans-compact` variables will pick them up automatically.
+**Forbidden families:** Mallory Narrow, Mallory Regular (non-MP), Mallory MP (non-compact). These must never be referenced in CSS or layout.
 
 ---
 
 ## 9. Update protocol
 
 Any change to a value in this codebase that has a counterpart here:
-1. Edit `STYLEGUIDE.md` first (this file).
+1. Edit `styleguide.md` first (this file).
 2. Edit `app/globals.css` to match.
 3. Verify in browser preview.
 

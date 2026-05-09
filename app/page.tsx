@@ -239,7 +239,7 @@ export default function Home() {
             </svg>
             <h3 className="t-h4">Reach millions</h3>
             <p className="t-body-sm">
-              Global distribution puts your work in front of new readers everywhere.
+              Global distribution puts your work in front of new audience everywhere.
             </p>
           </div>
           <div className="story-cta-cell">
