@@ -1,7 +1,6 @@
 import { HeroAdapter, LocaleCascade } from '@/components/AdaptationFlow';
 import BentoGraphic from '@/components/BentoGraphic';
 import InteractiveGlobe from '@/components/InteractiveGlobe';
-import ThumbnailGrid from '@/components/ThumbnailGrid';
 import BentoHeader from '@/components/BentoHeader';
 import StoryCTAHeader from '@/components/StoryCTAHeader';
 import RoughUnderline from '@/components/RoughUnderline';
@@ -159,12 +158,12 @@ export default function Home() {
         <div className="proof-grid">
           <div className="proof-card proof-card-hero">
             <div className="proof-hero-left">
-              <span className="proof-hero-number">50<span className="proof-hero-pct">% higher</span></span>
+              <span className="proof-hero-number"><CountUp end={50} /><span className="proof-hero-pct">% higher</span></span>
               <span className="proof-hero-label">Retention of adapted stories over translated ones.</span>
             </div>
             <div className="proof-hero-right">
               <h3 className="t-h4">Adaptation performs significantly better than translation</h3>
-              <p className="t-body-sm">Translated stories preserve words. Adapted stories preserve experience. Atlas rebuilds the entire cultural fabric so readers never sense a foreign origin. The result: significantly higher engagement, longer listen times, and growing revenue without cannibalizing original content.</p>
+              <p className="t-body-sm">Atlas rebuilds the cultural fabric so stories feel native. Higher engagement, longer listen times, growing revenue.</p>
               <ul className="proof-hero-stats">
                 <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>600+</strong> AI-adapted shows across drama, romance, crime, fantasy</li>
                 <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>8</strong> language markets live including US, UK, Europe, LATAM, India</li>
@@ -201,58 +200,93 @@ export default function Home() {
       <section id="writers" className="story-cta">
         <StoryCTAHeader />
 
-        <ThumbnailGrid />
-
-        <div className="story-cta-grid">
-          <div className="story-cta-cell">
-            <svg className="story-cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-            </svg>
-            <h3 className="t-h4">Write freely</h3>
-            <p className="t-body-sm">
-              Just write. Our AI editor handles the rest.
-            </p>
+        <div className="show-grid">
+          <div className="show-card">
+            <img src="/thumbnails/thumb-01.jpg" alt="" className="show-card-thumb" />
+            <div className="show-card-info">
+              <h3 className="t-h4">A Deal With The Duke</h3>
+              <span className="show-card-sub">Adapted from English to 3 locales</span>
+              <p className="t-body-sm">A regency romance that became a cultural phenomenon. 562M plays and $28M earned across all locales.</p>
+            </div>
           </div>
-          <div className="story-cta-cell">
-            <svg className="story-cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-            </svg>
-            <h3 className="t-h4">Go global instantly</h3>
-            <p className="t-body-sm">
-              One tap. Atlas adapts your story for dozens of locales.
-            </p>
+          <div className="show-card show-card-adaptations">
+            <div className="show-adapt-thumb">
+              <img src="/thumbnails/thumb-01.jpg" alt="" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-de" />German</span>
+            </div>
+            <div className="show-adapt-thumb">
+              <img src="/thumbnails/thumb-01.jpg" alt="" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-fr" />French</span>
+            </div>
+            <div className="show-adapt-thumb">
+              <img src="/thumbnails/thumb-01.jpg" alt="" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-es" />Spanish</span>
+            </div>
           </div>
-          <div className="story-cta-cell">
-            <svg className="story-cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
-            <h3 className="t-h4">Reach millions</h3>
-            <p className="t-body-sm">
-              Global distribution puts your work in front of new audience everywhere.
-            </p>
+          <div className="show-card">
+            <img src="/thumbnails/thumb-03.jpg" alt="" className="show-card-thumb" />
+            <div className="show-card-info">
+              <h3 className="t-h4">Badge of Vengeance</h3>
+              <span className="show-card-sub">Adapted from English to 2 locales</span>
+              <p className="t-body-sm">A crime thriller spanning 200+ episodes with region-specific plot adaptations. 340M plays and $19M earned.</p>
+            </div>
           </div>
-          <div className="story-cta-cell">
-            <svg className="story-cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-            </svg>
-            <h3 className="t-h4">Earn from day one</h3>
-            <p className="t-body-sm">
-              Every locale is a new revenue stream. Earn automatically.
-            </p>
+          <div className="show-card show-card-adaptations">
+            <div className="show-adapt-thumb">
+              <img src="/thumbnails/thumb-03.jpg" alt="" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-in" />Hindi</span>
+            </div>
+            <div className="show-adapt-thumb">
+              <img src="/thumbnails/thumb-03.jpg" alt="" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-br" />Portuguese</span>
+            </div>
+          </div>
+          <div className="show-card">
+            <img src="/thumbnails/thumb-14.jpg" alt="" className="show-card-thumb" />
+            <div className="show-card-info">
+              <h3 className="t-h4">The House That Lived</h3>
+              <span className="show-card-sub">Adapted from English to 3 locales</span>
+              <p className="t-body-sm">Fantasy horror with mythology rebuilt from scratch for each locale. 410M plays and $22M earned globally.</p>
+            </div>
+          </div>
+          <div className="show-card show-card-adaptations">
+            <div className="show-adapt-thumb">
+              <img src="/thumbnails/thumb-14.jpg" alt="" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-jp" />Japanese</span>
+            </div>
+            <div className="show-adapt-thumb">
+              <img src="/thumbnails/thumb-14.jpg" alt="" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-ke" />Swahili</span>
+            </div>
+            <div className="show-adapt-thumb">
+              <img src="/thumbnails/thumb-14.jpg" alt="" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-it" />Italian</span>
+            </div>
+          </div>
+          <div className="show-card">
+            <img src="/thumbnails/thumb-18.jpg" alt="" className="show-card-thumb" />
+            <div className="show-card-info">
+              <h3 className="t-h4">Beneath a Broken Sky</h3>
+              <span className="show-card-sub">Adapted from English to 2 locales</span>
+              <p className="t-body-sm">Epic fantasy spanning 300+ chapters with world-building adapted for local audiences. 470M plays and $25M earned.</p>
+            </div>
+          </div>
+          <div className="show-card show-card-adaptations">
+            <div className="show-adapt-thumb">
+              <img src="/thumbnails/thumb-18.jpg" alt="" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-de" />German</span>
+            </div>
+            <div className="show-adapt-thumb">
+              <img src="/thumbnails/thumb-18.jpg" alt="" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-fr" />French</span>
+            </div>
           </div>
         </div>
 
-        <button type="button" className="btn-brand story-cta-btn">Start writing</button>
+        <button type="button" className="btn-brand story-cta-btn">Try your story</button>
 
         <div className="social-proof">
-          <div className="avatar-stack">
-            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" />
-            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" />
-            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" />
-            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="" />
-            <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="" />
-          </div>
-          <p className="social-proof-text">Join 50,000+ happy writers on Pocket</p>
+          <p className="social-proof-text">Atlas is free to try.</p>
         </div>
       </section>
 
