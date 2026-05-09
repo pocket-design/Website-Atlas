@@ -288,24 +288,35 @@ body {
 .btn-brand:disabled { opacity: 0.5; cursor: default; }
 
 /* ── NAV ─────────────────────────────────────────────────────
-   Transparent and non-sticky. The painted hero atmosphere
-   shows through behind it. The nav scrolls away with the
-   page — no sticky, no scroll-driven background fade. */
+   Floating pill-shaped nav pinned to the top. Glassmorphic
+   backdrop with subtle border and shadow for depth. */
 nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--sp-2-5) var(--sp-8);
-  position: relative;
-  z-index: 2;
-  background: transparent;
+  gap: var(--sp-4);
+  position: fixed;
+  top: var(--sp-3);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(calc(100% - var(--sp-8) * 2), var(--container));
+  padding: 10px 10px 10px 20px;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px) saturate(1.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--r-pill);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 16px rgba(0, 0, 0, 0.06);
 }
 .nav-logo {
   display: inline-flex;
   align-items: center;
   height: 32px;
 }
-.nav-logo img { height: 28px; width: auto; display: block; }
+.nav-logo img { height: 24px; width: auto; display: block; }
 
 .footer-logo {
   display: inline-flex;
@@ -315,29 +326,39 @@ nav {
 
 .nav-links {
   display: flex;
-  gap: var(--sp-6);
+  gap: var(--sp-1);
   list-style: none;
 }
 .nav-links a {
   display: inline-flex;
   align-items: center;
-  height: 40px;
-  padding: 0 4px;
+  height: 34px;
+  padding: 0 12px;
   color: var(--text-secondary);
   text-decoration: none;
   font-family: var(--ff-sans);
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 500;
   line-height: 1;
-  transition: color 120ms var(--ease);
+  border-radius: var(--r-pill);
+  transition: color 120ms var(--ease), background-color 120ms var(--ease);
 }
-.nav-links a:hover { color: var(--text-primary); }
+.nav-links a:hover {
+  color: var(--text-primary);
+  background-color: rgba(0, 0, 0, 0.04);
+}
+nav .btn-primary {
+  min-height: 34px;
+  padding: 8px 16px;
+  font-size: 12px;
+}
 
 /* ── FOLD 1 — HERO ───────────────────────────────────────── */
 .hero {
-  /* Zero bottom padding so the cascade fold below starts
-     immediately at the story box's bottom edge — branch lines
-     anchor cleanly to the box rather than floating in space. */
-  padding: var(--sp-8) var(--sp-8) 0 var(--sp-8);
+  /* Extra top padding creates breathing room for the floating
+     nav pill to sit in. Zero bottom so the cascade fold starts
+     at the story box's bottom edge. */
+  padding: calc(var(--sp-8) + 150px) var(--sp-8) 0 var(--sp-8);
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -444,17 +465,14 @@ footer { background: var(--surface-page); }
 }
 
 .hero-eyebrow {
-  margin: 0 auto var(--sp-2-5);
-  /* Wordmark-style brand label — Mallory regular, all caps,
-     wide letter-spacing. The product name announcing itself.
-     UI tier so trimmed line-height. */
-  font-family: var(--ff-sans);
+  margin: 0 auto var(--sp-1);
+  font-family: var(--ff-display);
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--text-primary);
+  transform: translateY(-16px);
 }
 
 /* Calligraphic printer's ornament — a horizontal scrollwork
@@ -463,10 +481,9 @@ footer { background: var(--surface-page); }
    chapter-break dingbats. The whole ornament lives inside a
    single SVG so the proportions stay locked across viewports. */
 .hero-divider {
-  display: flex;
-  justify-content: center;
-  margin: var(--sp-1) auto var(--sp-1-5);
-  color: var(--scarlet);
+  height: 0;
+  margin: 0;
+  overflow: hidden;
 }
 .hero-divider-ornament {
   width: 240px;
@@ -1028,24 +1045,85 @@ footer { background: var(--surface-page); }
   transition: color 0.1s var(--ease);
 }
 
-/* Adapted-phrase highlights — soft scarlet wash on the words
-   the engine changed. Behavior is EXCLUSIVE: only the bucket
-   currently spotlighted by the tooltip is lit; everything
-   else returns to no-bg. As buckets advance, prior highlights
-   fade back out so the focus stays on what the tooltip is
-   actually pointing to. */
+/* Plain text recedes during tooltip cycling so highlights dominate */
+.sheen-word.text-dimmed {
+  color: var(--ink-tint-5);
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Adapted-phrase highlights — color-coded per category bucket.
+   Two tiers: once sheen completes, ALL highlights show a subtle
+   persistent background (.is-highlighted). When the tooltip
+   focuses a specific bucket, that bucket gains extra emphasis
+   (.is-active) while all others remain at their persistent level. */
 .locale-highlight {
-  background-color: rgba(245, 29, 0, 0);
+  background-color: transparent;
   border-radius: 2px;
   padding: 0 2px;
   margin: 0 -2px;
-  transition: background-color 0.55s var(--ease), color 0.3s var(--ease);
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s var(--ease);
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
-.locale-highlight.is-active {
-  background-color: rgba(245, 29, 0, 0.22);
+
+/* Staggered entrance — each bucket fades in sequentially with
+   an overshoot: peaks at high saturation then settles softer. */
+.locale-highlight.is-highlighted {
+  animation: hlReveal 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
+.locale-highlight.is-highlighted[data-bucket="0"] { animation-delay: 0s; }
+.locale-highlight.is-highlighted[data-bucket="1"] { animation-delay: 0.15s; }
+.locale-highlight.is-highlighted[data-bucket="2"] { animation-delay: 0.3s; }
+.locale-highlight.is-highlighted[data-bucket="3"] { animation-delay: 0.45s; }
+.locale-highlight.is-highlighted[data-bucket="4"] { animation-delay: 0.6s; }
+
+@keyframes hlReveal {
+  0%   { background-color: var(--hl-color-peak-zero); }
+  35%  { background-color: var(--hl-color-peak); }
+  100% { background-color: var(--hl-color-rest); }
+}
+
+/* Per-bucket color tokens (peak = vivid entrance, rest = persistent) */
+.locale-highlight[data-bucket="0"] {
+  --hl-color-peak-zero: rgba(59, 130, 246, 0);
+  --hl-color-peak: rgba(59, 130, 246, 0.32);
+  --hl-color-rest: rgba(59, 130, 246, 0.16);
+}
+.locale-highlight[data-bucket="1"] {
+  --hl-color-peak-zero: rgba(16, 185, 129, 0);
+  --hl-color-peak: rgba(16, 185, 129, 0.32);
+  --hl-color-rest: rgba(16, 185, 129, 0.16);
+}
+.locale-highlight[data-bucket="2"] {
+  --hl-color-peak-zero: rgba(245, 158, 11, 0);
+  --hl-color-peak: rgba(245, 158, 11, 0.32);
+  --hl-color-rest: rgba(245, 158, 11, 0.16);
+}
+.locale-highlight[data-bucket="3"] {
+  --hl-color-peak-zero: rgba(139, 92, 246, 0);
+  --hl-color-peak: rgba(139, 92, 246, 0.32);
+  --hl-color-rest: rgba(139, 92, 246, 0.16);
+}
+.locale-highlight[data-bucket="4"] {
+  --hl-color-peak-zero: rgba(245, 29, 0, 0);
+  --hl-color-peak: rgba(245, 29, 0, 0.32);
+  --hl-color-rest: rgba(245, 29, 0, 0.16);
+}
+
+/* Emphasis tier — tooltip focus brings bucket to full intensity.
+   animation: none prevents the initial overshoot from replaying during cycling. */
+.locale-highlight.is-active[data-bucket="0"] { background-color: rgba(59, 130, 246, 0.30); animation: none; }
+.locale-highlight.is-active[data-bucket="1"] { background-color: rgba(16, 185, 129, 0.30); animation: none; }
+.locale-highlight.is-active[data-bucket="2"] { background-color: rgba(245, 158, 11, 0.30); animation: none; }
+.locale-highlight.is-active[data-bucket="3"] { background-color: rgba(139, 92, 246, 0.30); animation: none; }
+.locale-highlight.is-active[data-bucket="4"] { background-color: rgba(245, 29, 0, 0.30); animation: none; }
+
+/* Dimmed tier — non-focused buckets recede but stay subtly visible */
+.locale-highlight.is-dimmed[data-bucket="0"] { background-color: rgba(59, 130, 246, 0.06); animation: none; }
+.locale-highlight.is-dimmed[data-bucket="1"] { background-color: rgba(16, 185, 129, 0.06); animation: none; }
+.locale-highlight.is-dimmed[data-bucket="2"] { background-color: rgba(245, 158, 11, 0.06); animation: none; }
+.locale-highlight.is-dimmed[data-bucket="3"] { background-color: rgba(139, 92, 246, 0.06); animation: none; }
+.locale-highlight.is-dimmed[data-bucket="4"] { background-color: rgba(245, 29, 0, 0.06); animation: none; }
 
 /* Cascade strip wrapper — establishes positioning context so
    the tooltip can be anchored exactly to the highlighted text
@@ -1067,7 +1145,7 @@ footer { background: var(--surface-page); }
   z-index: 5;
   padding: 9px 14px;
   background: var(--ink);
-  color: var(--vellum);
+  color: #fff;
   border-radius: var(--r-pill);
   font-family: var(--ff-sans);
   font-size: 11px;
@@ -1080,9 +1158,26 @@ footer { background: var(--surface-page); }
     0 1px 2px rgba(0, 0, 0, 0.06),
     0 6px 18px rgba(0, 0, 0, 0.14);
   opacity: 0;
-  transition: opacity 0.55s var(--ease);
 }
-.cascade-tooltip.is-visible { opacity: 1; }
+.cascade-tooltip.is-visible {
+  animation: tooltipLife 3s ease-in-out forwards;
+}
+
+@keyframes tooltipLife {
+  0%   { opacity: 0; transform: translate(-50%, calc(-100% - 14px)); }
+  12%  { opacity: 1; transform: translate(-50%, calc(-100% - 18px)); }
+  50%  { opacity: 1; transform: translate(-50%, calc(-100% - 14px)); }
+  85%  { opacity: 1; transform: translate(-50%, calc(-100% - 18px)); }
+  100% { opacity: 0; transform: translate(-50%, calc(-100% - 14px)); }
+}
+
+/* Category-colored tooltip backgrounds */
+.cascade-tooltip[data-bucket="0"] { background: rgb(37, 99, 235); }
+.cascade-tooltip[data-bucket="1"] { background: rgb(5, 150, 105); }
+.cascade-tooltip[data-bucket="2"] { background: rgb(217, 119, 6); }
+.cascade-tooltip[data-bucket="3"] { background: rgb(109, 40, 217); }
+.cascade-tooltip[data-bucket="4"] { background: rgb(220, 38, 38); }
+
 .cascade-tooltip::after {
   content: '';
   position: absolute;
@@ -1093,8 +1188,13 @@ footer { background: var(--surface-page); }
   height: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-top: 6px solid var(--ink);
+  border-top: 6px solid currentColor;
 }
+.cascade-tooltip[data-bucket="0"]::after { border-top-color: rgb(37, 99, 235); }
+.cascade-tooltip[data-bucket="1"]::after { border-top-color: rgb(5, 150, 105); }
+.cascade-tooltip[data-bucket="2"]::after { border-top-color: rgb(217, 119, 6); }
+.cascade-tooltip[data-bucket="3"]::after { border-top-color: rgb(109, 40, 217); }
+.cascade-tooltip[data-bucket="4"]::after { border-top-color: rgb(220, 38, 38); }
 
 /* ── FOLD 2 — BENTO ──────────────────────────────────────── */
 .bento {

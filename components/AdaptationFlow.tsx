@@ -324,9 +324,9 @@ export function HeroAdapter() {
 // repeat). Index is the locale's position in LOCALES.
 const BUCKET_OWNERS = [0, 1, 2, 3, 0];
 
-// Per-bucket timing — total cycle is 4s per category
-const BUCKET_ACTIVE_MS = 3000; // tooltip + highlights visible
-const BUCKET_PAUSE_MS  = 1000; // beat between buckets — tooltip fades out
+// Per-bucket timing — synced to the tooltipLife animation (3s)
+const BUCKET_ACTIVE_MS = 3000; // matches animation duration
+const BUCKET_PAUSE_MS  = 300;  // brief gap before next bucket starts
 
 /**
  * Splits a locale's segments into individual word tokens.
@@ -351,8 +351,8 @@ function tokenize(segments: Segment[]): WordToken[] {
 }
 
 const SHEEN_TOTAL_MS = 2400;
-const SHEEN_STEPS = 80;
-const SHEEN_SETTLE_PAUSE_MS = 400;
+const SHEEN_STEPS = 120;
+const SHEEN_SETTLE_PAUSE_MS = 3000;
 
 export function LocaleCascade() {
   const stripRef = useRef<HTMLDivElement>(null);
@@ -442,11 +442,12 @@ export function LocaleCascade() {
     const startSheen = () => {
       let step = 0;
       const interval = SHEEN_TOTAL_MS / SHEEN_STEPS;
-      const easeIn = (t: number) => t * t * t;
+      const easeInOut = (t: number) =>
+        t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
       const tick = () => {
         if (cancelled) return;
         const linear = step / SHEEN_STEPS;
-        setProgress(easeIn(linear));
+        setProgress(easeInOut(linear));
         step++;
         if (step <= SHEEN_STEPS) {
           timeouts.push(setTimeout(tick, interval));
@@ -487,21 +488,21 @@ export function LocaleCascade() {
     };
   }, []);
 
-  const showTooltip = currentBucket >= 0 && currentBucket < BUCKETS.length && tooltipPos;
+  const hasTooltip = currentBucket >= 0 && currentBucket < BUCKETS.length && tooltipPos;
 
   return (
     <div className="adapt-flow">
       <CascadeBranches />
 
       <div ref={stripRef} className="cascade-strip">
-        {showTooltip && (
-          <div
-            className={'cascade-tooltip' + (isActive ? ' is-visible' : '')}
-            style={{ left: tooltipPos!.x, top: tooltipPos!.y }}
-          >
-            {BUCKETS[currentBucket]}
-          </div>
-        )}
+        <div
+          className={'cascade-tooltip' + (hasTooltip && isActive ? ' is-visible' : '')}
+          data-bucket={currentBucket >= 0 ? currentBucket : undefined}
+          style={tooltipPos ? { left: tooltipPos.x, top: tooltipPos.y } : { left: 0, top: 0 }}
+          aria-hidden={!hasTooltip}
+        >
+          {currentBucket >= 0 && currentBucket < BUCKETS.length ? BUCKETS[currentBucket] : ''}
+        </div>
 
         <div ref={gridRef} className="cascade-grid">
           {visibleLocales.map((l, i) => (
@@ -592,11 +593,12 @@ function LocaleCard({
     let cancelled = false;
     const targetKey = l.key;
     const interval = SHEEN_TOTAL_MS / SHEEN_STEPS;
-    const easeIn = (t: number) => t * t * t;
+    const easeInOut = (t: number) =>
+      t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
     const tick = () => {
       if (cancelled) return;
       const linear = step / SHEEN_STEPS;
-      setLocalProgress(easeIn(linear));
+      setLocalProgress(easeInOut(linear));
       step++;
       if (step <= SHEEN_STEPS) {
         setTimeout(tick, interval);
@@ -718,13 +720,17 @@ function LocaleCard({
           const revealed = effectiveSheenDone || myIdx <= revealedCount;
           const isCurrent = !effectiveSheenDone && myIdx === revealedCount;
 
+          const isHighlight = token.bucket !== undefined;
+          const cyclingStarted = currentBucket >= 0 && effectiveSheenDone;
+          const isFocused = isActive && currentBucket === token.bucket;
+          const isDimmed = cyclingStarted && !isFocused;
           const cls =
-            (token.bucket !== undefined
+            (isHighlight
               ? 'locale-highlight' +
-                (effectiveSheenDone && isActive && currentBucket === token.bucket
-                  ? ' is-active'
-                  : '')
-              : 'sheen-word') +
+                (effectiveSheenDone ? ' is-highlighted' : '') +
+                (cyclingStarted && isFocused ? ' is-active' : '') +
+                (cyclingStarted && isDimmed ? ' is-dimmed' : '')
+              : 'sheen-word' + (cyclingStarted ? ' text-dimmed' : '')) +
             (revealed ? ' is-revealed' : '') +
             (isCurrent ? ' is-sheen-current' : '');
 

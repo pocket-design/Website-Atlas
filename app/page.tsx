@@ -48,7 +48,7 @@ export default function Home() {
 
       {/* FOLD 1 — HERO */}
       <section className="hero">
-        <div className="hero-eyebrow">ATLAS BY POCKET</div>
+        <div className="hero-eyebrow">Meet the all-new Atlas</div>
         <div className="hero-divider" aria-hidden="true">
           <svg
             className="hero-divider-ornament"
