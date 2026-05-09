@@ -31,16 +31,16 @@ export default function Home() {
         </a>
         <ul className="nav-links">
           <li>
-            <a href="#">Features</a>
+            <a href="#locale-cascade">Locales</a>
           </li>
           <li>
-            <a href="#">Stories</a>
+            <a href="#how-it-works">How it works</a>
           </li>
           <li>
-            <a href="#">Pricing</a>
+            <a href="#proof">Proof</a>
           </li>
           <li>
-            <a href="#">Docs</a>
+            <a href="#writers">Writers</a>
           </li>
         </ul>
         <button type="button" className="btn-primary">
@@ -94,7 +94,7 @@ export default function Home() {
       </section>
 
       {/* FOLD 2 — BENTO */}
-      <section className="bento">
+      <section id="how-it-works" className="bento">
         <div className="section-header">
           <h2 className="t-h2">You write the story once.<br />Atlas adapts it to the world.</h2>
         </div>
@@ -145,7 +145,7 @@ export default function Home() {
       </section>
 
       {/* FOLD 3 — BATTLE-TESTED */}
-      <section className="proof-section">
+      <section id="proof" className="proof-section">
         <div className="section-header">
           <h2 className="t-h2">Battle-tested at the global scale.</h2>
         </div>
@@ -176,7 +176,7 @@ export default function Home() {
       </section>
 
       {/* FOLD 4 — HAVE A STORY */}
-      <section className="story-cta">
+      <section id="writers" className="story-cta">
         <h2 className="t-h2">Have a story?<br />Write it on Pocket.</h2>
 
         <ThumbnailGrid />

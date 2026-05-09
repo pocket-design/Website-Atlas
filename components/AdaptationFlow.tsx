@@ -339,7 +339,7 @@ export function HeroAdapter() {
               document.getElementById('locale-cascade')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
           >
-            Go global
+            Make my story global
           </button>
         </div>
       </div>
@@ -512,6 +512,10 @@ export function LocaleCascade() {
       ([entry]) => {
         if (!entry.isIntersecting) return;
         io.disconnect();
+        // Unblur images immediately on scroll-in
+        grid.querySelectorAll('.locale-card-image').forEach((el) => {
+          el.classList.add('is-revealed');
+        });
         timeouts.push(setTimeout(() => {
           if (!cancelled) startSheen();
         }, 1000));
@@ -741,7 +745,7 @@ function LocaleCard({
         )}
       </div>
 
-      <div className="locale-card-image" aria-hidden="true">
+      <div className={'locale-card-image' + (globalProgress > -1 ? ' is-revealed' : '')} aria-hidden="true">
         <Image
           src={l.image}
           alt={l.imageLabel}

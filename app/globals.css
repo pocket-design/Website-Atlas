@@ -1060,6 +1060,13 @@ section.cards-section { background: var(--surface-page); }
 }
 .locale-card-image img {
   border-radius: var(--r-card-inner);
+  filter: blur(12px);
+  transform: scale(1.05);
+  transition: filter 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.locale-card-image.is-revealed img {
+  filter: blur(0);
+  transform: scale(1);
 }
 
 .locale-card-text {
