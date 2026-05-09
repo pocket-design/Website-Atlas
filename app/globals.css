@@ -216,7 +216,7 @@ body {
 .t-label {
   font-family: var(--ff-sans);
   font-weight: 700;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1;
   letter-spacing: 0.005em;
 }
@@ -258,7 +258,7 @@ body {
   padding: 10px var(--sp-2-5);
   border-radius: var(--r-pill);
   font-family: var(--ff-sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1;
   cursor: pointer;
@@ -281,7 +281,7 @@ body {
   padding: 10px var(--sp-3);
   border-radius: var(--r-pill);
   font-family: var(--ff-sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.005em;
@@ -360,7 +360,7 @@ body {
 .site-nav .btn-primary {
   min-height: 34px;
   padding: 8px 16px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 /* ── FOLD 1 — HERO ───────────────────────────────────────── */
@@ -716,7 +716,7 @@ section.cards-section { background: var(--surface-page); }
   padding: 10px var(--sp-2-5);
   border-radius: 8px;
   font-family: var(--ff-sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.01em;
   cursor: pointer;
@@ -833,7 +833,7 @@ section.cards-section { background: var(--surface-page); }
   padding: 10px var(--sp-2-5);
   border-radius: var(--r-pill);
   font-family: var(--ff-sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.005em;
@@ -858,7 +858,7 @@ section.cards-section { background: var(--surface-page); }
   padding: 10px var(--sp-3);
   border-radius: var(--r-pill);
   font-family: var(--ff-sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.005em;
@@ -1510,7 +1510,7 @@ section.cards-section { background: var(--surface-page); }
   padding: 10px var(--sp-3);
   border-radius: var(--r-pill);
   font-family: var(--ff-sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.005em;

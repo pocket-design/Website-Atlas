@@ -108,7 +108,7 @@ Buttons, eyebrows, nav, labels — anywhere a label sits in a fixed-height conta
 | Token | Size | Line-height | Letter-spacing | Weight | Use |
 | --- | --- | --- | --- | --- | --- |
 | `t-label-lg` | `14px` | `1` | `0.005em` | 700 | Larger button text, prominent CTAs. |
-| `t-label` | `13px` | `1` | `0.005em` | 700 | Default button, locale-card eyebrow strip, secondary CTAs. |
+| `t-label` | `14px` | `1` | `0.005em` | 700 | Default button, locale-card eyebrow strip, secondary CTAs. Same size as body text (`t-body-sm`). |
 | `t-nav` | `14px` | `1` | `0` | 400 | Nav links. Regular weight (400) — not bold — so they read as navigational, not buttons. |
 | `t-eyebrow` | `12px` | `1` | `0.08em` | 700 | Section eyebrows, locale-card "GERMANY" labels. **ALL CAPS** (set via `text-transform`). |
 | `t-caption` | `11px` | `1.4` | `0.02em` | 400 | Footer copy, footnotes. The only UI-tier token that doesn't trim, because it appears in flowing footer copy. |
@@ -255,7 +255,7 @@ Globe rotation honors `prefers-reduced-motion`. New animations should too — se
 ### 6.1 Buttons
 
 **Primary scarlet pill** (`btn-global`, `btn-brand`, etc.):
-- Family `--ff-sans`, weight 700, size 13px, line-height 1 (trimmed), letter-spacing 0.005em
+- Family `--ff-sans`, weight 700, size 14px, line-height 1 (trimmed), letter-spacing 0.005em
 - Background `--scarlet`, color `--vellum`, no border
 - Padding `10px var(--sp-3)`, border-radius `var(--r-pill)`, min-height **40px**
 - Hover → `--scarlet-shade-1`, active → `--scarlet-shade-2` + `scale(0.96)`
