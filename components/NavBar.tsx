@@ -12,9 +12,6 @@ export default function NavBar() {
           <a href="#locale-cascade">How it works</a>
         </li>
         <li>
-          <a href="#try-it">Demo</a>
-        </li>
-        <li>
           <a href="#how-it-works">Features</a>
         </li>
         <li>
@@ -24,15 +21,9 @@ export default function NavBar() {
           <a href="#writers">Writers</a>
         </li>
       </ul>
-      <button
-        type="button"
-        className="btn-primary"
-        onClick={() => {
-          document.getElementById('try-it')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }}
-      >
+      <a href="/try" className="btn-primary">
         Try it now
-      </button>
+      </a>
     </nav>
   );
 }

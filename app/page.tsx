@@ -89,13 +89,14 @@ export default function Home() {
         <LocaleCascade />
       </section>
 
-      {/* FOLD — TRY IT */}
-      <section id="try-it" className="try-it">
-        <div className="section-header">
+      {/* FOLD — TRY IT (hidden for now, will become /try page) */}
+      {/* <section id="try-it" className="try-it">
+        <div className="section-header tryit-header">
           <h2 className="t-h3">Write it <RoughUnderline>once</RoughUnderline>,<br />adapt it for the world.</h2>
+          <p className="tryit-desc">Paste your prose, pick a locale. Atlas adapts it in seconds.<br />Battle-tested over millions of words.</p>
         </div>
         <TryItSection />
-      </section>
+      </section> */}
 
       {/* FOLD — BENTO */}
       <section id="how-it-works" className="bento">
@@ -113,9 +114,9 @@ export default function Home() {
           </div>
           <div className="bcell span-2">
             <BentoGraphic scene="knowledge" />
-            <h3 className="t-h4">Knowledge graph memory</h3>
+            <h3 className="t-h4">Supports insanely long prose</h3>
             <p className="t-body-sm">
-              Every character and relationship tracked across hundreds of chapters. <strong>Chapter 40 stays consistent with chapter 1.</strong>
+              Thousands of words, hundreds of episodes, entire seasons. <strong>Atlas stays perfectly consistent from first page to last.</strong>
             </p>
           </div>
           <div className="bcell span-3">
@@ -156,6 +157,22 @@ export default function Home() {
         </div>
 
         <div className="proof-grid">
+          <div className="proof-card proof-card-hero">
+            <div className="proof-hero-left">
+              <span className="proof-hero-number">50<span className="proof-hero-pct">% higher</span></span>
+              <span className="proof-hero-label">Retention of adapted stories over translated ones.</span>
+            </div>
+            <div className="proof-hero-right">
+              <h3 className="t-h4">Adaptation performs significantly better than translation</h3>
+              <p className="t-body-sm">Translated stories preserve words. Adapted stories preserve experience. Atlas rebuilds the entire cultural fabric so readers never sense a foreign origin. The result: significantly higher engagement, longer listen times, and growing revenue without cannibalizing original content.</p>
+              <ul className="proof-hero-stats">
+                <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>600+</strong> AI-adapted shows across drama, romance, crime, fantasy</li>
+                <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>8</strong> language markets live including US, UK, Europe, LATAM, India</li>
+                <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>$20.5M+</strong> lifetime revenue from adapted content</li>
+                <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>36 shows in 4 months</strong> scaled for Germany alone after launch</li>
+              </ul>
+            </div>
+          </div>
           <div className="proof-card">
             <div className="proof-stat"><CountUp end={10000} suffix="+" /></div>
             <h3 className="t-h4">Stories adapted</h3>
@@ -284,7 +301,7 @@ export default function Home() {
 
         <div className="footer-bottom">
           <span>Pocket Entertainment Pvt Ltd.</span>
-          <span>&copy; 2026 All rights reserved</span>
+          <span>&copy; 2026 All rights reserved.</span>
         </div>
       </footer>
 

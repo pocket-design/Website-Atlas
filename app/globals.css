@@ -440,7 +440,7 @@ body {
 
 /* ── FOLD 2 — CASCADE ────────────────────────────────────── */
 .cascade {
-  padding: 0 var(--sp-8) var(--sp-6);
+  padding: 0 var(--sp-8) var(--sp-8);
   text-align: center;
   position: relative;
 }
@@ -966,6 +966,8 @@ section.cards-section { background: var(--surface-page); }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
+  max-width: 1200px;
+  margin: 0 auto;
   border: 1px solid var(--surface-divider);
   border-radius: var(--r-card);
   overflow: hidden;
@@ -1428,7 +1430,21 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── TRY IT SECTION ─────────────────────────────────────── */
 .try-it {
-  padding: var(--sp-12) var(--sp-8);
+  padding: var(--sp-8) var(--sp-8);
+}
+.tryit-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.tryit-desc {
+  max-width: 500px;
+  font-family: var(--ff-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-align: right;
+  margin: 0 0 var(--sp-1) 0;
 }
 .tryit-wrapper {
   max-width: var(--container);
@@ -1502,7 +1518,7 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── FOLD — BENTO ───────────────────────────────────────── */
 .bento {
-  padding: var(--sp-12) var(--sp-8);
+  padding: var(--sp-8) var(--sp-8);
 }
 
 .section-header {
@@ -1567,7 +1583,7 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── FOLD 3 — CARDS ──────────────────────────────────────── */
 .cards-section {
-  padding: var(--sp-12) var(--sp-8);
+  padding: var(--sp-8) var(--sp-8);
   background: var(--surface-alt);
   border-top: 1px solid var(--surface-divider);
   border-bottom: 1px solid var(--surface-divider);
@@ -1622,7 +1638,7 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── FOLD 3 — BATTLE-TESTED ───────────────────────────────── */
 .proof-section {
-  padding: var(--sp-12) var(--sp-8);
+  padding: var(--sp-8) var(--sp-8);
 }
 .proof-section .section-header {
   max-width: var(--container);
@@ -1649,10 +1665,77 @@ section.cards-section { background: var(--surface-page); }
   border-right: 1px solid var(--surface-divider);
 }
 .proof-card:last-child { border-right: none; }
+.proof-card-hero {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: start;
+  padding: 0;
+  border-right: none;
+  border-bottom: 1px solid var(--surface-divider);
+}
+.proof-hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--sp-5);
+}
+.proof-hero-right {
+  grid-column: 2 / -1;
+  padding: var(--sp-5);
+}
+.proof-hero-number {
+  font-family: var(--ff-display);
+  font-size: clamp(56px, 6vw, 72px);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--scarlet);
+  font-variation-settings: "SERF" 65, "slnt" 0;
+}
+.proof-hero-pct {
+  font-size: 0.5em;
+  vertical-align: baseline;
+}
+.proof-hero-label {
+  font-family: var(--ff-display);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--scarlet);
+  line-height: 1.3;
+  font-variation-settings: "SERF" 65, "slnt" 0;
+}
+.proof-hero-right h3 {
+  margin-bottom: var(--sp-1);
+}
+.proof-hero-stats {
+  list-style: none;
+  padding: 0;
+  margin: var(--sp-2) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.proof-hero-stats li {
+  font-family: var(--ff-sans);
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.proof-hero-stats li svg {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.proof-hero-stats strong {
+  color: var(--ink);
+  font-weight: 700;
+  margin-right: -2px;
+}
 .proof-stat {
   font-family: var(--ff-display);
   font-size: clamp(36px, 4vw, 48px);
   font-weight: 500;
+  font-variation-settings: "SERF" 65, "slnt" 0;
   line-height: 1;
   color: var(--scarlet);
   margin-bottom: var(--sp-2);
@@ -1666,7 +1749,7 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── FOLD 4 — HAVE A STORY ────────────────────────────────── */
 .story-cta {
-  padding: var(--sp-12) var(--sp-8);
+  padding: var(--sp-8) var(--sp-8);
   text-align: center;
 }
 .story-cta h2 {
@@ -1763,7 +1846,7 @@ section.cards-section { background: var(--surface-page); }
 
 /* ── FOLD 4 — FINAL CTA ──────────────────────────────────── */
 .final-cta {
-  padding: var(--sp-12) var(--sp-8);
+  padding: var(--sp-8) var(--sp-8);
   text-align: center;
   background: var(--surface-inverse);
 }
