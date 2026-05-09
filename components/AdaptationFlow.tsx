@@ -339,7 +339,7 @@ export function HeroAdapter() {
               document.getElementById('locale-cascade')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
           >
-            Make my story global
+            Adapt my story
           </button>
         </div>
       </div>

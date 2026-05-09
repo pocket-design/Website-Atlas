@@ -132,45 +132,46 @@ export default function Home() {
         </div>
 
         <div className="bento-grid">
-          <div className="bcell wide">
-            <BentoGraphic scene="network" />
-            <h3 className="t-h3">Adapts culture, not just words</h3>
+          <div className="bcell span-4">
+            <BentoGraphic scene="transpose" />
+            <h3 className="t-h3">Full cultural transposition, not translation</h3>
             <p className="t-body-sm">
-              Atlas doesn&apos;t translate. It transposes. Names, food, humor, places, and idioms
-              are reimagined for each locale so your story feels like it was written there.
+              Names become culturally native. A corner store becomes a Späti in Berlin, a konbini in Tokyo, a duka in Nairobi. Food, humor, family dynamics, and street-level details are rebuilt from scratch for each locale. The entire social fabric shifts so every scene feels like it was written by a local author. <strong>Readers never sense a foreign origin.</strong>
             </p>
           </div>
-          <div className="bcell">
-            <BentoGraphic scene="orbit" />
-            <h3 className="t-h3">Remembers everything</h3>
+          <div className="bcell span-2">
+            <BentoGraphic scene="knowledge" />
+            <h3 className="t-h3">Knowledge graph memory</h3>
             <p className="t-body-sm">
-              A knowledge graph tracks every character, place, and relationship across your entire
-              story. Chapter 40 stays consistent with chapter 1, automatically.
+              Every character, relationship, nickname, and pronoun is tracked across hundreds of chapters. <strong>Chapter 40 stays perfectly consistent with chapter 1.</strong>
             </p>
           </div>
-          <div className="bcell">
-            <BentoGraphic scene="wave" />
-            <h3 className="t-h3">Smart decisions, not blind swaps</h3>
+          <div className="bcell span-3">
+            <BentoGraphic scene="strategy" />
+            <h3 className="t-h3">Strategy-first architecture</h3>
             <p className="t-body-sm">
-              A three-tier triage decides what to keep authentic, what to find an analogy for,
-              and what to fully reimagine. Nothing feels forced.
+              Before changing a single name, Atlas generates a comprehensive cultural transposition strategy. Genre, tone, naming conventions, geographic mappings, institutional equivalents. <strong>This document becomes the constitution that governs every downstream decision.</strong>
             </p>
           </div>
-          <div className="bcell">
-            <BentoGraphic scene="cascade" />
-            <h3 className="t-h3">Understands your story like a reader would</h3>
+          <div className="bcell span-3">
+            <BentoGraphic scene="triage" />
+            <h3 className="t-h3">Three-tier entity triage</h3>
             <p className="t-body-sm">
-              Atlas reads for genre, tone, pacing, and voice before touching a single word.
-              It strategizes a localization plan the way a human editor would, then executes
-              it at machine speed across every locale simultaneously.
+              Every cultural element is classified: preserve and explain (plot-critical concepts that can&apos;t be swapped), find an analogy (a Korean chaebol becomes an American dynasty), or fully replace (onigiri becomes a tartine). <strong>No element is left half-translated.</strong>
             </p>
           </div>
-          <div className="bcell">
-            <BentoGraphic scene="wave" />
-            <h3 className="t-h3">One click, every market</h3>
+          <div className="bcell" style={{gridColumn: 'span 2'}}>
+            <BentoGraphic scene="validation" />
+            <h3 className="t-h3">Self-healing validation</h3>
             <p className="t-body-sm">
-              Hit publish once. Atlas adapts your story to dozens of locales in seconds,
-              giving you global reach without a global team.
+              After thousands of LLM calls, a verification pass flags naming conflicts, cultural mixing (&ldquo;Morrison-sama&rdquo;), and gaps. <strong>Only broken items are surgically regenerated.</strong>
+            </p>
+          </div>
+          <div className="bcell" style={{gridColumn: 'span 4'}}>
+            <BentoGraphic scene="graph" />
+            <h3 className="t-h3">Graph-segmented dependency resolution</h3>
+            <p className="t-body-sm">
+              Entity names form a directed graph. &ldquo;Tanaka-tei&rdquo; depends on the Tanaka surname, which depends on target naming conventions. Atlas uses Louvain community detection to keep related entities in the same batch, localizing in topological order so nothing contradicts. <strong>Graph-aware segmentation keeps related entities together where random batching would tear them apart.</strong>
             </p>
           </div>
         </div>
@@ -252,7 +253,18 @@ export default function Home() {
           </div>
         </div>
 
-        <a href="#" className="btn-brand story-cta-btn">Start writing</a>
+        <button type="button" className="btn-brand story-cta-btn">Start writing</button>
+
+        <div className="social-proof">
+          <div className="avatar-stack">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" />
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" />
+            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" />
+            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="" />
+            <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="" />
+          </div>
+          <p className="social-proof-text">Join 50,000+ happy writers on Pocket</p>
+        </div>
       </section>
 
       {/* FOLD 4 — FINAL CTA */}
@@ -261,9 +273,9 @@ export default function Home() {
         <div className="footer-inner">
           <div className="footer-brand">
             <div className="footer-brand-top">
-              <div className="footer-logo" aria-label="Pocket Atlas">
+              <div className="footer-logo" aria-label="Pocket">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/logo.svg" alt="Pocket Atlas" />
+                <img src="/assets/pocket-logo.svg" alt="Pocket" />
               </div>
               <p className="footer-byline">Home of the world&apos;s stories.</p>
             </div>

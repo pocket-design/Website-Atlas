@@ -236,9 +236,9 @@ When more than one peer enters together, stagger by **120ms** between siblings. 
 
 Use **CSS transitions** for interactive state changes (hover, focus, active) so they can be interrupted mid-flight. Reserve **CSS keyframes** for one-time staged sequences (entrance fades, branch draw-in).
 
-### Scale on press
+### Scale on press (spring bounce)
 
-Every interactive button uses `transform: scale(0.96)` on `:active`. Never below 0.95 — anything lower feels exaggerated.
+Every interactive button shrinks to `transform: scale(0.94)` on `:active` with a fast 100ms ease-in, then bounces back on release with a spring overshoot easing (`300ms cubic-bezier(0.34, 1.56, 0.64, 1)`). This creates a satisfying press-and-bounce feel. Applied universally to `btn-primary`, `btn-brand`, `btn-global`, `btn-demo`, and `tw-translate`.
 
 ### `will-change`
 

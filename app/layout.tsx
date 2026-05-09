@@ -2,42 +2,17 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 
-// Display family — Season Mix (Regular 400, Medium 500).
+// Display family — Season Collection variable font.
+// Axes: wght 300–900, SERF 0–100 (sans→serif), slnt -11–0.
+// Default SERF=65 nudges slightly toward serif from the Mix midpoint (50).
 const seasonMix = localFont({
-  src: [
-    {
-      path: '../public/fonts/season-mix/SeasonMix-Regular.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../public/fonts/season-mix/SeasonMix-Medium.ttf',
-      weight: '500',
-      style: 'normal',
-    },
-  ],
+  src: '../public/fonts/season-mix/SeasonCollectionVF.woff2',
   variable: '--font-season-mix',
   display: 'swap',
 });
 
-// Mallory MP (MicroPlus) — Frere-Jones's screen-optimized cut
-// of Mallory regular. Used for UI: buttons, nav, eyebrows.
-const malloryMP = localFont({
-  src: [
-    {
-      path: '../public/fonts/mallory-mp/Mallory-MP-Book.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../public/fonts/mallory-mp/Mallory-MP-Bold.ttf',
-      weight: '700',
-      style: 'normal',
-    },
-  ],
-  variable: '--font-mallory',
-  display: 'swap',
-});
+// Mallory MP (MicroPlus) — no longer loaded separately.
+// All Mallory usage is Mallory MP Compact (see --ff-sans below).
 
 // Mallory MP Compact — slightly tighter width, ideal for body
 // copy where we want more characters per line at the same size.
@@ -117,7 +92,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${seasonMix.variable} ${malloryMP.variable} ${malloryMPCompact.variable}`}
+      className={`${seasonMix.variable} ${malloryMPCompact.variable}`}
     >
       <body>{children}</body>
     </html>
