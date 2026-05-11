@@ -329,6 +329,11 @@ nav {
   z-index: 2;
 }
 
+/* V2 single illustration — full cover, no mask */
+.hero-bg-v2 {
+  z-index: 1;
+}
+
 /* ── Feathering overlays: paint the background colour over top/bottom edges */
 .hero-bg-fade {
   position: absolute;

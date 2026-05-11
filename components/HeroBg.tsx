@@ -1,15 +1,14 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { CITY_IMAGES } from './HeroBgDialKit';
-import type { HeroCity } from './HeroBgDialKit';
+import { CITY_IMAGES, CITY_IMAGES_V2, V2_CYCLE_ORDER } from './HeroBgDialKit';
+import type { HeroCity, HeroMode } from './HeroBgDialKit';
 
 const MAX_DELAY_MS  = 700;
-const FADE_DURATION = 380; // ms per half of the crossfade
+const FADE_DURATION = 380;
 
 type Snapshot = { x: number; y: number; t: number };
 
-/** Resolves once both images for a city are in the browser cache. */
 function preloadCity(city: HeroCity): Promise<void> {
   const { lineart, realistic } = CITY_IMAGES[city];
   const load = (src: string) =>
@@ -21,65 +20,80 @@ function preloadCity(city: HeroCity): Promise<void> {
   return Promise.all([load(lineart), load(realistic)]).then(() => {});
 }
 
+function preloadV2(): Promise<void> {
+  return Promise.all(
+    V2_CYCLE_ORDER.map(city =>
+      new Promise<void>(res => {
+        const img = new Image();
+        img.onload = img.onerror = () => res();
+        img.src = CITY_IMAGES_V2[city].src;
+      })
+    )
+  ).then(() => {});
+}
+
 type Props = {
-  city:      HeroCity;
-  radiusRef: React.RefObject<number>;
-  lagRef:    React.RefObject<number>;
+  mode:             HeroMode;
+  city:             HeroCity;
+  radiusRef:        React.RefObject<number>;
+  lagRef:           React.RefObject<number>;
+  cycleIntervalRef: React.RefObject<number>;
+  pauseOnHover:     boolean;
 };
 
-export default function HeroBg({ city, radiusRef, lagRef }: Props) {
+export default function HeroBg({ mode, city, radiusRef, lagRef, cycleIntervalRef, pauseOnHover }: Props) {
   const wrapRef    = useRef<HTMLDivElement>(null);
   const imgsRef    = useRef<HTMLDivElement>(null);
   const lineartRef = useRef<HTMLImageElement>(null);
 
-  // Track displayed city in both state (for re-render) and ref (for effects)
+  // V1 state
   const displayedCityRef = useRef<HeroCity>(city);
   const [displayedCity, setDisplayedCity] = useState<HeroCity>(city);
 
-  // ── Preload every city on mount so switching feels instant ───────────────
+  // V2 state
+  const [v2Index, setV2Index] = useState(0);
+
+  // ── Preload all assets on mount ──────────────────────────────────────────
   useEffect(() => {
     (Object.keys(CITY_IMAGES) as HeroCity[]).forEach(preloadCity);
+    preloadV2();
   }, []);
 
-  // ── Page-load entrance ───────────────────────────────────────────────────
+  // ── Hide container when mode switches; new mode handles reveal ───────────
   useEffect(() => {
+    imgsRef.current?.classList.add('hero-imgs-hidden');
+  }, [mode]);
+
+  // ── V1: page-load entrance ───────────────────────────────────────────────
+  useEffect(() => {
+    if (mode !== 'v1') return;
     const el = imgsRef.current;
     if (!el) return;
-    // Wait for initial city images then blur→sharp reveal
     preloadCity(displayedCityRef.current).then(() => {
       requestAnimationFrame(() => requestAnimationFrame(() => {
         el.classList.remove('hero-imgs-hidden');
       }));
     });
-  }, []); // intentionally runs once on mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]); // re-entrance whenever mode switches to v1
 
-  // ── City crossfade ───────────────────────────────────────────────────────
-  // Depends ONLY on `city` — NOT on `displayedCity`.
-  // If we included displayedCity, React would re-run the cleanup when
-  // setDisplayedCity fires inside the .then(), setting cancelled=true before
-  // the rAFs that remove hero-imgs-hidden get a chance to run.
+  // ── V1: city crossfade ───────────────────────────────────────────────────
   useEffect(() => {
+    if (mode !== 'v1') return;
     if (city === displayedCityRef.current) return;
     const el = imgsRef.current;
     if (!el) return;
 
     let cancelled = false;
-
-    // 1. Fade + blur OUT
     el.classList.add('hero-imgs-hidden');
 
-    // 2. Preload new images AND wait for fade-out — whichever takes longer
     Promise.all([
       preloadCity(city),
       new Promise<void>(res => setTimeout(res, FADE_DURATION)),
     ]).then(() => {
       if (cancelled) return;
-
-      // 3. Swap sources while invisible (images are now cached)
       displayedCityRef.current = city;
       setDisplayedCity(city);
-
-      // 4. One paint cycle, then blur→sharp IN
       requestAnimationFrame(() => requestAnimationFrame(() => {
         if (cancelled) return;
         el.classList.remove('hero-imgs-hidden');
@@ -87,9 +101,9 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
     });
 
     return () => { cancelled = true; };
-  }, [city]); // ← city only — see note above
+  }, [mode, city]);
 
-  // ── Reset lineart mask when displayed city changes ───────────────────────
+  // ── V1: reset lineart mask on city change ────────────────────────────────
   useEffect(() => {
     const el = lineartRef.current;
     if (!el) return;
@@ -97,8 +111,67 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
     el.style.removeProperty('mask-image');
   }, [displayedCity]);
 
-  // ── Time-based delay reveal (RAF loop) ───────────────────────────────────
+  // ── V2: auto-cycle timer ─────────────────────────────────────────────────
   useEffect(() => {
+    if (mode !== 'v2') return;
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+
+    let cancelled  = false;
+    let isHovering = false;
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    const onEnter = () => { isHovering = true; };
+    const onLeave = () => { isHovering = false; };
+    wrap.addEventListener('mouseenter', onEnter);
+    wrap.addEventListener('mouseleave', onLeave);
+
+    const scheduleNext = () => {
+      timeoutId = setTimeout(advance, cycleIntervalRef.current * 1000);
+    };
+
+    const advance = () => {
+      if (cancelled) return;
+      const el = imgsRef.current;
+      if (!el || (pauseOnHover && isHovering)) {
+        scheduleNext();
+        return;
+      }
+      el.classList.add('hero-imgs-hidden');
+      setTimeout(() => {
+        if (cancelled) return;
+        setV2Index(i => (i + 1) % V2_CYCLE_ORDER.length);
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          if (cancelled) return;
+          el.classList.remove('hero-imgs-hidden');
+          scheduleNext();
+        }));
+      }, FADE_DURATION);
+    };
+
+    // Entrance: preload all V2 images then reveal
+    preloadV2().then(() => {
+      if (cancelled) return;
+      const el = imgsRef.current;
+      if (!el) return;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (cancelled) return;
+        el.classList.remove('hero-imgs-hidden');
+        scheduleNext();
+      }));
+    });
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeoutId);
+      wrap.removeEventListener('mouseenter', onEnter);
+      wrap.removeEventListener('mouseleave', onLeave);
+    };
+  }, [mode, pauseOnHover, cycleIntervalRef]);
+
+  // ── V1: hover reveal RAF loop ────────────────────────────────────────────
+  useEffect(() => {
+    if (mode !== 'v1') return;
     const wrap = wrapRef.current;
     if (!wrap) return;
 
@@ -107,8 +180,6 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
     const history: Snapshot[] = [];
     let rafId: number;
 
-    // When cursor leaves: restore lineart to fully visible (no mask).
-    // We punch a hole only while hovering — lineart covers everything by default.
     const showFull = (el: HTMLImageElement) => {
       el.style.removeProperty('-webkit-mask-image');
       el.style.removeProperty('mask-image');
@@ -127,7 +198,7 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
       if (el) {
         if (!isInside) {
           history.length = 0;
-          showFull(el); // lineart fully visible — realistic hidden beneath
+          showFull(el);
         } else {
           const now = performance.now();
           history.push({ x: targetX, y: targetY, t: now });
@@ -176,32 +247,42 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
       window.removeEventListener('mousemove', onMove);
       cancelAnimationFrame(rafId);
     };
-  }, [radiusRef, lagRef]);
+  }, [mode, radiusRef, lagRef]);
 
-  const imgs = CITY_IMAGES[displayedCity];
+  const v1Imgs   = CITY_IMAGES[displayedCity];
+  const v2ImgSrc = CITY_IMAGES_V2[V2_CYCLE_ORDER[v2Index]].src;
 
   return (
     <div ref={wrapRef} className="hero-bg-wrap" aria-hidden="true">
-
-      {/* fading container — starts hidden for page-load entrance */}
       <div ref={imgsRef} className="hero-bg-imgs hero-imgs-hidden">
-        <img
-          src={imgs.realistic}
-          alt=""
-          className="hero-bg-img hero-bg-realistic"
-          draggable={false}
-        />
-        {/* No key here — same element persists, only src changes */}
-        <img
-          ref={lineartRef}
-          src={imgs.lineart}
-          alt=""
-          className="hero-bg-img hero-bg-lineart"
-          draggable={false}
-        />
+
+        {mode === 'v1' ? (
+          <>
+            <img
+              src={v1Imgs.realistic}
+              alt=""
+              className="hero-bg-img hero-bg-realistic"
+              draggable={false}
+            />
+            <img
+              ref={lineartRef}
+              src={v1Imgs.lineart}
+              alt=""
+              className="hero-bg-img hero-bg-lineart"
+              draggable={false}
+            />
+          </>
+        ) : (
+          <img
+            src={v2ImgSrc}
+            alt=""
+            className="hero-bg-img hero-bg-v2"
+            draggable={false}
+          />
+        )}
+
       </div>
 
-      {/* feathering overlays — outside the fading container, always visible */}
       <div className="hero-bg-fade hero-bg-fade-top"    />
       <div className="hero-bg-fade hero-bg-fade-bottom" />
     </div>
