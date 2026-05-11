@@ -7,6 +7,7 @@ import RoughUnderline from '@/components/RoughUnderline';
 import CountUp from '@/components/CountUp';
 import NavBar from '@/components/NavBar';
 import TryItSection from '@/components/TryItSection';
+import HeroBg from '@/components/HeroBg';
 
 export default function Home() {
   const jsonLd = {
@@ -42,6 +43,7 @@ export default function Home() {
 
       {/* FOLD 1 — HERO */}
       <section className="hero">
+        <HeroBg />
         <div className="hero-eyebrow">Meet Atlas by Pocket</div>
         <div className="hero-divider" aria-hidden="true">
           <svg
@@ -74,10 +76,7 @@ export default function Home() {
           </svg>
         </div>
         <h1 className="t-hero hero-title">
-          Incredibly powerful story{' '}
-          <RoughUnderline delay={3000}>adaptation</RoughUnderline>{' '}
-          <RoughUnderline delay={3150}>engine</RoughUnderline>{' '}
-          for writers
+          Incredibly powerful story adaptation engine for writers
         </h1>
         <HeroAdapter />
       </section>
@@ -158,8 +157,8 @@ export default function Home() {
         <div className="proof-grid">
           <div className="proof-card proof-card-hero">
             <div className="proof-hero-left">
-              <span className="proof-hero-number"><CountUp end={50} /><span className="proof-hero-pct">% higher</span></span>
-              <span className="proof-hero-label">Retention of adapted stories over translated ones.</span>
+              <span className="proof-hero-number"><CountUp end={50} /><span className="proof-hero-pct">%</span></span>
+              <span className="proof-hero-label">better retention</span>
             </div>
             <div className="proof-hero-right">
               <h3 className="t-h4">Adaptation performs significantly better than translation</h3>
