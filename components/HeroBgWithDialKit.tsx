@@ -4,12 +4,12 @@ import HeroBg from './HeroBg';
 import { HeroBgDialKit, useHeroBgConfig } from './HeroBgDialKit';
 
 export default function HeroBgWithDialKit() {
-  const { radiusRef, ui, setCity, setRadius, reset } = useHeroBgConfig();
+  const { radiusRef, lagRef, ui, setCity, setRadius, setDelay, reset } = useHeroBgConfig();
 
   return (
     <>
-      <HeroBg city={ui.city} radiusRef={radiusRef} />
-      <HeroBgDialKit ui={ui} setCity={setCity} setRadius={setRadius} reset={reset} />
+      <HeroBg city={ui.city} radiusRef={radiusRef} lagRef={lagRef} />
+      <HeroBgDialKit ui={ui} setCity={setCity} setRadius={setRadius} setDelay={setDelay} reset={reset} />
     </>
   );
 }
