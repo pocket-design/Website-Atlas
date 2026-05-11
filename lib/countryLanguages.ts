@@ -62,7 +62,7 @@ const MAP: Record<number, string> = {
   586: ARABIC,            // Pakistan  (Urdu)
   4:   ARABIC,            // Afghanistan (Dari/Pashto)
   706: ARABIC,            // Somalia
-  566: ARABIC,            // Mauritania (partial)
+  478: ARABIC,            // Mauritania (partial)
 
   // ── Devanagari ────────────────────────────────────────────
   356: DEVANAGARI,        // India
@@ -121,10 +121,8 @@ const MAP: Record<number, string> = {
   36:  LATIN, 554: LATIN, // Australia, New Zealand
   710: LATIN, 404: LATIN, 566: LATIN, 288: LATIN, // South Africa, Kenya, Nigeria, Ghana
   800: LATIN, 508: LATIN, 834: LATIN, 516: LATIN, // Uganda, Mozambique, Tanzania, Namibia
-  764: THAI,  // (already set, kept for reference)
   360: LATIN, 458: LATIN, 608: LATIN, // Indonesia, Malaysia, Philippines
   702: HANZI + LATIN, // Singapore (bilingual)
-  356: DEVANAGARI, // India (already set)
 };
 
 const FALLBACK = LATIN;
