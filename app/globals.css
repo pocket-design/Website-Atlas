@@ -287,8 +287,9 @@ nav {
   position: absolute;
   inset: 0;
   z-index: 0;
-  pointer-events: none; /* hover is handled by the .hero wrapper */
   overflow: hidden;
+  /* pointer-events off on the wrap itself — events handled on the section */
+  pointer-events: none;
 }
 
 /* shared styles for both image layers */
@@ -300,41 +301,44 @@ nav {
   object-fit: cover;
   object-position: center center;
   user-select: none;
-
-  /* feathering: fade to transparent at top (20%) and bottom (20%) */
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent      0%,
-    black           22%,
-    black           78%,
-    transparent    100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent      0%,
-    black           22%,
-    black           78%,
-    transparent    100%
-  );
 }
 
-/* realistic image sits below */
+/* realistic sits below — cursor mask is applied via JS */
 .hero-bg-realistic {
   z-index: 1;
-  opacity: 0;
-  transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  /* hidden by default; JS sets mask-image on mousemove */
+  -webkit-mask-image: radial-gradient(circle 0px at center, transparent 100%);
+  mask-image:         radial-gradient(circle 0px at center, transparent 100%);
 }
 
-/* line-art sits on top, fades out on hover to expose realistic */
+/* line-art sits on top — always fully visible */
 .hero-bg-lineart {
   z-index: 2;
-  opacity: 1;
-  transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* trigger: hovering the hero section cross-fades the two layers */
-.hero:hover .hero-bg-lineart  { opacity: 0; }
-.hero:hover .hero-bg-realistic { opacity: 1; }
+/* ── Feathering overlays: paint the background colour over top/bottom edges */
+.hero-bg-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 28%;
+  z-index: 10;          /* above both image layers */
+  pointer-events: none;
+}
+.hero-bg-fade-top {
+  top: 0;
+  background: linear-gradient(to bottom,
+    var(--vellum)        0%,
+    rgba(250,249,241,0) 100%
+  );
+}
+.hero-bg-fade-bottom {
+  bottom: 0;
+  background: linear-gradient(to top,
+    var(--vellum)        0%,
+    rgba(250,249,241,0) 100%
+  );
+}
 
 .hero-title {
   margin-bottom: var(--sp-3);
