@@ -32,7 +32,8 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
   const imgsRef    = useRef<HTMLDivElement>(null);
   const lineartRef = useRef<HTMLImageElement>(null);
 
-  // Displayed city lags behind the prop — swap happens while invisible
+  // Track displayed city in both state (for re-render) and ref (for effects)
+  const displayedCityRef = useRef<HeroCity>(city);
   const [displayedCity, setDisplayedCity] = useState<HeroCity>(city);
 
   // ── Preload every city on mount so switching feels instant ───────────────
@@ -45,17 +46,20 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
     const el = imgsRef.current;
     if (!el) return;
     // Wait for initial city images then blur→sharp reveal
-    preloadCity(displayedCity).then(() => {
+    preloadCity(displayedCityRef.current).then(() => {
       requestAnimationFrame(() => requestAnimationFrame(() => {
         el.classList.remove('hero-imgs-hidden');
       }));
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // intentionally runs once on mount
 
   // ── City crossfade ───────────────────────────────────────────────────────
+  // Depends ONLY on `city` — NOT on `displayedCity`.
+  // If we included displayedCity, React would re-run the cleanup when
+  // setDisplayedCity fires inside the .then(), setting cancelled=true before
+  // the rAFs that remove hero-imgs-hidden get a chance to run.
   useEffect(() => {
-    if (city === displayedCity) return;
+    if (city === displayedCityRef.current) return;
     const el = imgsRef.current;
     if (!el) return;
 
@@ -72,6 +76,7 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
       if (cancelled) return;
 
       // 3. Swap sources while invisible (images are now cached)
+      displayedCityRef.current = city;
       setDisplayedCity(city);
 
       // 4. One paint cycle, then blur→sharp IN
@@ -82,14 +87,14 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
     });
 
     return () => { cancelled = true; };
-  }, [city, displayedCity]);
+  }, [city]); // ← city only — see note above
 
   // ── Reset lineart mask when displayed city changes ───────────────────────
   useEffect(() => {
     const el = lineartRef.current;
     if (!el) return;
-    el.style.setProperty('-webkit-mask-image', 'none');
-    el.style.setProperty('mask-image',         'none');
+    el.style.removeProperty('-webkit-mask-image');
+    el.style.removeProperty('mask-image');
   }, [displayedCity]);
 
   // ── Time-based delay reveal (RAF loop) ───────────────────────────────────
@@ -102,11 +107,11 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
     const history: Snapshot[] = [];
     let rafId: number;
 
-    const hide = (el: HTMLImageElement) => {
-      el.style.setProperty('-webkit-mask-image',
-        'radial-gradient(circle 0px at center, transparent 100%)');
-      el.style.setProperty('mask-image',
-        'radial-gradient(circle 0px at center, transparent 100%)');
+    // When cursor leaves: restore lineart to fully visible (no mask).
+    // We punch a hole only while hovering — lineart covers everything by default.
+    const showFull = (el: HTMLImageElement) => {
+      el.style.removeProperty('-webkit-mask-image');
+      el.style.removeProperty('mask-image');
     };
 
     const onMove = (e: MouseEvent) => {
@@ -122,7 +127,7 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
       if (el) {
         if (!isInside) {
           history.length = 0;
-          hide(el);
+          showFull(el); // lineart fully visible — realistic hidden beneath
         } else {
           const now = performance.now();
           history.push({ x: targetX, y: targetY, t: now });
