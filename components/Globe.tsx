@@ -120,7 +120,7 @@ export default function Globe({ configRef }: Props) {
 
     // ── Grid ─────────────────────────────────────────────────────────────
     const latSteps = 18, lonSteps = 36;
-    const gridPoints = [];
+    const gridPoints: { lat: number; lon: number }[] = [];
     for (let i = 0; i <= latSteps; i++) {
       const lat = Math.PI * (i / latSteps - 0.5);
       for (let j = 0; j < lonSteps; j++)
