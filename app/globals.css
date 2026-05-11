@@ -303,6 +303,22 @@ nav {
   user-select: none;
 }
 
+/* ── Image container — handles fade + blur transitions ───── */
+.hero-bg-imgs {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  filter: blur(0px);
+  /* out: 380ms, in: 380ms — matches FADE_DURATION in HeroBg.tsx */
+  transition: opacity 0.38s ease, filter 0.38s ease;
+}
+
+/* Hidden state: fully blurred + transparent */
+.hero-imgs-hidden {
+  opacity: 0 !important;
+  filter: blur(22px) !important;
+}
+
 /* realistic sits below — always fully visible, no mask needed */
 .hero-bg-realistic {
   z-index: 1;
