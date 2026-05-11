@@ -153,7 +153,7 @@ export function HeroBgDialKit({ ui, setCity, setRadius, setDelay, reset }: Props
             display={
               ui.cursorDelay === 0
                 ? 'Off'
-                : `${Math.round(ui.cursorDelay * 100)}%`
+                : `${Math.round(ui.cursorDelay * 700)}ms`
             }
             min={0} max={0.92} step={0.04}
             value={ui.cursorDelay}
