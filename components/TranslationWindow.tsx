@@ -2,144 +2,224 @@
 
 import { useState } from 'react';
 
-type Lang = 'de' | 'fr' | 'es';
+// ── Data ───────────────────────────────────────────────────────────────────
+type Category = 'name' | 'place' | 'food' | 'family' | 'object';
+type Seg      = string | { text: string; cat: Category };
+type FilterId = 'all' | Category;
 
-const TRANSLATIONS: Record<Lang, { flag: string; name: string; paras: string[] }> = {
-  de: {
-    flag: '🇩🇪',
-    name: 'German',
-    paras: [
-      'In einer kleinen Küstenstadt, in der jeden Morgen der Nebel hereinrollte wie eine sanfte Erinnerung an die Anwesenheit des Meeres, lebte eine junge Leuchtturmwärterin namens Elara.',
-      'Sie hatte den Leuchtturm von ihrer Großmutter geerbt — zusammen mit dessen altem Logbuch, voller Geschichten von Schiffen, die durch die dunkelsten Stürme sicher nach Hause geleitet wurden.',
-    ],
-  },
-  fr: {
-    flag: '🇫🇷',
-    name: 'French',
-    paras: [
-      'Dans une petite ville côtière, où le brouillard se déposait chaque matin comme un doux rappel de la présence de la mer, vivait une jeune gardienne de phare nommée Elara.',
-      "Elle avait hérité du phare de sa grand-mère, ainsi que de son ancien journal de bord, rempli d'histoires de navires guidés sains et saufs à travers les tempêtes les plus sombres.",
-    ],
-  },
-  es: {
-    flag: '🇪🇸',
-    name: 'Spanish',
-    paras: [
-      'En un pequeño pueblo costero, donde la niebla rodaba cada mañana como un suave recordatorio de la presencia del mar, vivía una joven farera llamada Elara.',
-      'Había heredado el faro de su abuela, junto con su antiguo cuaderno de bitácora, repleto de historias de barcos guiados a salvo a casa a través de las tormentas más oscuras.',
-    ],
-  },
+const STORY = `After class, Maya ducked into the corner store and picked up her grandmother's afternoon usual, a pack of biscuits and a carton of tea. The shopkeeper, who had known three generations of the family, slid an extra packet of toffees across the counter without being asked. Outside, the late afternoon rain hadn't quite let up, and Maya's bag thumped against her hip as she ran the four blocks home. Her grandmother would already be on the porch, watching the road, ready to scold her for being late and then ask, in the same breath, whether she'd remembered the tea.`;
+
+const FILTERS: { id: FilterId; label: string }[] = [
+  { id: 'all',    label: 'All adaptations' },
+  { id: 'name',   label: 'Names' },
+  { id: 'place',  label: 'Places' },
+  { id: 'food',   label: 'Food & drink' },
+  { id: 'family', label: 'Family terms' },
+  { id: 'object', label: 'Everyday objects' },
+];
+
+const CAT: Record<Category, { bg: string; color: string }> = {
+  name:   { bg: 'rgba(124,58,237,0.10)',  color: '#6D28D9' },
+  place:  { bg: 'rgba(14,165,233,0.12)',  color: '#0369A1' },
+  food:   { bg: 'rgba(234,88,12,0.10)',   color: '#C2410C' },
+  family: { bg: 'rgba(22,163,74,0.10)',   color: '#15803D' },
+  object: { bg: 'rgba(219,39,119,0.10)',  color: '#9D174D' },
 };
 
-const LANGS: Lang[] = ['de', 'fr', 'es'];
+function h(text: string, cat: Category): Seg { return { text, cat }; }
 
+const CARDS: {
+  country: string; flag: string; imgBg: string; segs: Seg[];
+}[] = [
+  {
+    country: 'GERMANY', flag: '🇩🇪',
+    imgBg: 'linear-gradient(160deg,#4a3000 0%,#8B6220 40%,#C4913A 70%,#E8C97A 100%)',
+    segs: [
+      'Nach dem Unterricht schlüpfte ', h('Lena','name'), ' in den ', h('Späti','place'),
+      ' und holte ', h('Omas','family'), ' übliche Nachmittagsmischung, eine Tüte ',
+      h('Butterkekse','food'), ' und eine Flasche ', h('Apfelschorle','food'),
+      '. Der ', h('Inhaber','name'), ', der die Familie seit drei Generationen kannte, schob ihr unaufgefordert noch ein paar ',
+      h('Salzstangen','food'), ' über die Theke. Draußen wollte der Spätsommerregen nicht aufhören, und ',
+      h('Lenas','name'), ' ', h('Beutel','object'),
+      ' schlug bei jedem Schritt gegen ihre Hüfte, als sie nach Hause rannte. Oma würde schon ',
+      h('am Küchenfenster','place'), ' sitzen, die Straße schauen und sie schimpfen, und im selben Atemzug fragen, ob sie an die ',
+      h('Schorle','food'), ' gedacht hätte.',
+    ],
+  },
+  {
+    country: 'BRAZIL', flag: '🇧🇷',
+    imgBg: 'linear-gradient(160deg,#003d00 0%,#1a6b1a 35%,#4CAF50 65%,#A5D6A7 100%)',
+    segs: [
+      'Depois da aula, ', h('Mariana','name'), ' entrou no ', h('mercadinho','place'),
+      ' da esquina e pegou o de sempre da ', h('vovó','family'), ', um pacote de ',
+      h('biscoitos Maria','food'), ' e uma garrafa de ', h('Guaraná','food'),
+      '. O ', h('dono','name'), ', que conhecia a família há três gerações, empurrou para o balcão um saquinho de ',
+      h('bala de banana','food'), ' sem nem precisar pedir. Lá fora, a chuva de fim de tarde insistia em não parar, e a ',
+      h('sacola','object'), ' de Mariana batia contra o quadril enquanto ela corria pelas quatro quadras até em casa. A vovó já estaria na ',
+      h('varanda','place'), ', de olho na rua, pronta para brigar pelo atraso e, no mesmo fôlego, perguntar se ela tinha lembrado do ',
+      h('Guaraná','food'), '.',
+    ],
+  },
+  {
+    country: 'JAPAN', flag: '🇯🇵',
+    imgBg: 'linear-gradient(160deg,#0a0a1a 0%,#1a1a3e 35%,#2d4a8a 65%,#6B7FD4 100%)',
+    segs: [
+      '放課後、', h('貫','name'), 'は近所の', h('コンビニ','place'),
+      'に駆け込み、', h('おばあちゃん','family'), 'の夕方の定番、',
+      h('おせんべい','food'), 'の袋と冷たい', h('緑茶のペットボトル','food'),
+      'を手に取った。三代にわたって家族のことを知っている', h('レジのおじさん','name'),
+      'は、何も言わずに', h('小さな飴の袋','food'),
+      'をカウンターの隣にすっと置いた。外では夕暮れの雨がまだ降り止まず、貫の',
+      h('バッグ','object'), 'は走るたびに腰に当たって音を立てていた。おばあちゃんはきっともう縁側にいて、道を見ながら遅くもを叱りつつ、同じ口で「',
+      h('お茶','food'), 'は買ったの？」と訊くに違いなかった。',
+    ],
+  },
+  {
+    country: 'KENYA', flag: '🇰🇪',
+    imgBg: 'linear-gradient(160deg,#5D1A00 0%,#8B2500 35%,#D4531E 65%,#F5A05A 100%)',
+    segs: [
+      'After class, ', h('Wanjiku','name'), ' ducked into the ', h('duka','place'),
+      ' on the corner and picked up ', h("cucu's",'family'),
+      ' afternoon usual, a packet of ', h('Marie biscuits','food'),
+      ' and a small thermos of strong ', h('chai','food'),
+      '. ', h('Mzee Kamau','name'),
+      ', who had known three generations of the family, slid a small twist of ',
+      h('mabuyu sweets','food'), ' across the counter without a word. Outside, the late afternoon rain hadn\'t quite let up, and Wanjiku\'s ',
+      h('kiondo','object'), ' bumped against her hip as she ran the four blocks home. Cucu would already be on the ',
+      h('verandah','place'), ', watching the road, ready to scold her for being late and then ask, in the same breath, whether she\'d remembered the ',
+      h('chai','food'), '.',
+    ],
+  },
+];
+
+// ── Sub-components ─────────────────────────────────────────────────────────
+function HighlightedText({ segs, filter }: { segs: Seg[]; filter: FilterId }) {
+  return (
+    <>
+      {segs.map((seg, i) => {
+        if (typeof seg === 'string') return <span key={i}>{seg}</span>;
+        const dimmed = filter !== 'all' && filter !== seg.cat;
+        return (
+          <mark
+            key={i}
+            style={{
+              background: dimmed ? 'transparent' : CAT[seg.cat].bg,
+              color:      dimmed ? 'var(--text-secondary)' : CAT[seg.cat].color,
+              borderRadius: 3,
+              padding: '0 2px',
+              fontWeight: dimmed ? 400 : 500,
+              transition: 'background 0.2s, color 0.2s',
+            }}
+          >
+            {seg.text}
+          </mark>
+        );
+      })}
+    </>
+  );
+}
+
+function AdaptCard({
+  card, filter, index,
+}: {
+  card: typeof CARDS[0]; filter: FilterId; index: number;
+}) {
+  return (
+    <div
+      className="tw-adapt-card"
+      style={{ animationDelay: `${index * 0.22}s` }}
+    >
+      <div className="tw-adapt-head">
+        <span className="tw-adapt-flag">{card.flag}</span>
+        <span className="tw-adapt-country">{card.country}</span>
+        <span className="tw-adapt-icon">◇</span>
+      </div>
+      <div className="tw-adapt-img" style={{ background: card.imgBg }} />
+      <p className="tw-adapt-text">
+        <HighlightedText segs={card.segs} filter={filter} />
+      </p>
+    </div>
+  );
+}
+
+// ── Main component ─────────────────────────────────────────────────────────
 export default function TranslationWindow() {
-  const [activeLang, setActiveLang] = useState<Lang>('de');
-  const [adapted, setAdapted] = useState(false);
-  const [pending, setPending] = useState(false);
+  const [phase, setPhase]           = useState<'idle' | 'adapting' | 'done'>('idle');
+  const [visibleCount, setVisible]  = useState(0);
+  const [filter, setFilter]         = useState<FilterId>('all');
 
-  const onAdapt = () => {
-    if (pending || adapted) return;
-    setPending(true);
-    setTimeout(() => {
-      setAdapted(true);
-      setPending(false);
-    }, 600);
+  const handleAdapt = () => {
+    if (phase !== 'idle') return;
+    setPhase('adapting');
+    CARDS.forEach((_, i) => {
+      setTimeout(() => {
+        setVisible(i + 1);
+        if (i === CARDS.length - 1) setPhase('done');
+      }, 200 + i * 260);
+    });
   };
 
-  const targetClass = `tw-panel tw-target${adapted ? ' is-adapted' : ''}`;
-  const buttonClass = `tw-translate${adapted ? ' is-done' : ''}`;
-  const buttonLabel = pending ? 'Adapting…' : adapted ? '✓ Adapted' : 'Go global';
-
-  const paras = TRANSLATIONS[activeLang].paras;
+  const showAdaptations = phase !== 'idle';
 
   return (
-    <div className="tw-window" id="twWindow">
-      <div className="tw-grid">
-        {/* Source — original */}
-        <div className="tw-panel tw-source">
-          <div className="tw-head">
-            <div className="tw-lang">
-              <span className="tw-flag" aria-hidden="true">🇺🇸</span>
-              <span className="tw-lang-name">English</span>
-            </div>
-            <span className="tw-tag">Original</span>
-          </div>
-          <div className="tw-body">
-            <p>
-              In a small coastal town, where the fog rolled in every morning like a gentle reminder
-              of the sea&apos;s presence, lived a young lighthouse keeper named Elara.
-            </p>
-            <p>
-              She had inherited the lighthouse from her grandmother, along with its ancient logbook
-              filled with stories of ships guided safely home through the darkest storms.
-            </p>
-          </div>
-          <div className="tw-foot">
-            <span className="tw-meta">
-              <span className="tw-num">247</span> words
-            </span>
-            <button
-              type="button"
-              className={buttonClass}
-              onClick={onAdapt}
-              disabled={pending || adapted}
-            >
-              {buttonLabel}
-              {!pending && !adapted && <span aria-hidden="true">→</span>}
-            </button>
-          </div>
+    <div className="tw-root">
+      {/* ── Input card ── */}
+      <div className="tw-input-wrap">
+        <div className="tw-input-card">
+          <p className="tw-input-text">{STORY}</p>
         </div>
-
-        {/* Target — adapted */}
-        <div className={targetClass} id="twTargetPanel">
-          <div className="tw-head">
-            <div className="tw-tabs" role="tablist" aria-label="Target language">
-              {LANGS.map((lang) => {
-                const t = TRANSLATIONS[lang];
-                const on = lang === activeLang;
-                return (
-                  <button
-                    key={lang}
-                    type="button"
-                    role="tab"
-                    aria-selected={on}
-                    className={'tw-tab' + (on ? ' is-active' : '')}
-                    onClick={() => setActiveLang(lang)}
-                  >
-                    <span className="tw-flag" aria-hidden="true">{t.flag}</span>
-                    <span>{t.name}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-          <div className="tw-body">
-            {!adapted ? (
-              <p className="tw-placeholder">
-                Click <strong>Go global</strong> to see your story adapted for the selected market —
-                not just in language, but in cultural texture.
-              </p>
-            ) : (
-              paras.map((p, i) => (
-                <p
-                  key={`${activeLang}-${i}`}
-                  className="tw-fade"
-                  style={{ animationDelay: `${(i * 0.12).toFixed(2)}s` }}
-                >
-                  {p}
-                </p>
-              ))
-            )}
-          </div>
-          <div className="tw-foot">
-            <span className="tw-meta tw-status">
-              {adapted ? 'Adapted' : 'Awaiting adaptation'}
-            </span>
-            <span className="tw-meta">Pocket Atlas</span>
-          </div>
-        </div>
+        <button
+          className={`tw-adapt-btn${phase !== 'idle' ? ' is-active' : ''}`}
+          onClick={handleAdapt}
+          disabled={phase !== 'idle'}
+        >
+          {phase === 'idle' ? 'Adapt my story' : phase === 'adapting' ? 'Adapting…' : '✓ Adapted'}
+        </button>
       </div>
+
+      {/* ── Fork connector ── */}
+      {showAdaptations && (
+        <svg className="tw-fork" viewBox="0 0 1000 48" preserveAspectRatio="none" aria-hidden="true">
+          {/* vertical from button */}
+          <line x1="500" y1="0"  x2="500" y2="24" stroke="var(--vellum-shade-2)" strokeWidth="1"/>
+          {/* horizontal rail */}
+          <line x1="125" y1="24" x2="875" y2="24" stroke="var(--vellum-shade-2)" strokeWidth="1"/>
+          {/* drops to each card */}
+          {[125, 375, 625, 875].map(x => (
+            <line key={x} x1={x} y1="24" x2={x} y2="48" stroke="var(--vellum-shade-2)" strokeWidth="1"/>
+          ))}
+        </svg>
+      )}
+
+      {/* ── Adaptation grid ── */}
+      {showAdaptations && (
+        <div className="tw-adapt-wrap">
+          <div className="tw-adapt-grid">
+            {CARDS.slice(0, visibleCount).map((card, i) => (
+              <AdaptCard key={card.country} card={card} filter={filter} index={i} />
+            ))}
+            {/* placeholder columns for cards not yet visible */}
+            {Array.from({ length: CARDS.length - visibleCount }).map((_, i) => (
+              <div key={`ph-${i}`} className="tw-adapt-card tw-adapt-placeholder" />
+            ))}
+          </div>
+
+          {/* Filter tabs */}
+          {phase === 'done' && (
+            <div className="tw-filter-row">
+              {FILTERS.map(f => (
+                <button
+                  key={f.id}
+                  className={`tw-filter-btn${filter === f.id ? ' is-active' : ''}`}
+                  onClick={() => setFilter(f.id)}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
