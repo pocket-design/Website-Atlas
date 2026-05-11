@@ -230,11 +230,20 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--sp-2-5) var(--sp-8);
-  position: sticky;
-  top: 0;
-  background: rgba(250, 249, 241, 0.92);
-  backdrop-filter: blur(16px);
+  /* floating pill */
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 48px);
+  max-width: 1200px;
+  padding: 10px 16px 10px 20px;
+  border-radius: 999px;
+  background: rgba(250, 249, 241, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
   z-index: 100;
 }
 .nav-logo {
@@ -259,14 +268,14 @@ nav {
   color: var(--text-secondary);
   text-decoration: none;
   font-size: 14px;
-  padding: 12px 4px;
+  padding: 6px 4px;
   transition: color 120ms var(--ease);
 }
 .nav-links a:hover { color: var(--text-primary); }
 
 /* ── FOLD 1 — HERO ───────────────────────────────────────── */
 .hero {
-  padding: var(--sp-20) var(--sp-8);
+  padding: calc(var(--sp-20) + 72px) var(--sp-8) var(--sp-20);
   text-align: center;
   position: relative;
   overflow: hidden;
