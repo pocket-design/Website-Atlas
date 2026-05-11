@@ -275,10 +275,10 @@ nav {
 
 /* ── FOLD 1 — HERO ───────────────────────────────────────── */
 .hero {
-  padding: calc(var(--sp-20) + 72px) var(--sp-8) var(--sp-12);
+  padding: calc(var(--sp-20) + 72px) var(--sp-8) var(--sp-20);
   text-align: center;
   position: relative;
-  /* overflow is intentionally visible — background is clipped by .hero-bg-wrap */
+  overflow: hidden;
 }
 .hero > * { position: relative; z-index: 1; }
 
@@ -376,193 +376,188 @@ nav {
    Filled with the same surface-card white as every other
    card on the page so the globe sits cleanly behind it.
    Concentric radii: 20px outer / 8px padding / 12px inner. */
-/* ── TRANSLATION WINDOW — new adaptation UI ─────────────── */
-.tw-root {
-  width: 100%;
-  max-width: 1200px;
+.tw-window {
+  max-width: 1080px;
   margin: 0 auto;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-divider);
+  border-radius: 20px;
+  padding: var(--sp-1);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 4px 14px rgba(0,0,0,0.05);
+  transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease);
+}
+.tw-window:hover {
+  border-color: var(--vellum-shade-3);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 8px 24px rgba(50,50,93,0.08);
 }
 
-/* Input card */
-.tw-input-wrap {
+.tw-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-1);
+  text-align: left;
+}
+
+.tw-panel {
   display: flex;
   flex-direction: column;
+  min-height: 460px;
+  border: 1px solid var(--surface-divider);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.tw-panel.tw-source { background: var(--vellum-tint-7); }
+.tw-panel.tw-target { background: var(--vellum-tint-3); }
+
+.tw-head {
+  display: flex;
   align-items: center;
-  gap: var(--sp-3);
-  max-width: 640px;
-  margin: 0 auto;
+  justify-content: space-between;
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--surface-divider);
 }
-.tw-input-card {
-  width: 100%;
-  text-align: left;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.7);
-  border-radius: 16px;
-  padding: var(--sp-4) var(--sp-4);
-  box-shadow:
-    0 2px 8px rgba(0,0,0,0.06),
-    0 12px 32px rgba(0,0,0,0.08);
+
+.tw-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
 }
-.tw-input-text {
-  font-size: 15px;
-  line-height: 1.75;
+.tw-flag { font-size: 18px; line-height: 1; }
+.tw-lang-name {
+  font-family: var(--ff-sans);
+  font-size: 14px;
+  font-weight: 700;
   color: var(--text-primary);
-  text-wrap: pretty;
-  margin: 0;
 }
-.tw-adapt-btn {
+
+.tw-tag {
+  font-family: var(--ff-sans);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.tw-target .tw-tag { color: var(--scarlet); }
+
+/* Target language tabs */
+.tw-tabs {
+  display: inline-flex;
+  gap: var(--sp-half);
+}
+.tw-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-family: var(--ff-sans);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: background 120ms var(--ease), color 120ms var(--ease), transform 120ms var(--ease);
+}
+.tw-tab .tw-flag { font-size: 14px; }
+.tw-tab:hover {
+  background: var(--vellum-shade-1);
+  color: var(--text-primary);
+}
+.tw-tab:active { transform: scale(0.96); }
+.tw-tab.is-active {
+  background: var(--ink);
+  color: var(--vellum);
+}
+.tw-tab.is-active:hover {
+  background: var(--ink-tint-1);
+  color: var(--vellum);
+}
+
+.tw-body {
+  flex: 1;
+  padding: var(--sp-4);
+  overflow-y: auto;
+}
+.tw-body p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+.tw-body p + p { margin-top: var(--sp-2); }
+
+.tw-placeholder {
+  color: var(--text-tertiary) !important;
+  font-style: italic;
+}
+.tw-placeholder strong {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-style: normal;
+}
+
+.tw-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-1-5) var(--sp-3);
+  border-top: 1px solid var(--surface-divider);
+  gap: var(--sp-2);
+}
+
+.tw-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-family: var(--ff-sans);
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+.tw-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.tw-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--vellum-shade-3);
+  transition: background 160ms var(--ease);
+}
+.tw-target.is-adapted .tw-status::before { background: var(--scarlet); }
+
+.tw-translate {
   display: inline-flex;
   align-items: center;
   gap: var(--sp-1);
   background: var(--scarlet);
   color: var(--vellum);
   border: none;
-  padding: 12px 28px;
-  border-radius: 999px;
+  padding: 10px var(--sp-2-5);
+  border-radius: 8px;
   font-family: var(--ff-sans);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.01em;
   cursor: pointer;
-  transition: background 120ms var(--ease), transform 120ms var(--ease), opacity 120ms;
-  box-shadow: 0 4px 14px rgba(245,29,0,0.30);
+  min-height: 36px;
+  transition: background 120ms var(--ease), transform 120ms var(--ease);
 }
-.tw-adapt-btn:hover  { background: var(--scarlet-shade-1); transform: translateY(-1px); }
-.tw-adapt-btn:active { background: var(--scarlet-shade-2); transform: scale(0.97); }
-.tw-adapt-btn:disabled { opacity: 0.7; cursor: default; transform: none; box-shadow: none; }
-.tw-adapt-btn.is-active { background: var(--ink); box-shadow: none; }
+.tw-translate:hover { background: var(--scarlet-shade-1); }
+.tw-translate:active { background: var(--scarlet-shade-2); transform: scale(0.96); }
+.tw-translate:disabled { opacity: 0.6; cursor: default; transform: none; }
+.tw-translate.is-done { background: var(--ink); }
+.tw-translate.is-done:hover { background: var(--ink-tint-1); }
 
-/* Fork connector SVG */
-.tw-fork {
-  display: block;
-  width: 100%;
-  height: 48px;
-  overflow: visible;
-  animation: fadeIn 0.3s var(--ease) both;
-}
-
-/* Adaptation grid — break out of hero's 64px side padding */
-.tw-adapt-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-3);
-  animation: fadeIn 0.3s var(--ease) both;
-  /* Expand to use full viewport width minus a small margin */
-  width: calc(100% + 2 * var(--sp-8));
-  margin-left: calc(-1 * var(--sp-8));
-  padding: 0 var(--sp-4);
-  box-sizing: border-box;
-  position: relative;
-  z-index: 2;
-  padding-bottom: var(--sp-8);
-}
-.tw-adapt-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--sp-2);
-  align-items: start;
-  overflow-x: auto;
-}
-
-/* Individual adaptation card */
-.tw-adapt-card {
-  text-align: left;
-  background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,0.65);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 8px 20px rgba(0,0,0,0.06);
-  animation: cardIn 0.38s var(--ease) both;
-}
-.tw-adapt-placeholder {
-  background: transparent;
-  border: 1px dashed var(--vellum-shade-1);
-  border-radius: 12px;
-  min-height: 380px;
-  box-shadow: none;
-  animation: none;
-}
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Card header */
-.tw-adapt-head {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 12px;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-}
-.tw-adapt-flag { font-size: 16px; line-height: 1; }
-.tw-adapt-country {
-  flex: 1;
-  font-family: var(--ff-sans);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--text-primary);
-}
-.tw-adapt-icon {
-  font-size: 12px;
-  color: var(--text-tertiary);
-  line-height: 1;
-}
-
-/* Card image placeholder */
-.tw-adapt-img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-}
-
-/* Card text */
-.tw-adapt-text {
-  padding: 14px 14px 16px;
-  font-size: 13px;
-  line-height: 1.7;
-  color: var(--text-secondary);
-  text-wrap: pretty;
-  margin: 0;
-}
-
-/* Filter row */
-.tw-filter-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--sp-1);
-  animation: fadeUp 0.4s var(--ease) both;
-}
-.tw-filter-btn {
-  display: inline-flex;
-  align-items: center;
-  background: rgba(255,255,255,0.7);
-  border: 1px solid var(--vellum-shade-1);
-  border-radius: 999px;
-  padding: 6px 14px;
-  font-family: var(--ff-sans);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 130ms var(--ease);
-}
-.tw-filter-btn:hover { border-color: var(--ink); color: var(--text-primary); }
-.tw-filter-btn.is-active {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--vellum);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
 .tw-fade { animation: fadeUp 0.5s var(--ease) both; }
 
 /* ── FOLD 2 — BENTO ──────────────────────────────────────── */
