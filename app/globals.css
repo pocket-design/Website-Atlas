@@ -158,6 +158,7 @@
   --z-sticky:   10;
   --z-tooltip:  20;
   --z-nav:      100;
+  --z-modal:    200;
 
   /* ─── Motion: durations ─── */
   --dur-instant: 120ms;
@@ -2424,7 +2425,7 @@ body:has(.try-page) .site-nav {
   outline: none;
   background: transparent;
   font-family: var(--ff-sans-compact);
-  font-size: var(--fs-md);
+  font-size: var(--fs-base);
   line-height: var(--lh-spacious);
   color: var(--text-primary);
 }
@@ -2474,7 +2475,7 @@ body:has(.try-page) .site-nav {
 
 .try-result-text {
   font-family: var(--ff-sans-compact);
-  font-size: var(--fs-md);
+  font-size: var(--fs-base);
   line-height: var(--lh-spacious);
   color: var(--text-primary);
   white-space: pre-wrap;
@@ -2492,6 +2493,159 @@ body:has(.try-page) .site-nav {
   color: var(--text-tertiary);
 }
 
+
+/* Tweak mappings modal */
+.tweak-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+.tweak-modal {
+  width: 90%;
+  max-width: 640px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-card);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+}
+
+.tweak-header {
+  padding: var(--sp-3) var(--sp-4) 0;
+}
+
+.tweak-title {
+  font-family: var(--ff-sans);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.tweak-tabs {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-1) var(--sp-4) 0;
+  border-bottom: var(--border-hairline);
+  overflow-x: auto;
+}
+
+.tweak-tab {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1-5);
+  padding: var(--sp-2-5) 0;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  font-family: var(--ff-sans);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-1);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  white-space: nowrap;
+  margin-bottom: -1px;
+  transition: color var(--dur-instant) var(--ease), border-color var(--dur-instant) var(--ease);
+}
+.tweak-tab:hover {
+  color: var(--text-primary);
+}
+.tweak-tab.is-active {
+  color: var(--text-primary);
+  border-bottom-color: var(--ink);
+}
+.tweak-tab .locale-flag {
+  width: 20px;
+  height: 15px;
+  border-radius: var(--r-xs);
+  flex-shrink: 0;
+  background-size: cover;
+}
+
+.tweak-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sp-3) var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.tweak-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.tweak-source {
+  flex-shrink: 0;
+  min-width: 120px;
+  font-family: var(--ff-sans);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+}
+
+.tweak-arrow {
+  flex-shrink: 0;
+  font-family: var(--ff-sans);
+  font-size: var(--fs-sm);
+  color: var(--text-tertiary);
+}
+
+.tweak-input {
+  flex: 1;
+  padding: var(--sp-1) var(--sp-1-5);
+  border: var(--border-hairline);
+  border-radius: var(--r-sm);
+  font-family: var(--ff-sans);
+  font-size: var(--fs-base);
+  color: var(--text-primary);
+  background: var(--surface-card);
+  outline: none;
+  transition: border-color var(--dur-instant) var(--ease);
+}
+.tweak-input:focus {
+  border-color: var(--scarlet);
+}
+
+.tweak-delete {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: background var(--dur-instant) var(--ease), color var(--dur-instant) var(--ease);
+}
+.tweak-delete:hover {
+  background: var(--scarlet-tint-7);
+  color: var(--scarlet);
+}
+
+.tweak-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  border-top: var(--border-hairline);
+}
 
 /* Sticky bottom action bar */
 .try-action-bar {

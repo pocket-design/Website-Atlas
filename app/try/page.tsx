@@ -105,7 +105,7 @@ function SourceLocaleSwitcher() {
     <div className="locale-card-locale try-locale-chip" ref={ref}>
       <button className="locale-picker-btn" onClick={() => setOpen(!open)}>
         <span className={`locale-flag fi fi-${selected.flag}`} aria-hidden="true" />
-        <span className="locale-picker-name">{selected.label} (auto-detected)</span>
+        <span className="locale-picker-name">{selected.label} (auto)</span>
         <LocaleChevrons />
       </button>
       {open && (
@@ -211,12 +211,165 @@ function AddLocaleButton({ exclude, onAdd }: { exclude: string[]; onAdd: (code: 
   );
 }
 
+type Mapping = { source: string; target: string };
+
+const DEMO_MAPPINGS: Record<string, Mapping[]> = {
+  de: [
+    { source: 'Maya', target: 'Lena' },
+    { source: 'corner store', target: 'Späti' },
+    { source: 'Elm Street', target: 'Lindenstraße' },
+    { source: 'biscuits', target: 'Butterkekse' },
+    { source: 'tea', target: 'Apfelschorle' },
+    { source: 'Mr. Farhan', target: 'Herr Yılmaz' },
+    { source: 'grandmother', target: 'Oma' },
+  ],
+  br: [
+    { source: 'Maya', target: 'Mariana' },
+    { source: 'corner store', target: 'mercadinho' },
+    { source: 'Elm Street', target: 'Rua das Flores' },
+    { source: 'biscuits', target: 'biscoitos Maria' },
+    { source: 'tea', target: 'Guaraná' },
+    { source: 'Mr. Farhan', target: 'Seu Antônio' },
+    { source: 'grandmother', target: 'vovó' },
+  ],
+  jp: [
+    { source: 'Maya', target: '舞' },
+    { source: 'corner store', target: 'コンビニ' },
+    { source: 'Elm Street', target: '桜通り' },
+    { source: 'biscuits', target: 'おせんべい' },
+    { source: 'tea', target: '緑茶' },
+    { source: 'Mr. Farhan', target: '田中のおじさん' },
+    { source: 'grandmother', target: 'おばあちゃん' },
+  ],
+  ke: [
+    { source: 'Maya', target: 'Wanjiku' },
+    { source: 'corner store', target: 'duka' },
+    { source: 'Elm Street', target: 'Kenyatta Avenue' },
+    { source: 'biscuits', target: 'Marie biscuits' },
+    { source: 'tea', target: 'chai' },
+    { source: 'Mr. Farhan', target: 'Mzee Kamau' },
+    { source: 'grandmother', target: 'cucu' },
+  ],
+  fr: [
+    { source: 'Maya', target: 'Camille' },
+    { source: 'corner store', target: "l'épicerie" },
+    { source: 'Elm Street', target: 'Rue du Faubourg' },
+    { source: 'biscuits', target: 'petits-beurre' },
+    { source: 'tea', target: 'thé à la menthe' },
+    { source: 'Mr. Farhan', target: 'M. Belkacem' },
+    { source: 'grandmother', target: 'mamie' },
+  ],
+  in: [
+    { source: 'Maya', target: 'प्रिया' },
+    { source: 'corner store', target: 'किराना दुकान' },
+    { source: 'Elm Street', target: 'गली' },
+    { source: 'biscuits', target: 'पारले-जी' },
+    { source: 'tea', target: 'चाय पत्ती' },
+    { source: 'Mr. Farhan', target: 'शर्मा अंकल' },
+    { source: 'grandmother', target: 'नानी' },
+  ],
+  es: [
+    { source: 'Maya', target: 'Lucía' },
+    { source: 'corner store', target: 'tienda de barrio' },
+    { source: 'Elm Street', target: 'Calle Mayor' },
+    { source: 'biscuits', target: 'galletas María' },
+    { source: 'tea', target: 'Cola Cao' },
+    { source: 'Mr. Farhan', target: 'Don Paco' },
+    { source: 'grandmother', target: 'abuela' },
+  ],
+  kr: [
+    { source: 'Maya', target: '수진' },
+    { source: 'corner store', target: '편의점' },
+    { source: 'Elm Street', target: '동네 골목' },
+    { source: 'biscuits', target: '새우깡' },
+    { source: 'tea', target: '보리차' },
+    { source: 'Mr. Farhan', target: '김 사장님' },
+    { source: 'grandmother', target: '할머니' },
+  ],
+};
+
+function TweakModal({ locales, onClose }: { locales: string[]; onClose: () => void }) {
+  const [activeLocale, setActiveLocale] = useState(locales[0]);
+  const [mappings, setMappings] = useState<Record<string, Mapping[]>>(() => {
+    const initial: Record<string, Mapping[]> = {};
+    locales.forEach((code) => {
+      initial[code] = (DEMO_MAPPINGS[code] || []).map((m) => ({ ...m }));
+    });
+    return initial;
+  });
+
+  const updateMapping = (index: number, value: string) => {
+    setMappings((prev) => {
+      const next = { ...prev };
+      next[activeLocale] = [...next[activeLocale]];
+      next[activeLocale][index] = { ...next[activeLocale][index], target: value };
+      return next;
+    });
+  };
+
+  const deleteMapping = (index: number) => {
+    setMappings((prev) => {
+      const next = { ...prev };
+      next[activeLocale] = next[activeLocale].filter((_, i) => i !== index);
+      return next;
+    });
+  };
+
+  return (
+    <div className="tweak-overlay" onClick={onClose}>
+      <div className="tweak-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="tweak-header">
+          <h2 className="tweak-title">Tweak mappings</h2>
+        </div>
+        <div className="tweak-tabs">
+          {locales.map((code) => {
+            const locale = ALL_LOCALES.find((l) => l.code === code);
+            return (
+              <button
+                key={code}
+                className={`tweak-tab${activeLocale === code ? ' is-active' : ''}`}
+                onClick={() => setActiveLocale(code)}
+              >
+                <span className={`locale-flag fi fi-${locale?.flag}`} aria-hidden="true" />
+                {locale?.label}
+              </button>
+            );
+          })}
+        </div>
+        <div className="tweak-body">
+          {(mappings[activeLocale] || []).map((mapping, i) => (
+            <div key={i} className="tweak-row">
+              <span className="tweak-source">{mapping.source}</span>
+              <span className="tweak-arrow">mapped to</span>
+              <input
+                className="tweak-input"
+                value={mapping.target}
+                onChange={(e) => updateMapping(i, e.target.value)}
+              />
+              <button className="tweak-delete" onClick={() => deleteMapping(i)} aria-label="Delete mapping">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                  <path d="M2.5 3.5h9M5.5 3.5V2.5a1 1 0 011-1h1a1 1 0 011 1v1M11 3.5l-.5 8a1 1 0 01-1 1h-5a1 1 0 01-1-1l-.5-8M5.5 6v4M8.5 6v4" />
+                </svg>
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="tweak-footer">
+          <button className="btn-secondary" onClick={onClose}>Cancel</button>
+          <button className="btn-brand" onClick={onClose}>Update</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function TryPage() {
   const [source, setSource] = useState('');
-  const [selectedLocales, setSelectedLocales] = useState<string[]>(['de']);
+  const [selectedLocales, setSelectedLocales] = useState<string[]>(['de', 'br', 'jp']);
   const [activeTab, setActiveTab] = useState('de');
   const [isAdapting, setIsAdapting] = useState(false);
   const [results, setResults] = useState<Record<string, string>>({});
+  const [showTweak, setShowTweak] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
 
@@ -326,11 +479,11 @@ export default function TryPage() {
           </div>
           <div className="try-action-half try-action-right">
             <div className="try-action-meta">
-              <span className="try-meta-item">{Object.keys(results).length} adaptations</span>
+              <span className="try-meta-item">{Object.keys(results).length} {Object.keys(results).length === 1 ? 'adaptation' : 'adaptations'}</span>
             </div>
             {Object.keys(results).length > 0 && (
               <>
-                <button className="btn-secondary try-tweak-btn">
+                <button className="btn-secondary try-tweak-btn" onClick={() => setShowTweak(true)}>
                   Tweak mappings
                 </button>
                 <button className="btn-secondary try-download-btn" onClick={() => {
@@ -351,6 +504,9 @@ export default function TryPage() {
         </div>
         </div>
       </main>
+      {showTweak && (
+        <TweakModal locales={selectedLocales} onClose={() => setShowTweak(false)} />
+      )}
     </>
   );
 }
