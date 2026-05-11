@@ -2,8 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-// Reveal circle radius in px — increase for a wider window
-const RADIUS = 260;
+const RADIUS = 260; // reveal circle radius in px
 
 export default function HeroBg() {
   const wrapRef      = useRef<HTMLDivElement>(null);
@@ -14,38 +13,41 @@ export default function HeroBg() {
     const img  = realisticRef.current;
     if (!wrap || !img) return;
 
-    // Listen on the whole hero section so the reveal works even when
-    // the cursor is over the text / translation-window above the images
-    const section = wrap.closest('section') ?? wrap;
+    const hide = () => {
+      img.style.setProperty('-webkit-mask-image',
+        `radial-gradient(circle 0px at center, transparent 100%)`);
+      img.style.setProperty('mask-image',
+        `radial-gradient(circle 0px at center, transparent 100%)`);
+    };
 
+    // Listen on window so pointer-events settings on child elements
+    // never block the reveal.
     const onMove = (e: MouseEvent) => {
       const rect = wrap.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      // Radial gradient: opaque at centre, feathers out to transparent
-      const mask = `radial-gradient(circle ${RADIUS}px at ${x}px ${y}px, black 30%, transparent 100%)`;
-      img.style.webkitMaskImage = mask;
-      img.style.maskImage        = mask;
+
+      // Hide when cursor is outside the hero image area
+      if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
+        hide();
+        return;
+      }
+
+      const mask =
+        `radial-gradient(circle ${RADIUS}px at ${x}px ${y}px, black 30%, transparent 100%)`;
+      img.style.setProperty('-webkit-mask-image', mask);
+      img.style.setProperty('mask-image',         mask);
     };
 
-    const onLeave = () => {
-      img.style.webkitMaskImage = 'radial-gradient(circle 0px at center, transparent 100%)';
-      img.style.maskImage        = 'radial-gradient(circle 0px at center, transparent 100%)';
-    };
-
-    section.addEventListener('mousemove',  onMove  as EventListener);
-    section.addEventListener('mouseleave', onLeave as EventListener);
-
-    return () => {
-      section.removeEventListener('mousemove',  onMove  as EventListener);
-      section.removeEventListener('mouseleave', onLeave as EventListener);
-    };
+    hide(); // start hidden
+    window.addEventListener('mousemove', onMove);
+    return () => window.removeEventListener('mousemove', onMove);
   }, []);
 
   return (
     <div ref={wrapRef} className="hero-bg-wrap" aria-hidden="true">
 
-      {/* ── realistic layer (bottom) — revealed by cursor mask ── */}
+      {/* realistic — revealed by cursor-radius mask */}
       <img
         ref={realisticRef}
         src="/assets/hero-realistic.jpg"
@@ -54,7 +56,7 @@ export default function HeroBg() {
         draggable={false}
       />
 
-      {/* ── line-art layer (top) — always visible ── */}
+      {/* line-art — always on top */}
       <img
         src="/assets/hero-lineart.jpg"
         alt=""
@@ -62,7 +64,7 @@ export default function HeroBg() {
         draggable={false}
       />
 
-      {/* ── feathering overlays (painted on top of both images) ── */}
+      {/* feathering gradient overlays */}
       <div className="hero-bg-fade hero-bg-fade-top"    />
       <div className="hero-bg-fade hero-bg-fade-bottom" />
     </div>

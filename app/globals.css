@@ -303,12 +303,9 @@ nav {
   user-select: none;
 }
 
-/* realistic sits below — cursor mask is applied via JS */
+/* realistic sits below — JS applies mask-image on every mousemove */
 .hero-bg-realistic {
   z-index: 1;
-  /* hidden by default; JS sets mask-image on mousemove */
-  -webkit-mask-image: radial-gradient(circle 0px at center, transparent 100%);
-  mask-image:         radial-gradient(circle 0px at center, transparent 100%);
 }
 
 /* line-art sits on top — always fully visible */
