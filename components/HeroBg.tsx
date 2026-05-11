@@ -5,9 +5,21 @@ import { CITY_IMAGES } from './HeroBgDialKit';
 import type { HeroCity } from './HeroBgDialKit';
 
 const MAX_DELAY_MS  = 700;
-const FADE_DURATION = 380; // ms — half of the crossfade (out → swap → in)
+const FADE_DURATION = 380; // ms per half of the crossfade
 
 type Snapshot = { x: number; y: number; t: number };
+
+/** Resolves once both images for a city are in the browser cache. */
+function preloadCity(city: HeroCity): Promise<void> {
+  const { lineart, realistic } = CITY_IMAGES[city];
+  const load = (src: string) =>
+    new Promise<void>(res => {
+      const img = new Image();
+      img.onload = img.onerror = () => res();
+      img.src = src;
+    });
+  return Promise.all([load(lineart), load(realistic)]).then(() => {});
+}
 
 type Props = {
   city:      HeroCity;
@@ -17,24 +29,29 @@ type Props = {
 
 export default function HeroBg({ city, radiusRef, lagRef }: Props) {
   const wrapRef    = useRef<HTMLDivElement>(null);
-  const imgsRef    = useRef<HTMLDivElement>(null);   // container that fades
+  const imgsRef    = useRef<HTMLDivElement>(null);
   const lineartRef = useRef<HTMLImageElement>(null);
 
-  // The city currently rendered in the DOM (lags behind prop during fade)
+  // Displayed city lags behind the prop — swap happens while invisible
   const [displayedCity, setDisplayedCity] = useState<HeroCity>(city);
 
+  // ── Preload every city on mount so switching feels instant ───────────────
+  useEffect(() => {
+    (Object.keys(CITY_IMAGES) as HeroCity[]).forEach(preloadCity);
+  }, []);
+
   // ── Page-load entrance ───────────────────────────────────────────────────
-  // Start hidden (blur + transparent), reveal after first paint
   useEffect(() => {
     const el = imgsRef.current;
     if (!el) return;
-    // Force a repaint so the initial hidden class is applied before we remove it
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
+    // Wait for initial city images then blur→sharp reveal
+    preloadCity(displayedCity).then(() => {
+      requestAnimationFrame(() => requestAnimationFrame(() => {
         el.classList.remove('hero-imgs-hidden');
-      });
+      }));
     });
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // intentionally runs once on mount
 
   // ── City crossfade ───────────────────────────────────────────────────────
   useEffect(() => {
@@ -42,23 +59,32 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
     const el = imgsRef.current;
     if (!el) return;
 
+    let cancelled = false;
+
     // 1. Fade + blur OUT
     el.classList.add('hero-imgs-hidden');
 
-    const t1 = setTimeout(() => {
-      // 2. Swap the city while invisible — React re-renders the new srcs
+    // 2. Preload new images AND wait for fade-out — whichever takes longer
+    Promise.all([
+      preloadCity(city),
+      new Promise<void>(res => setTimeout(res, FADE_DURATION)),
+    ]).then(() => {
+      if (cancelled) return;
+
+      // 3. Swap sources while invisible (images are now cached)
       setDisplayedCity(city);
-    }, FADE_DURATION);
 
-    const t2 = setTimeout(() => {
-      // 3. Fade + un-blur IN
-      el.classList.remove('hero-imgs-hidden');
-    }, FADE_DURATION + 40); // tiny extra gap so new images are painted first
+      // 4. One paint cycle, then blur→sharp IN
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (cancelled) return;
+        el.classList.remove('hero-imgs-hidden');
+      }));
+    });
 
-    return () => { clearTimeout(t1); clearTimeout(t2); };
+    return () => { cancelled = true; };
   }, [city, displayedCity]);
 
-  // ── Reset mask when displayed city changes ───────────────────────────────
+  // ── Reset lineart mask when displayed city changes ───────────────────────
   useEffect(() => {
     const el = lineartRef.current;
     if (!el) return;
@@ -152,7 +178,7 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
   return (
     <div ref={wrapRef} className="hero-bg-wrap" aria-hidden="true">
 
-      {/* ── fading image container — starts hidden for page-load entrance ── */}
+      {/* fading container — starts hidden for page-load entrance */}
       <div ref={imgsRef} className="hero-bg-imgs hero-imgs-hidden">
         <img
           src={imgs.realistic}
@@ -160,8 +186,8 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
           className="hero-bg-img hero-bg-realistic"
           draggable={false}
         />
+        {/* No key here — same element persists, only src changes */}
         <img
-          key={displayedCity}
           ref={lineartRef}
           src={imgs.lineart}
           alt=""
@@ -170,7 +196,7 @@ export default function HeroBg({ city, radiusRef, lagRef }: Props) {
         />
       </div>
 
-      {/* feathering overlays — always visible, outside the fading container */}
+      {/* feathering overlays — outside the fading container, always visible */}
       <div className="hero-bg-fade hero-bg-fade-top"    />
       <div className="hero-bg-fade hero-bg-fade-bottom" />
     </div>
