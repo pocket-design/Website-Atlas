@@ -1,4 +1,4 @@
-import Globe from '@/components/Globe';
+import GlobeWithDialKit from '@/components/GlobeWithDialKit';
 import TranslationWindow from '@/components/TranslationWindow';
 import BentoGraphic from '@/components/BentoGraphic';
 import RevealOnScroll from '@/components/RevealOnScroll';
@@ -33,7 +33,7 @@ export default function Home() {
 
       {/* FOLD 1 — HERO */}
       <section className="hero">
-        <Globe />
+        <GlobeWithDialKit />
         <h1 className="t-display hero-title">
           Translation changes words. We change worlds.
         </h1>
