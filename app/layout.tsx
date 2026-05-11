@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
+import 'dialkit/styles.css';
+import DialkitRoot from '@/components/DialkitRoot';
 
 // Display family — Season Collection variable font.
 // Axes: wght 300–900, SERF 0–100 (sans→serif), slnt -11–0.
@@ -94,7 +96,10 @@ export default function RootLayout({
       lang="en"
       className={`${seasonMix.variable} ${malloryMPCompact.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <DialkitRoot />
+      </body>
     </html>
   );
 }

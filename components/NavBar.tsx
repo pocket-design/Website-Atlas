@@ -1,8 +1,8 @@
 'use client';
 
-export default function NavBar() {
+export default function NavBar({ className }: { className?: string }) {
   return (
-    <nav className="site-nav">
+    <nav className={['site-nav', className].filter(Boolean).join(' ')}>
       <a className="nav-logo" href="#" aria-label="Pocket Atlas — home">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/assets/logo.svg" alt="Pocket Atlas" />

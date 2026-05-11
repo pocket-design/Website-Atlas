@@ -349,20 +349,41 @@ const ALL_LOCALES: Locale[] = [
 
 const DEFAULT_LOCALE_KEYS = ['de', 'br', 'jp', 'ke'];
 
+export type HeroAdapterProps = {
+  /**
+   * When true, the adapter stays in the DOM for layout but does not
+   * dispatch the BG intro or start the typewriter until unpaused.
+   */
+  paused?: boolean;
+};
+
 /**
  * Hero half of the flow: the double-bordered input box with
  * Demo story / Take this global buttons. Renders inside the
  * .hero section so the globe sits behind it.
  */
-export function HeroAdapter() {
+export function HeroAdapter({ paused = false }: HeroAdapterProps) {
   const [revealedWords, setRevealedWords] = useState(0);
   const [done, setDone] = useState(false);
   const words = useRef(DEMO_STORY.split(/(\s+)/)).current;
   const totalWords = useRef(words.filter((w) => !/^\s+$/.test(w)).length).current;
+  const introFiredRef = useRef(false);
 
   useEffect(() => {
+    if (paused) return;
+
     let cancelled = false;
     let wordIdx = 0;
+
+    if (!introFiredRef.current) {
+      introFiredRef.current = true;
+      // Persist the request so HeroBg can start even if it mounts after this fires.
+      (window as any).__heroBgIntroStartRequested = true;
+      // Defer one frame so listeners mounted in sibling components are ready.
+      requestAnimationFrame(() => {
+        window.dispatchEvent(new CustomEvent('hero-bg-intro-start'));
+      });
+    }
 
     const reveal = () => {
       if (cancelled) return;
@@ -381,7 +402,7 @@ export function HeroAdapter() {
 
     reveal();
     return () => { cancelled = true; };
-  }, [totalWords]);
+  }, [paused, totalWords]);
 
   let wordCounter = 0;
 

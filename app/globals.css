@@ -438,31 +438,273 @@ body {
   pointer-events: none;
 }
 
+/* Hero fold — staggered entrance (eyebrow → divider → title lines → adapt → nav) */
+@keyframes hero-entrance-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes hero-entrance-rise-eyebrow {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-16px);
+  }
+}
+
+@keyframes hero-entrance-nav-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes hero-entrance-nav-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.hero-entrance {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* Per-child rise: animation-delay = --he-delay + --he-stagger */
+.hero-entrance-rise {
+  animation: hero-entrance-rise var(--he-dur, 240ms) cubic-bezier(0.22, 1, 0.36, 1)
+    calc(var(--he-delay, 0ms) + var(--he-stagger, 0ms)) forwards;
+}
+
+.hero-entrance-rise-eyebrow {
+  animation: hero-entrance-rise-eyebrow var(--he-dur, 190ms) cubic-bezier(0.22, 1, 0.36, 1)
+    calc(var(--he-delay, 0ms) + var(--he-stagger, 0ms)) forwards;
+}
+
+.hero-title .hero-title-line {
+  display: block;
+}
+
+/* Hide pre-reveal adapter visually; DOM stays for layout (no CLS below hero) */
+.hero-adapt-slot--prerun {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Nav delay: HeroSection sets --he-nav-delay on :root; fallback = NAV_DELAY_MS (773) */
+.site-nav.hero-entrance--nav {
+  opacity: 0;
+  --he-nav-dur: 340ms;
+  --he-nav-delay: 773ms;
+  animation: hero-entrance-nav-in var(--he-nav-dur) ease-out var(--he-nav-delay) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero .hero-entrance {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none;
+  }
+
+  .hero .hero-eyebrow {
+    transform: translateY(-16px);
+  }
+
+  .site-nav.hero-entrance--nav {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none;
+  }
+
+  .site-nav.hero-entrance--nav {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (max-width: 768px) {
+  .site-nav.hero-entrance--nav {
+    transform: none !important;
+  }
+}
+
 .hero-bg-wrap {
   position: absolute;
   inset: 0;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
+
+  /* Default mapping:
+     - base: BG2
+     - top:  BG1 (masked on hover) */
+  --hero-bg-base: var(--hero-bg-b);
+  --hero-bg-top: var(--hero-bg-a);
 }
 .hero-bg-img {
   position: absolute;
-  inset: -10%;
-  width: 120%;
-  height: 120%;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   user-select: none;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+.hero-bg-img-base {
+  background-image: var(--hero-bg-base);
+  transform: translate3d(0, var(--hero-parallax-base, 0px), 0)
+    scale(var(--hero-scale-base, 1));
+}
+.hero-bg-img-top {
+  background-image: var(--hero-bg-top);
+  transform: translate3d(0, var(--hero-parallax-top, 0px), 0)
+    scale(var(--hero-scale-top, 1));
+  opacity: var(--hero-idle-o, 0);
+  transition: none;
+  will-change: mask-image, -webkit-mask-image, opacity;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
+}
+
+.hero-bg-img-base--video {
+  background-image: none;
+}
+
+/* While the intro is running we want the BG1 lineart to back the bloom reveal
+   (same as image mode), not an empty base with the raw video peeking through. */
+.hero-bg-wrap.hero-bg-preintro .hero-bg-img-base--video,
+.hero-bg-wrap.hero-bg-intro .hero-bg-img-base--video {
+  background-image: var(--hero-bg-base);
+}
+
+.hero-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-bg-video.hero-bg-video--visible {
+  opacity: 1;
+}
+
+/* Belt-and-braces: even if the video state has been flipped to visible (e.g.
+   on a replay or cached decode), keep it hidden during pre-intro / intro phases
+   so it can't peek out before the cross-fade. */
+.hero-bg-wrap.hero-bg-preintro .hero-bg-video,
+.hero-bg-wrap.hero-bg-intro:not(.hero-bg-outro) .hero-bg-video {
+  opacity: 0;
+}
+
+/* Outro: snap the video to fully visible underneath, then slowly dissolve the
+   PNG on top to reveal it. Only one layer fades, so the lineart base can't
+   peek through at the midpoint. */
+.hero-bg-wrap.hero-bg-outro .hero-bg-video {
+  opacity: 1;
+  transition: none;
+}
+.hero-bg-wrap.hero-bg-outro .hero-bg-img-top {
+  opacity: 0;
+  transition: opacity 2000ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg-video {
+    transition: none;
+  }
+  .hero-bg-video.hero-bg-video--visible {
+    opacity: 1;
+  }
+}
+
+/* Hover reveal: BG1 (top) masked over BG2 (base) */
+.hero-bg-wrap.hero-bg-hovering .hero-bg-img-top {
+  opacity: var(--hero-top-o, 1);
+}
+.hero-bg-wrap.hero-bg-intro .hero-bg-img-top {
+  opacity: 1;
+}
+
+/* Intro mapping (reversed):
+   - base: BG1
+   - top:  BG2 (revealed with bloom mask) */
+.hero-bg-wrap.hero-bg-intro {
+  --hero-bg-base: var(--hero-bg-a);
+  --hero-bg-top: var(--hero-bg-b);
+}
+
+/* Pre-intro: hold the same mapping as intro, but keep top hidden */
+.hero-bg-wrap.hero-bg-preintro {
+  --hero-bg-base: var(--hero-bg-a);
+  --hero-bg-top: var(--hero-bg-b);
+}
+.hero-bg-wrap.hero-bg-preintro .hero-bg-img-top {
+  opacity: var(--hero-idle-o, 0);
+}
+
+@supports (-webkit-mask-image: radial-gradient(circle, #000, transparent)) or
+  (mask-image: radial-gradient(circle, #000, transparent)) {
+  .hero-bg-img-top {
+    -webkit-mask-image: radial-gradient(
+      circle at var(--hero-mx, 50%) var(--hero-my, 50%),
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 1) calc(var(--hero-reveal-r, 180px) - var(--hero-reveal-f, 110px)),
+      rgba(0, 0, 0, 0) var(--hero-reveal-r, 180px)
+    );
+    mask-image: radial-gradient(
+      circle at var(--hero-mx, 50%) var(--hero-my, 50%),
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 1) calc(var(--hero-reveal-r, 180px) - var(--hero-reveal-f, 110px)),
+      rgba(0, 0, 0, 0) var(--hero-reveal-r, 180px)
+    );
+  }
+
+  /* Intro bloom reveal uses its own radius/feather vars */
+  .hero-bg-wrap.hero-bg-intro .hero-bg-img-top {
+    -webkit-mask-image: radial-gradient(
+      circle at 50% 44%,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 1) calc(var(--hero-intro-r, 0px) - var(--hero-intro-f, 140px)),
+      rgba(0, 0, 0, 0) var(--hero-intro-r, 0px)
+    );
+    mask-image: radial-gradient(
+      circle at 50% 44%,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 1) calc(var(--hero-intro-r, 0px) - var(--hero-intro-f, 140px)),
+      rgba(0, 0, 0, 0) var(--hero-intro-r, 0px)
+    );
+  }
 }
 .hero-bg-imgs {
   position: absolute;
   inset: 0;
-  filter: blur(0px);
-  transition: filter 5s cubic-bezier(0.2, 0, 0.2, 1);
+  opacity: 1;
+  transition: opacity 220ms ease;
 }
 .hero-imgs-hidden {
-  filter: blur(6px) !important;
+  opacity: 0;
 }
 .hero-bg-fade-bottom {
   position: absolute;
@@ -2155,6 +2397,11 @@ footer {
     right: var(--sp-2);
     transform: none;
     width: auto;
+  }
+
+  .site-nav.hero-entrance--nav {
+    animation-name: hero-entrance-nav-fade;
+    animation-timing-function: ease-out;
   }
 
   /* Hero */

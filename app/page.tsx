@@ -1,4 +1,4 @@
-import { HeroAdapter, LocaleCascade } from '@/components/AdaptationFlow';
+import { LocaleCascade } from '@/components/AdaptationFlow';
 import BentoGraphic from '@/components/BentoGraphic';
 import InteractiveGlobe from '@/components/InteractiveGlobe';
 import BentoHeader from '@/components/BentoHeader';
@@ -7,7 +7,7 @@ import RoughUnderline from '@/components/RoughUnderline';
 import CountUp from '@/components/CountUp';
 import NavBar from '@/components/NavBar';
 import TryItSection from '@/components/TryItSection';
-import HeroBg from '@/components/HeroBg';
+import HeroSection from '@/components/HeroSection';
 
 export default function Home() {
   const jsonLd = {
@@ -38,48 +38,11 @@ export default function Home() {
       />
 
 
-      {/* NAV */}
-      <NavBar />
+      {/* NAV — entrance staggered last (see .hero-entrance--nav) */}
+      <NavBar className="hero-entrance--nav" />
 
       {/* FOLD 1 — HERO */}
-      <section className="hero">
-        <HeroBg />
-        <div className="hero-eyebrow">Meet Atlas by Pocket</div>
-        <div className="hero-divider" aria-hidden="true">
-          <svg
-            className="hero-divider-ornament"
-            viewBox="0 0 220 18"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            preserveAspectRatio="xMidYMid meet"
-          >
-            {/* Outer terminal dots — left and right, equal */}
-            <circle cx="4"   cy="9" r="1.4" fill="currentColor" stroke="none" />
-            <circle cx="216" cy="9" r="1.4" fill="currentColor" stroke="none" />
-
-            {/* Hairline strokes — mirrored exactly across the
-                vertical axis x=110 */}
-            <line x1="10"  y1="9" x2="92"  y2="9" strokeWidth="1" />
-            <line x1="128" y1="9" x2="210" y2="9" strokeWidth="1" />
-
-            {/* Inner punctuation dots flanking the medallion */}
-            <circle cx="98"  cy="9" r="1.1" fill="currentColor" stroke="none" />
-            <circle cx="122" cy="9" r="1.1" fill="currentColor" stroke="none" />
-
-            {/* Center diamond medallion — symmetric around x=110 */}
-            <path
-              d="M110 3 L 117 9 L 110 15 L 103 9 Z"
-              fill="currentColor"
-              stroke="none"
-            />
-          </svg>
-        </div>
-        <h1 className="t-hero hero-title">
-          Incredibly powerful story adaptation engine for writers
-        </h1>
-        <HeroAdapter />
-      </section>
+      <HeroSection />
 
       {/* FOLD 2 — Cascade: one English passage, five locales */}
       <section id="locale-cascade" className="cascade">
