@@ -5,41 +5,43 @@ import { useEffect, useRef } from 'react';
 const RADIUS = 260; // reveal circle radius in px
 
 export default function HeroBg() {
-  const wrapRef      = useRef<HTMLDivElement>(null);
-  const realisticRef = useRef<HTMLImageElement>(null);
+  const wrapRef    = useRef<HTMLDivElement>(null);
+  const lineartRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    const wrap = wrapRef.current;
-    const img  = realisticRef.current;
-    if (!wrap || !img) return;
+    const wrap    = wrapRef.current;
+    const lineart = lineartRef.current;
+    if (!wrap || !lineart) return;
 
-    const hide = () => {
-      img.style.setProperty('-webkit-mask-image',
-        `radial-gradient(circle 0px at center, transparent 100%)`);
-      img.style.setProperty('mask-image',
-        `radial-gradient(circle 0px at center, transparent 100%)`);
+    // Fully opaque by default — no hole yet
+    const show = () => {
+      lineart.style.setProperty('-webkit-mask-image', 'none');
+      lineart.style.setProperty('mask-image',         'none');
     };
 
-    // Listen on window so pointer-events settings on child elements
-    // never block the reveal.
+    // Cut a feathered hole in the lineart at cursor position,
+    // letting the realistic image beneath show through.
+    // transparent = hole (reveals realistic), black = keep lineart
     const onMove = (e: MouseEvent) => {
       const rect = wrap.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
-      // Hide when cursor is outside the hero image area
       if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
-        hide();
+        show();
         return;
       }
 
-      const mask =
-        `radial-gradient(circle ${RADIUS}px at ${x}px ${y}px, black 30%, transparent 100%)`;
-      img.style.setProperty('-webkit-mask-image', mask);
-      img.style.setProperty('mask-image',         mask);
+      const mask = `radial-gradient(circle ${RADIUS}px at ${x}px ${y}px,
+        transparent 0%,
+        transparent 30%,
+        black 70%,
+        black 100%)`;
+      lineart.style.setProperty('-webkit-mask-image', mask);
+      lineart.style.setProperty('mask-image',         mask);
     };
 
-    hide(); // start hidden
+    show();
     window.addEventListener('mousemove', onMove);
     return () => window.removeEventListener('mousemove', onMove);
   }, []);
@@ -47,17 +49,17 @@ export default function HeroBg() {
   return (
     <div ref={wrapRef} className="hero-bg-wrap" aria-hidden="true">
 
-      {/* realistic — revealed by cursor-radius mask */}
+      {/* realistic — always fully visible, sits below */}
       <img
-        ref={realisticRef}
         src="/assets/hero-realistic.jpg"
         alt=""
         className="hero-bg-img hero-bg-realistic"
         draggable={false}
       />
 
-      {/* line-art — always on top */}
+      {/* line-art — on top, cursor punches a hole through it */}
       <img
+        ref={lineartRef}
         src="/assets/hero-lineart.jpg"
         alt=""
         className="hero-bg-img hero-bg-lineart"

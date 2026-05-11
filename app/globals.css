@@ -303,12 +303,12 @@ nav {
   user-select: none;
 }
 
-/* realistic sits below — JS applies mask-image on every mousemove */
+/* realistic sits below — always fully visible, no mask needed */
 .hero-bg-realistic {
   z-index: 1;
 }
 
-/* line-art sits on top — always fully visible */
+/* line-art sits on top — JS cuts a hole at the cursor position */
 .hero-bg-lineart {
   z-index: 2;
 }
