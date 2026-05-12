@@ -319,7 +319,8 @@ function TweakModal({ locales, onClose }: { locales: string[]; onClose: () => vo
     <div className="tweak-overlay" onClick={onClose}>
       <div className="tweak-modal" onClick={(e) => e.stopPropagation()}>
         <div className="tweak-header">
-          <h2 className="tweak-title">Tweak mappings</h2>
+          <h2 className="tweak-title">Change mappings</h2>
+          <p className="tweak-subtitle">Removing or editing a mapping will reflow the adapted prose to accommodate the change(s).</p>
         </div>
         <div className="tweak-tabs">
           {locales.map((code) => {
@@ -346,7 +347,7 @@ function TweakModal({ locales, onClose }: { locales: string[]; onClose: () => vo
                 value={mapping.target}
                 onChange={(e) => updateMapping(i, e.target.value)}
               />
-              <button className="tweak-delete" onClick={() => deleteMapping(i)} aria-label="Delete mapping">
+              <button className="tweak-delete" onClick={() => deleteMapping(i)} aria-label="Delete mapping" data-tooltip="Delete" disabled={(mappings[activeLocale] || []).length <= 3}>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                   <path d="M2.5 3.5h9M5.5 3.5V2.5a1 1 0 011-1h1a1 1 0 011 1v1M11 3.5l-.5 8a1 1 0 01-1 1h-5a1 1 0 01-1-1l-.5-8M5.5 6v4M8.5 6v4" />
                 </svg>
@@ -369,6 +370,7 @@ export default function TryPage() {
   const [activeTab, setActiveTab] = useState('de');
   const [isAdapting, setIsAdapting] = useState(false);
   const [results, setResults] = useState<Record<string, string>>({});
+  const [hasAdapted, setHasAdapted] = useState(false);
   const [showTweak, setShowTweak] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -385,6 +387,7 @@ export default function TryPage() {
         adapted[code] = `[${locale?.label} adaptation of your story will appear here once the Atlas API is connected. This is a placeholder demonstrating the output panel.]`;
       });
       setResults(adapted);
+      setHasAdapted(true);
       setIsAdapting(false);
     }, 3000);
   };
@@ -454,7 +457,7 @@ export default function TryPage() {
                 <div className="try-result-text">{results[activeTab]}</div>
               ) : (
                 <div className="try-empty">
-                  <p>Your adapted story will appear here</p>
+                  <p>Your adaptation will appear here.</p>
                 </div>
               )}
             </div>
@@ -470,23 +473,35 @@ export default function TryPage() {
               <span className="try-meta-item">{source.length} characters</span>
             </div>
             <button
-              className="btn-brand try-adapt-btn"
+              className={`${hasAdapted ? 'btn-secondary' : 'btn-brand'} try-adapt-btn`}
               disabled={!source.trim() || isAdapting}
               onClick={handleAdapt}
             >
-              {isAdapting ? 'Adapting...' : 'Adapt my story'}
+              {isAdapting ? (hasAdapted ? 'Regenerating...' : 'Adapting...') : hasAdapted ? <>Regenerate <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4" /></svg></> : 'Adapt my story'}
             </button>
           </div>
           <div className="try-action-half try-action-right">
             <div className="try-action-meta">
-              <span className="try-meta-item">{Object.keys(results).length} {Object.keys(results).length === 1 ? 'adaptation' : 'adaptations'}</span>
+              <span className="try-meta-item">{results[activeTab] ? results[activeTab].trim().split(/\s+/).length : 0} words</span>
+              <span className="try-meta-sep">·</span>
+              <span className="try-meta-item">{results[activeTab] ? results[activeTab].length : 0} characters</span>
             </div>
             {Object.keys(results).length > 0 && (
               <>
-                <button className="btn-secondary try-tweak-btn" onClick={() => setShowTweak(true)}>
-                  Tweak mappings
+                <button className="try-icon-btn" onClick={() => { setResults({}); }} aria-label="Clear" data-tooltip="Clear">
+                  <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                    <path d="M4 4l8 8M12 4l-8 8" />
+                  </svg>
                 </button>
-                <button className="btn-secondary try-download-btn" onClick={() => {
+                <button className="try-icon-btn" onClick={() => setShowTweak(true)} aria-label="Change mappings" data-tooltip="Change mappings">
+                  <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M2 4h3m3 0h6M2 8h6m3 0h3M2 12h1m3 0h8" />
+                    <circle cx="7" cy="4" r="1.5" />
+                    <circle cx="10" cy="8" r="1.5" />
+                    <circle cx="5" cy="12" r="1.5" />
+                  </svg>
+                </button>
+                <button className="btn-secondary" onClick={() => {
                   const text = results[activeTab] || '';
                   const blob = new Blob([text], { type: 'text/plain' });
                   const url = URL.createObjectURL(blob);
@@ -496,6 +511,9 @@ export default function TryPage() {
                   a.click();
                   URL.revokeObjectURL(url);
                 }}>
+                  <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M8 2v9m0 0l-3-3m3 3l3-3M3 13h10" />
+                  </svg>
                   Download
                 </button>
               </>
