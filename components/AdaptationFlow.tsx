@@ -2,8 +2,7 @@
 
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-
-const DEMO_STORY = `After class, Maya ducked into the corner store on Elm Street and picked up her grandmother's afternoon usual, a pack of biscuits and a carton of tea. The shopkeeper, Mr. Farhan, who had known three generations of the family, slid an extra packet of toffees across the counter without being asked. Outside, the late afternoon rain hadn't quite let up, and Maya's bag thumped against her hip as she ran the four blocks home past St. Joseph's Church. The street smelled of wet asphalt and frying onions from Dev's cart near the intersection, and somewhere behind her a bicycle bell rang twice, impatient and sharp. She cut through the narrow lane between old Ramesh's tailor shop and the Sullivan & Sons printing press, stepping over a puddle that had been there since monsoon began. Her grandmother Nani would already be on the porch, watching the road, ready to scold her for being late and then ask, in the same breath, whether she'd remembered the tea.`;
+import { DEMO_STORY, DEFAULT_LOCALE_KEYS } from '@/lib/locales';
 
 /**
  * Each locale's adapted passage is broken into segments so we
@@ -347,7 +346,6 @@ const ALL_LOCALES: Locale[] = [
   },
 ];
 
-const DEFAULT_LOCALE_KEYS = ['de', 'br', 'jp', 'ke'];
 
 /**
  * Hero half of the flow: the double-bordered input box with

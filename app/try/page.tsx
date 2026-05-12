@@ -1,18 +1,40 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import NavBar from '@/components/NavBar';
+import { ALL_LOCALES as LOCALE_META, SOURCE_LOCALES as SOURCE_LOCALE_META } from '@/lib/locales';
+import type { LocaleMeta } from '@/lib/locales';
 
-const ALL_LOCALES = [
-  { code: 'de', flag: 'de', label: 'German' },
-  { code: 'br', flag: 'br', label: 'Portuguese (BR)' },
-  { code: 'jp', flag: 'jp', label: 'Japanese' },
-  { code: 'ke', flag: 'ke', label: 'Swahili' },
-  { code: 'fr', flag: 'fr', label: 'French' },
-  { code: 'in', flag: 'in', label: 'Hindi' },
-  { code: 'es', flag: 'es', label: 'Spanish' },
-  { code: 'kr', flag: 'kr', label: 'Korean' },
-];
+const ALL_LOCALES = LOCALE_META.map((l: LocaleMeta) => ({ code: l.code, flag: l.countryCode, label: l.name }));
+
+function Tooltip({ label, children }: { label: string; children: React.ReactElement }) {
+  const [show, setShow] = useState(false);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const ref = useRef<HTMLSpanElement>(null);
+
+  const handleEnter = () => {
+    if (ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      setPos({ x: rect.left + rect.width / 2, y: rect.top });
+      setShow(true);
+    }
+  };
+
+  return (
+    <span ref={ref} onMouseEnter={handleEnter} onMouseLeave={() => setShow(false)} style={{ display: 'inline-flex' }}>
+      {children}
+      {show && createPortal(
+        <span className="portal-tooltip" style={{ left: pos.x, top: pos.y }}>
+          <span className="portal-tooltip-pill">{label}</span>
+          <span className="portal-tooltip-notch" />
+        </span>,
+        document.body
+      )}
+    </span>
+  );
+}
+
 
 function LocaleChevrons() {
   return (
@@ -76,16 +98,7 @@ function SquareLoader({ finishing }: { finishing: boolean }) {
   );
 }
 
-const SOURCE_LOCALES = [
-  { code: 'en', flag: 'us', label: 'English' },
-  { code: 'de', flag: 'de', label: 'German' },
-  { code: 'br', flag: 'br', label: 'Portuguese (BR)' },
-  { code: 'jp', flag: 'jp', label: 'Japanese' },
-  { code: 'fr', flag: 'fr', label: 'French' },
-  { code: 'in', flag: 'in', label: 'Hindi' },
-  { code: 'es', flag: 'es', label: 'Spanish' },
-  { code: 'kr', flag: 'kr', label: 'Korean' },
-];
+const SOURCE_LOCALES = SOURCE_LOCALE_META.map((l: LocaleMeta) => ({ code: l.code, flag: l.countryCode, label: l.name }));
 
 function SourceLocaleSwitcher() {
   const [selected, setSelected] = useState(SOURCE_LOCALES[0]);
@@ -347,7 +360,7 @@ function TweakModal({ locales, onClose }: { locales: string[]; onClose: () => vo
                 value={mapping.target}
                 onChange={(e) => updateMapping(i, e.target.value)}
               />
-              <button className="tweak-delete" onClick={() => deleteMapping(i)} aria-label="Delete mapping" data-tooltip="Delete" disabled={(mappings[activeLocale] || []).length <= 3}>
+              <button className="icon-btn-tertiary tweak-delete" onClick={() => deleteMapping(i)} aria-label="Delete mapping" data-tooltip="Delete" disabled={(mappings[activeLocale] || []).length <= 3}>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                   <path d="M2.5 3.5h9M5.5 3.5V2.5a1 1 0 011-1h1a1 1 0 011 1v1M11 3.5l-.5 8a1 1 0 01-1 1h-5a1 1 0 01-1-1l-.5-8M5.5 6v4M8.5 6v4" />
                 </svg>
@@ -364,32 +377,194 @@ function TweakModal({ locales, onClose }: { locales: string[]; onClose: () => vo
   );
 }
 
+type Chapter = { id: number; content: string };
+type ChapterResult = { status: 'pending' | 'streaming' | 'done'; text: string };
+
+let nextChapterId = 2;
+
+function ChapterEditor({ chapters, onChange }: {
+  chapters: Chapter[];
+  onChange: (chapters: Chapter[]) => void;
+}) {
+  const lastChapterRef = useRef<HTMLDivElement>(null);
+  const lastTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const prevCountRef = useRef(chapters.length);
+
+  useEffect(() => {
+    if (chapters.length > prevCountRef.current && lastChapterRef.current) {
+      lastChapterRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(() => lastTextareaRef.current?.focus(), 300);
+    }
+    prevCountRef.current = chapters.length;
+  }, [chapters.length]);
+
+  const updateContent = (id: number, content: string) => {
+    onChange(chapters.map((ch) => ch.id === id ? { ...ch, content } : ch));
+  };
+
+  const deleteChapter = (id: number) => {
+    if (chapters.length <= 1) return;
+    onChange(chapters.filter((ch) => ch.id !== id));
+  };
+
+  return (
+    <div className="chapter-editor">
+      {chapters.map((ch, idx) => (
+        <div key={ch.id} className="chapter-block" ref={idx === chapters.length - 1 ? lastChapterRef : undefined}>
+          <div className="chapter-header">
+            <span className="chapter-title">Chapter {idx + 1}</span>
+            <div className="chapter-actions">
+              {chapters.length > 1 && (
+                <Tooltip label="Delete chapter">
+                  <button
+                    className="icon-btn-tertiary"
+                    onClick={() => deleteChapter(ch.id)}
+                    aria-label="Delete chapter"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                      <path d="M2.5 3.5h9M5.5 3.5V2.5a1 1 0 011-1h1a1 1 0 011 1v1M11 3.5l-.5 8a1 1 0 01-1 1h-5a1 1 0 01-1-1l-.5-8M5.5 6v4M8.5 6v4" />
+                    </svg>
+                  </button>
+                </Tooltip>
+              )}
+            </div>
+          </div>
+          <textarea
+            ref={idx === chapters.length - 1 ? lastTextareaRef : undefined}
+            className="try-textarea chapter-textarea"
+            placeholder={`Write your chapter ${idx + 1} here...`}
+            value={ch.content}
+            onChange={(e) => updateContent(ch.id, e.target.value)}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ChapterOutput({ chapterResults, onDelete }: {
+  chapterResults: ChapterResult[];
+  onDelete: (idx: number) => void;
+}) {
+  return (
+    <div className="chapter-output">
+      {chapterResults.map((cr, idx) => (
+        <div key={idx} className="chapter-block chapter-block-output">
+          <div className="chapter-header chapter-header-output">
+            <span className={`chapter-title${cr.status === 'streaming' ? ' is-streaming' : ''}`}>
+              {cr.status === 'pending' ? (
+                <>Chapter {idx + 1} in progress<span className="chapter-ellipsis" /></>
+              ) : cr.status === 'streaming' ? (
+                <>Chapter {idx + 1} in progress<span className="chapter-ellipsis" /></>
+              ) : (
+                <>Chapter {idx + 1}</>
+              )}
+            </span>
+            {cr.status === 'done' && chapterResults.length > 1 && (
+              <div className="chapter-actions">
+                <Tooltip label="Delete chapter">
+                  <button
+                    className="icon-btn-tertiary"
+                    onClick={() => onDelete(idx)}
+                    aria-label="Delete chapter"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                      <path d="M2.5 3.5h9M5.5 3.5V2.5a1 1 0 011-1h1a1 1 0 011 1v1M11 3.5l-.5 8a1 1 0 01-1 1h-5a1 1 0 01-1-1l-.5-8M5.5 6v4M8.5 6v4" />
+                    </svg>
+                  </button>
+                </Tooltip>
+              </div>
+            )}
+          </div>
+          <div className="chapter-result-text">
+            {cr.status === 'pending' ? null : cr.text}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function TryPage() {
-  const [source, setSource] = useState('');
+  const [chapters, setChapters] = useState<Chapter[]>([{ id: 1, content: '' }]);
   const [selectedLocales, setSelectedLocales] = useState<string[]>(['de', 'br', 'jp']);
   const [activeTab, setActiveTab] = useState('de');
   const [isAdapting, setIsAdapting] = useState(false);
-  const [results, setResults] = useState<Record<string, string>>({});
+  const [results, setResults] = useState<Record<string, ChapterResult[]>>({});
   const [hasAdapted, setHasAdapted] = useState(false);
   const [showTweak, setShowTweak] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  const totalSource = chapters.map((c) => c.content).join('\n');
+  const totalSourceWords = totalSource.trim() ? totalSource.trim().split(/\s+/).length : 0;
+  const totalSourceChars = totalSource.length;
+
+  const activeResults = results[activeTab] || [];
+  const totalResultText = activeResults.map((r) => r.text).join('\n');
+  const totalResultWords = totalResultText.trim() ? totalResultText.trim().split(/\s+/).length : 0;
+  const totalResultChars = totalResultText.length;
+  const hasAnyResult = activeResults.some((r) => r.status === 'done');
 
   const handleAdapt = () => {
-    if (!source.trim() || isAdapting) return;
+    if (!totalSource.trim() || isAdapting) return;
     setIsAdapting(true);
     setResults({});
 
-    setTimeout(() => {
-      const adapted: Record<string, string> = {};
-      selectedLocales.forEach((code) => {
-        const locale = ALL_LOCALES.find((l) => l.code === code);
-        adapted[code] = `[${locale?.label} adaptation of your story will appear here once the Atlas API is connected. This is a placeholder demonstrating the output panel.]`;
+    const chapterCount = chapters.length;
+
+    const initialResults: Record<string, ChapterResult[]> = {};
+    selectedLocales.forEach((code) => {
+      initialResults[code] = chapters.map(() => ({ status: 'pending' as const, text: '' }));
+    });
+    setResults(initialResults);
+
+    selectedLocales.forEach((code) => {
+      const locale = ALL_LOCALES.find((l) => l.code === code);
+      chapters.forEach((ch, chIdx) => {
+        const delay = chIdx * 2000 + 800;
+        const streamDelay = delay + 1200;
+        const doneDelay = streamDelay + 1500;
+
+        setTimeout(() => {
+          setResults((prev) => {
+            const next = { ...prev };
+            next[code] = [...(next[code] || [])];
+            next[code][chIdx] = { status: 'streaming', text: '' };
+            return next;
+          });
+        }, delay);
+
+        setTimeout(() => {
+          setResults((prev) => {
+            const next = { ...prev };
+            next[code] = [...(next[code] || [])];
+            next[code][chIdx] = {
+              status: 'streaming',
+              text: `[${locale?.label} adaptation of Chapter ${chIdx + 1} will appear here once the Atlas API is connected.]`,
+            };
+            return next;
+          });
+        }, streamDelay);
+
+        setTimeout(() => {
+          setResults((prev) => {
+            const next = { ...prev };
+            next[code] = [...(next[code] || [])];
+            next[code][chIdx] = {
+              status: 'done',
+              text: `[${locale?.label} adaptation of Chapter ${chIdx + 1} will appear here once the Atlas API is connected. This is a placeholder demonstrating the sequential chapter output.]`,
+            };
+            return next;
+          });
+
+          const isLastChapter = chIdx === chapterCount - 1;
+          const isLastLocale = code === selectedLocales[selectedLocales.length - 1];
+          if (isLastChapter && isLastLocale) {
+            setHasAdapted(true);
+            setIsAdapting(false);
+          }
+        }, doneDelay);
       });
-      setResults(adapted);
-      setHasAdapted(true);
-      setIsAdapting(false);
-    }, 3000);
+    });
   };
 
   return (
@@ -406,13 +581,7 @@ export default function TryPage() {
               </div>
             </div>
             <div className="try-pane-body">
-              <textarea
-                ref={textareaRef}
-                className="try-textarea"
-                placeholder="Write or paste your story here..."
-                value={source}
-                onChange={(e) => setSource(e.target.value)}
-              />
+              <ChapterEditor chapters={chapters} onChange={setChapters} />
             </div>
           </div>
 
@@ -447,14 +616,25 @@ export default function TryPage() {
                 )}
               </div>
             </div>
-            <div className={`try-pane-body try-pane-output${results[activeTab] ? ' has-result' : ''}`}>
-              {isAdapting ? (
+            <div className={`try-pane-body try-pane-output${hasAnyResult ? ' has-result' : ''}`}>
+              {activeResults.length > 0 ? (
+                <ChapterOutput
+                  chapterResults={activeResults}
+                  onDelete={(idx) => {
+                    setResults((prev) => {
+                      const next = { ...prev };
+                      Object.keys(next).forEach((code) => {
+                        next[code] = next[code].filter((_, i) => i !== idx);
+                      });
+                      return next;
+                    });
+                  }}
+                />
+              ) : isAdapting ? (
                 <div className="try-loading">
                   <SquareLoader finishing={false} />
                   <p className="try-loading-text">Adapting your story...</p>
                 </div>
-              ) : results[activeTab] ? (
-                <div className="try-result-text">{results[activeTab]}</div>
               ) : (
                 <div className="try-empty">
                   <p>Your adaptation will appear here.</p>
@@ -468,27 +648,36 @@ export default function TryPage() {
         <div className="try-action-bar">
           <div className="try-action-half try-action-left">
             <div className="try-action-meta">
-              <span className="try-meta-item">{source.trim() ? source.trim().split(/\s+/).length : 0} words</span>
+              <span className="try-meta-item">{totalSourceWords} words</span>
               <span className="try-meta-sep">·</span>
-              <span className="try-meta-item">{source.length} characters</span>
+              <span className="try-meta-item">{totalSourceChars} characters</span>
             </div>
             <button
+              className="btn-secondary chapter-add-btn-bar"
+              onClick={() => setChapters((prev) => [...prev, { id: nextChapterId++, content: '' }])}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                <path d="M8 3v10M3 8h10" />
+              </svg>
+              Add chapter
+            </button>
+            <button
               className={`${hasAdapted ? 'btn-secondary' : 'btn-brand'} try-adapt-btn`}
-              disabled={!source.trim() || isAdapting}
+              disabled={!totalSource.trim() || isAdapting}
               onClick={handleAdapt}
             >
-              {isAdapting ? (hasAdapted ? 'Regenerating...' : 'Adapting...') : hasAdapted ? <>Regenerate <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4" /></svg></> : 'Adapt my story'}
+              {isAdapting ? (hasAdapted ? 'Regenerating...' : 'Adapting...') : hasAdapted ? <>Regenerate <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4" /></svg></> : 'Adapt'}
             </button>
           </div>
           <div className="try-action-half try-action-right">
             <div className="try-action-meta">
-              <span className="try-meta-item">{results[activeTab] ? results[activeTab].trim().split(/\s+/).length : 0} words</span>
+              <span className="try-meta-item">{totalResultWords} words</span>
               <span className="try-meta-sep">·</span>
-              <span className="try-meta-item">{results[activeTab] ? results[activeTab].length : 0} characters</span>
+              <span className="try-meta-item">{totalResultChars} characters</span>
             </div>
-            {Object.keys(results).length > 0 && (
+            {hasAnyResult && (
               <>
-                <button className="try-icon-btn" onClick={() => { setResults({}); }} aria-label="Clear" data-tooltip="Clear">
+                <button className="try-icon-btn" onClick={() => { setResults({}); setHasAdapted(false); }} aria-label="Clear" data-tooltip="Clear">
                   <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                     <path d="M4 4l8 8M12 4l-8 8" />
                   </svg>
@@ -502,7 +691,7 @@ export default function TryPage() {
                   </svg>
                 </button>
                 <button className="btn-secondary" onClick={() => {
-                  const text = results[activeTab] || '';
+                  const text = activeResults.map((r, i) => `Chapter ${i + 1}\n\n${r.text}`).join('\n\n---\n\n');
                   const blob = new Blob([text], { type: 'text/plain' });
                   const url = URL.createObjectURL(blob);
                   const a = document.createElement('a');
