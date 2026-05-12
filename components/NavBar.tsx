@@ -27,7 +27,7 @@ export default function NavBar({ centerLabel, ctaLabel = 'Try it now', ctaHref =
             <a href="#proof">Proof</a>
           </li>
           <li>
-            <a href="#writers">Writers</a>
+            <a href="#writers">Adapted shows</a>
           </li>
         </ul>
       )}

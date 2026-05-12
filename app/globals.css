@@ -602,7 +602,7 @@ body {
 
 /* ── FOLD 2 — CASCADE ────────────────────────────────────── */
 .cascade {
-  padding: 0 var(--sp-8) var(--sp-8);
+  padding: 0 0 var(--sp-8);
   text-align: center;
   position: relative;
 }
@@ -1100,10 +1100,15 @@ section.cards-section { background: var(--surface-page); }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
-  max-width: 1200px;
-  margin: 0 auto;
-  border: var(--border-hairline);
-  border-radius: var(--r-card);
+  width: 100vw;
+  max-width: 1600px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  border-top: var(--border-hairline);
+  border-bottom: var(--border-hairline);
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: var(--shadow-card);
   background: var(--surface-card);
@@ -1665,25 +1670,26 @@ section.cards-section { background: var(--surface-page); }
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 1px;
+  gap: var(--sp-1);
   max-width: var(--container);
   margin: 0 auto;
-  border: var(--border-hairline);
-  border-radius: var(--r-card);
-  overflow: hidden;
-  background: var(--surface-divider);
-  box-shadow: var(--shadow-card);
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
 }
 
 .bcell {
   background: var(--surface-card);
-  border: none;
-  border-radius: 0;
+  border: var(--border-hairline);
+  border-radius: var(--r-card);
   padding: var(--sp-4);
-  transition: background-color var(--dur-instant) var(--ease);
+  box-shadow: var(--shadow-card);
+  transition: background-color var(--dur-instant) var(--ease), box-shadow var(--dur-instant) var(--ease), border-color var(--dur-instant) var(--ease);
 }
 .bcell:hover {
-  background-color: var(--vellum-tint-7);
+  background-color: var(--surface-card);
 }
 .bcell.span-2 { grid-column: span 2; }
 .bcell.span-3 { grid-column: span 3; }
@@ -1773,29 +1779,34 @@ section.cards-section { background: var(--surface-page); }
 .proof-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0;
+  gap: var(--sp-1);
   max-width: var(--container);
   margin: 0 auto;
-  border: var(--border-hairline);
-  border-radius: var(--r-card);
-  overflow: hidden;
-  background: var(--surface-card);
-  box-shadow: var(--shadow-card);
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
 }
 .proof-card {
   padding: var(--sp-4);
   text-align: left;
-  border-right: var(--border-hairline);
+  border: var(--border-hairline);
+  border-radius: var(--r-card);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-card);
 }
-.proof-card:last-child { border-right: none; }
+.proof-card:last-child { border-right: var(--border-hairline); }
 .proof-card-hero {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-items: start;
   padding: 0;
-  border-right: none;
-  border-bottom: var(--border-hairline);
+  border: var(--border-hairline);
+  border-radius: var(--r-card);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-card);
 }
 .proof-hero-left {
   display: flex;
@@ -1812,7 +1823,7 @@ section.cards-section { background: var(--surface-page); }
   font-size: clamp(56px, 6vw, 72px);
   font-weight: var(--fw-medium);
   line-height: var(--lh-1);
-  color: var(--scarlet);
+  color: var(--ink);
   font-variation-settings: "SERF" 65, "slnt" 0;
 }
 .proof-hero-pct {
@@ -1823,7 +1834,7 @@ section.cards-section { background: var(--surface-page); }
   font-family: var(--ff-display);
   font-size: var(--fs-xl);
   font-weight: var(--fw-medium);
-  color: var(--scarlet);
+  color: var(--ink);
   line-height: var(--lh-snug);
   font-variation-settings: "SERF" 65, "slnt" 0;
 }
@@ -1860,7 +1871,7 @@ section.cards-section { background: var(--surface-page); }
   font-weight: var(--fw-medium);
   font-variation-settings: "SERF" 65, "slnt" 0;
   line-height: var(--lh-1);
-  color: var(--scarlet);
+  color: var(--ink);
   margin-bottom: var(--sp-1);
 }
 .proof-card h3 {
@@ -2276,10 +2287,10 @@ footer {
     grid-template-columns: 1fr;
   }
   .proof-card {
-    border-right: none;
-    border-bottom: var(--border-hairline);
+    border: var(--border-hairline);
+    border-radius: var(--r-card);
   }
-  .proof-card:last-child { border-bottom: none; }
+  .proof-card:last-child { border: var(--border-hairline); }
   .proof-card-hero {
     grid-template-columns: 1fr;
   }

@@ -236,33 +236,6 @@ const DEMO_MAPPINGS: Record<string, Mapping[]> = {
     { source: 'Mr. Farhan', target: 'Herr Yılmaz' },
     { source: 'grandmother', target: 'Oma' },
   ],
-  br: [
-    { source: 'Maya', target: 'Mariana' },
-    { source: 'corner store', target: 'mercadinho' },
-    { source: 'Elm Street', target: 'Rua das Flores' },
-    { source: 'biscuits', target: 'biscoitos Maria' },
-    { source: 'tea', target: 'Guaraná' },
-    { source: 'Mr. Farhan', target: 'Seu Antônio' },
-    { source: 'grandmother', target: 'vovó' },
-  ],
-  jp: [
-    { source: 'Maya', target: '舞' },
-    { source: 'corner store', target: 'コンビニ' },
-    { source: 'Elm Street', target: '桜通り' },
-    { source: 'biscuits', target: 'おせんべい' },
-    { source: 'tea', target: '緑茶' },
-    { source: 'Mr. Farhan', target: '田中のおじさん' },
-    { source: 'grandmother', target: 'おばあちゃん' },
-  ],
-  ke: [
-    { source: 'Maya', target: 'Wanjiku' },
-    { source: 'corner store', target: 'duka' },
-    { source: 'Elm Street', target: 'Kenyatta Avenue' },
-    { source: 'biscuits', target: 'Marie biscuits' },
-    { source: 'tea', target: 'chai' },
-    { source: 'Mr. Farhan', target: 'Mzee Kamau' },
-    { source: 'grandmother', target: 'cucu' },
-  ],
   fr: [
     { source: 'Maya', target: 'Camille' },
     { source: 'corner store', target: "l'épicerie" },
@@ -281,6 +254,15 @@ const DEMO_MAPPINGS: Record<string, Mapping[]> = {
     { source: 'Mr. Farhan', target: 'शर्मा अंकल' },
     { source: 'grandmother', target: 'नानी' },
   ],
+  ta: [
+    { source: 'Maya', target: 'மாயா' },
+    { source: 'corner store', target: 'மளிகைக்கடை' },
+    { source: 'Elm Street', target: 'அண்ணா சாலை' },
+    { source: 'biscuits', target: 'பிஸ்கட்' },
+    { source: 'tea', target: 'டீ' },
+    { source: 'Mr. Farhan', target: 'முருகன் அண்ணா' },
+    { source: 'grandmother', target: 'பாட்டி' },
+  ],
   es: [
     { source: 'Maya', target: 'Lucía' },
     { source: 'corner store', target: 'tienda de barrio' },
@@ -290,14 +272,41 @@ const DEMO_MAPPINGS: Record<string, Mapping[]> = {
     { source: 'Mr. Farhan', target: 'Don Paco' },
     { source: 'grandmother', target: 'abuela' },
   ],
-  kr: [
-    { source: 'Maya', target: '수진' },
-    { source: 'corner store', target: '편의점' },
-    { source: 'Elm Street', target: '동네 골목' },
-    { source: 'biscuits', target: '새우깡' },
-    { source: 'tea', target: '보리차' },
-    { source: 'Mr. Farhan', target: '김 사장님' },
-    { source: 'grandmother', target: '할머니' },
+  it: [
+    { source: 'Maya', target: 'Giulia' },
+    { source: 'corner store', target: 'alimentari' },
+    { source: 'Elm Street', target: 'Via dei Tigli' },
+    { source: 'biscuits', target: 'biscotti' },
+    { source: 'tea', target: 'tè' },
+    { source: 'Mr. Farhan', target: 'Signor Ferrara' },
+    { source: 'grandmother', target: 'nonna' },
+  ],
+  jp: [
+    { source: 'Maya', target: '舞' },
+    { source: 'corner store', target: 'コンビニ' },
+    { source: 'Elm Street', target: '桜通り' },
+    { source: 'biscuits', target: 'おせんべい' },
+    { source: 'tea', target: '緑茶' },
+    { source: 'Mr. Farhan', target: '田中のおじさん' },
+    { source: 'grandmother', target: 'おばあちゃん' },
+  ],
+  nl: [
+    { source: 'Maya', target: 'Fleur' },
+    { source: 'corner store', target: 'buurtwinkel' },
+    { source: 'Elm Street', target: 'Lindelaan' },
+    { source: 'biscuits', target: 'stroopwafels' },
+    { source: 'tea', target: 'thee' },
+    { source: 'Mr. Farhan', target: 'Meneer De Vries' },
+    { source: 'grandmother', target: 'oma' },
+  ],
+  br: [
+    { source: 'Maya', target: 'Mariana' },
+    { source: 'corner store', target: 'mercadinho' },
+    { source: 'Elm Street', target: 'Rua das Flores' },
+    { source: 'biscuits', target: 'biscoitos Maria' },
+    { source: 'tea', target: 'Guaraná' },
+    { source: 'Mr. Farhan', target: 'Seu Antônio' },
+    { source: 'grandmother', target: 'vovó' },
   ],
 };
 
@@ -487,7 +496,7 @@ function ChapterOutput({ chapterResults, onDelete }: {
 
 export default function TryPage() {
   const [chapters, setChapters] = useState<Chapter[]>([{ id: 1, content: '' }]);
-  const [selectedLocales, setSelectedLocales] = useState<string[]>(['de', 'br', 'jp']);
+  const [selectedLocales, setSelectedLocales] = useState<string[]>(['de', 'fr', 'jp']);
   const [activeTab, setActiveTab] = useState('de');
   const [isAdapting, setIsAdapting] = useState(false);
   const [results, setResults] = useState<Record<string, ChapterResult[]>>({});

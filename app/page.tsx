@@ -179,8 +179,8 @@ export default function Home() {
             </p>
           </div>
           <div className="proof-card">
-            <div className="proof-stat"><CountUp end={50} suffix="+" /></div>
-            <h3 className="t-h4">Locales supported</h3>
+            <div className="proof-stat"><CountUp end={14} /></div>
+            <h3 className="t-h4">Locale-pairs supported</h3>
             <p className="t-body-sm">
               Deep cultural intelligence, not just language swaps.
             </p>
