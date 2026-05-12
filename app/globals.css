@@ -1,46 +1,63 @@
 /* Fonts loaded via next/font/local in app/layout.tsx and exposed as
    --font-season-mix and --font-mallory-narrow CSS variables. */
 
-/* ── Design tokens ───────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS  ·  docs/design-system.md is the source of truth
+   ═══════════════════════════════════════════════════════════ */
 :root {
-  /* Ink */
+  /* ── Ink palette ─────────────────────────────────────────── */
   --ink-tint-7:  #E2E2E2;
   --ink-tint-6:  #C6C6C6;
   --ink-tint-5:  #A9A9A9;
   --ink-tint-4:  #8D8D8D;
   --ink-tint-3:  #717171;
+  --ink-tint-2:  #545454;
   --ink-tint-1:  #383838;
   --ink:         #1C1C1C;
+  --ink-shade-1: #181818;
   --ink-shade-2: #151515;
+  --ink-shade-3: #111111;
 
-  /* Vellum */
+  /* ── Vellum palette ──────────────────────────────────────── */
   --vellum-tint-7:  #FEFEFD;
+  --vellum-tint-6:  #FDFDFB;
+  --vellum-tint-5:  #FDFCF9;
+  --vellum-tint-4:  #FCFCF8;
   --vellum-tint-3:  #FBFBF6;
+  --vellum-tint-2:  #FBFAF4;
+  --vellum-tint-1:  #FAF9F2;
   --vellum:         #FAF9F1;
   --vellum-shade-1: #DAD9D2;
   --vellum-shade-2: #BBBAB4;
   --vellum-shade-3: #9C9B96;
   --vellum-shade-4: #7D7C78;
+  --vellum-shade-5: #5D5D5A;
+  --vellum-shade-6: #3E3E3C;
+  --vellum-shade-7: #1F1F1E;
 
-  /* Scarlet */
+  /* ── Scarlet palette ─────────────────────────────────────── */
   --scarlet-tint-7:  #FDE2DF;
+  --scarlet-tint-6:  #FCC6BF;
+  --scarlet-tint-3:  #F8715F;
   --scarlet:         #F51D00;
   --scarlet-shade-1: #D61900;
   --scarlet-shade-2: #B71500;
 
-  /* Semantic */
-  --text-primary:    var(--ink);
-  --text-secondary:  var(--ink-tint-3);
-  --text-tertiary:   var(--ink-tint-4);
-  --text-on-dark:    var(--vellum);
+  /* ── Semantic: text ──────────────────────────────────────── */
+  --text-primary:   var(--ink);           /* #1C1C1C — headings, emphasis */
+  --text-secondary: var(--ink-tint-3);    /* #717171 — body, supporting   */
+  --text-tertiary:  var(--ink-tint-4);    /* #8D8D8D — captions, meta     */
+  --text-disabled:  var(--ink-tint-5);    /* #A9A9A9 — disabled           */
+  --text-on-dark:   var(--vellum);        /* #FAF9F1 — text on ink fills  */
 
-  --surface-page:    var(--vellum);
-  --surface-card:    var(--vellum-tint-7);
-  --surface-alt:     var(--vellum-shade-1);
-  --surface-divider: var(--vellum-shade-2);
-  --surface-inverse: var(--ink);
+  /* ── Semantic: surface ───────────────────────────────────── */
+  --surface-page:    var(--vellum);          /* page ground                */
+  --surface-card:    var(--vellum-tint-7);   /* raised card (≈ white)      */
+  --surface-alt:     var(--vellum-shade-1);  /* alternate section band     */
+  --surface-divider: var(--vellum-shade-2);  /* hairlines                  */
+  --surface-inverse: var(--ink);             /* dark band                  */
 
-  /* Spacing (8px grid) */
+  /* ── Spacing — 8px grid ──────────────────────────────────── */
   --sp-half: 4px;
   --sp-1:    8px;
   --sp-1-5:  12px;
@@ -56,21 +73,64 @@
   --sp-15:   120px;
   --sp-20:   160px;
 
-  /* Container */
+  /* ── Container widths ────────────────────────────────────── */
   --container:        1200px;
-  --container-narrow: 720px;
+  --container-narrow:  720px;
+  --container-wide:   1376px;
 
-  /* Radii */
-  --r-btn:  4px;
-  --r-input: 4px;
-  --r-tag:  4px;
-  --r-card: 6px;
-  --r-pill: 32px;
+  /* ── Radii ───────────────────────────────────────────────── */
+  /* design-system.md: input/tag 6 · button 8 · card 12 · panel 16 · pill 9999 */
+  --r-input:  6px;
+  --r-tag:    6px;
+  --r-btn:    8px;
+  --r-card:  12px;
+  --r-panel: 16px;
+  --r-pill:  9999px;
 
-  /* Motion */
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* ── Shadows — layered, pure-black low-alpha ─────────────── */
+  --shadow-border:
+    0px 0px 0px 1px rgba(0, 0, 0, 0.06),
+    0px 1px 2px -1px rgba(0, 0, 0, 0.06),
+    0px 2px 4px 0px rgba(0, 0, 0, 0.04);
+  --shadow-border-hover:
+    0px 0px 0px 1px rgba(0, 0, 0, 0.08),
+    0px 1px 2px -1px rgba(0, 0, 0, 0.08),
+    0px 2px 4px 0px rgba(0, 0, 0, 0.06);
+  --shadow-elevated:
+    0px 0px 0px 1px rgba(0, 0, 0, 0.04),
+    0px 4px 12px -2px rgba(0, 0, 0, 0.08),
+    0px 16px 32px -8px rgba(0, 0, 0, 0.10);
 
-  /* Type-family aliases */
+  /* Keep --shadow-md as alias for backwards-compat */
+  --shadow-md: var(--shadow-border);
+
+  /* ── Motion ──────────────────────────────────────────────── */
+  --ease:        cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-instant: 120ms;
+  --dur-normal:  200ms;
+
+  /* ── Type scale extras ───────────────────────────────────── */
+  --fs-ui:       13px;
+  --fs-base:     14px;
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+  --lh-1:        1;
+
+  /* ── Z-index ─────────────────────────────────────────────── */
+  --z-base:   0;
+  --z-raised: 1;
+  --z-nav:    100;
+
+  /* ── Glass surface (nav) ─────────────────────────────────── */
+  --glass-bg:     rgba(250, 249, 241, 0.82);
+  --glass-blur:   blur(32px) saturate(1.8);
+  --border-glass: 1px solid rgba(255, 255, 255, 0.4);
+
+  /* ── Type-family aliases ─────────────────────────────────── */
+  /* Season Mix = headings only · Mallory = everything else    */
   --ff-display: var(--font-season-mix), Georgia, serif;
   --ff-sans:    var(--font-mallory-narrow), 'Inter', system-ui, sans-serif;
 }
@@ -95,9 +155,26 @@ body {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.hero-title    { animation: fadeUp 0.7s var(--ease) 0.10s both; }
-.hero-subhead  { animation: fadeUp 0.7s var(--ease) 0.22s both; }
+.hero-eyebrow  { animation: fadeUp 0.7s var(--ease) 0.05s both; }
+.hero-title    { animation: fadeUp 0.7s var(--ease) 0.15s both; }
+.hero-subhead  { animation: fadeUp 0.7s var(--ease) 0.25s both; }
 #twWindow      { animation: fadeUp 0.7s var(--ease) 0.38s both; }
+
+/* ── Hero eyebrow + title ─────────────────────────────────── */
+/* Design system: eyebrows use Mallory 700, not Season Mix */
+.hero-eyebrow {
+  margin: 0 auto var(--sp-2);
+  font-family: var(--ff-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.hero-title {
+  margin: 0 auto var(--sp-8);
+  max-width: 1000px;
+}
 
 /* ── Type scale ──────────────────────────────────────────── */
 .t-display {
@@ -186,12 +263,13 @@ body {
 }
 
 /* ── Buttons ─────────────────────────────────────────────── */
+/* Primary CTA: ink fill · vellum text · pill shape */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   gap: var(--sp-1);
   background: var(--ink);
-  color: var(--vellum);
+  color: var(--text-on-dark);
   border: none;
   padding: 10px var(--sp-2-5);
   border-radius: var(--r-pill);
@@ -226,32 +304,33 @@ body {
 .btn-brand:disabled { opacity: 0.5; cursor: default; }
 
 /* ── NAV ─────────────────────────────────────────────────── */
-nav {
-  display: flex;
+.site-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
-  /* floating pill */
   position: fixed;
-  top: 16px;
+  top: var(--sp-3);
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - 48px);
-  max-width: 1200px;
-  padding: 10px 16px 10px 20px;
-  border-radius: 999px;
-  background: rgba(250, 249, 241, 0.72);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
-  z-index: 100;
+  width: min(calc(100% - var(--sp-8) * 2), var(--container));
+  padding: 10px 10px 10px 20px;
+  z-index: var(--z-nav);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--border-glass);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-elevated);
 }
+.site-nav .nav-logo  { justify-self: start; }
+.site-nav .btn-primary { justify-self: end; }
+
 .nav-logo {
   display: inline-flex;
   align-items: center;
   height: 32px;
 }
-.nav-logo img { height: 28px; width: auto; display: block; }
+.nav-logo img { height: 24px; width: auto; display: block; }
 
 .footer-logo {
   display: inline-flex;
@@ -259,22 +338,45 @@ nav {
 }
 .footer-logo img { height: 22px; width: auto; display: block; }
 
+.nav-center-label {
+  font-family: var(--ff-sans);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+  justify-self: center;
+}
+
 .nav-links {
   display: flex;
-  gap: var(--sp-6);
+  gap: var(--sp-1);
   list-style: none;
+  justify-self: center;
 }
 .nav-links a {
-  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 12px;
+  color: var(--text-primary);
   text-decoration: none;
-  font-size: 14px;
-  padding: 6px 4px;
-  transition: color 120ms var(--ease);
+  font-family: var(--ff-sans);
+  font-size: 13px;   /* label */
+  font-weight: 400;  /* Mallory Book — only 400/700 are valid */
+  border-radius: var(--r-pill);
+  transition: background-color var(--dur-instant) var(--ease), transform var(--dur-normal) var(--ease-spring);
 }
-.nav-links a:hover { color: var(--text-primary); }
+.nav-links a:hover  { background-color: rgba(0,0,0,0.04); }
+.nav-links a:active { transform: scale(0.95); }
+
+.site-nav .btn-primary {
+  min-height: 34px;
+  padding: 8px 16px;
+  font-size: var(--fs-base);
+}
 
 /* ── FOLD 1 — HERO ───────────────────────────────────────── */
 .hero {
+  min-height: 100vh;
   padding: calc(var(--sp-20) + 72px) var(--sp-8) var(--sp-20);
   text-align: center;
   position: relative;
@@ -321,12 +423,12 @@ nav {
 
 /* realistic sits below — always fully visible, no mask needed */
 .hero-bg-realistic {
-  z-index: 1;
+  z-index: 2; /* sits on top — JS cuts a hole at the cursor position */
 }
 
-/* line-art sits on top — JS cuts a hole at the cursor position */
+/* lineart sits below — revealed through the hole on hover */
 .hero-bg-lineart {
-  z-index: 2;
+  z-index: 1;
 }
 
 /* V2 single illustration — full cover, no mask */
@@ -377,7 +479,7 @@ nav {
   margin: 0 auto;
   background: var(--surface-card);
   border: 1px solid var(--surface-divider);
-  border-radius: 20px;
+  border-radius: var(--r-panel);
   padding: var(--sp-1);
   box-shadow:
     0 1px 2px rgba(0,0,0,0.04),
@@ -399,7 +501,7 @@ nav {
   width: 220px;
   background: var(--vellum-tint-7);
   border: 1px solid var(--surface-divider);
-  border-radius: 12px;
+  border-radius: var(--r-card);
   overflow: hidden;
 }
 .tw-cn-atlas {
@@ -426,7 +528,10 @@ nav {
 .tw-cn-icon { font-size: 14px; line-height: 1; }
 .tw-cn-body { padding: 12px 14px 14px; }
 .tw-cn-preview {
-  font-size: 12px;
+  /* caption: 11px Mallory 400 — body text at the smallest on-scale size */
+  font-family: var(--ff-sans);
+  font-weight: 400;
+  font-size: 11px;
   line-height: 1.6;
   color: var(--text-secondary);
   margin: 0;
@@ -460,14 +565,18 @@ nav {
   align-items: center;
 }
 .tw-cn-plabel {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  letter-spacing: 0.04em;
+  /* eyebrow: Mallory 700, 12px, 0.08em, uppercase */
+  font-family: var(--ff-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--text-tertiary);
 }
 .tw-cn-pval {
+  /* caption: Mallory 400, 11px — value emphasis via color not weight */
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;  /* 700 to distinguish from label */
   color: var(--text-primary);
 }
 
@@ -499,19 +608,21 @@ nav {
   gap: 5px;
 }
 .tw-cn-lang {
+  /* eyebrow-adjacent chip: Mallory 700, 11px (caption size fits the tight chip) */
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   padding: 3px 8px;
-  border-radius: 4px;
+  border-radius: var(--r-tag);
   background: var(--vellum-shade-1);
   color: var(--text-primary);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .tw-adapt-btn {
   width: 100%;
   padding: 9px 0;
-  border-radius: 7px;
+  border-radius: var(--r-btn);
   border: none;
   background: var(--scarlet);
   color: var(--vellum);
@@ -558,7 +669,7 @@ nav {
 .tw-adapt-card {
   background: var(--vellum-tint-7);
   border: 1px solid var(--surface-divider);
-  border-radius: 10px;
+  border-radius: var(--r-btn);
   overflow: hidden;
   animation: twCardIn 0.35s var(--ease) both;
 }
@@ -575,8 +686,9 @@ nav {
 }
 .tw-adapt-flag  { font-size: 14px; line-height: 1; }
 .tw-adapt-country {
+  /* eyebrow: Mallory 700, 11px minimum (10px is below scale) */
   font-family: var(--ff-sans);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -593,8 +705,11 @@ nav {
   width: 100%;
 }
 .tw-adapt-text {
-  font-size: 11.5px;
-  line-height: 1.65;
+  /* caption: 11px — nearest on-scale value to the previous 11.5px */
+  font-family: var(--ff-sans);
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 1.6;
   color: var(--text-secondary);
   padding: 9px 10px 10px;
   margin: 0;
@@ -608,12 +723,12 @@ nav {
 }
 .tw-chip {
   padding: 5px 12px;
-  border-radius: 20px;
+  border-radius: var(--r-pill);
   border: 1px solid var(--surface-divider);
   background: transparent;
   font-family: var(--ff-sans);
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 13px; /* label */
+  font-weight: 400; /* Mallory Book */
   color: var(--text-secondary);
   cursor: pointer;
   transition: background 120ms var(--ease), border-color 120ms var(--ease), color 120ms var(--ease);
@@ -665,10 +780,7 @@ nav {
 }
 .bcell:hover {
   border-color: var(--vellum-shade-3);
-  box-shadow:
-    0 4px 6px rgba(0,0,0,0.04),
-    0 16px 32px rgba(50,50,93,0.10),
-    0 2px 4px rgba(0,0,0,0.04);
+  box-shadow: var(--shadow-elevated);
   transform: translateY(-2px);
 }
 .bcell.wide { grid-column: span 2; }
@@ -684,11 +796,12 @@ nav {
 .bcell p  { color: var(--text-secondary); }
 
 .bcell-stat {
-  font-family: var(--ff-sans);
-  font-size: 48px;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.02em;
+  /* Design system: "trust-band stat numbers" = display = Season Mix 400 */
+  font-family: var(--ff-display);
+  font-size: clamp(40px, 5.4vw, 56px); /* display scale */
+  font-weight: 400;
+  line-height: 1.07;
+  letter-spacing: -0.03em;
   color: var(--ink);
   margin-bottom: var(--sp-1);
   font-variant-numeric: tabular-nums;
@@ -721,10 +834,7 @@ nav {
 }
 .card:hover {
   transform: translateY(-2px);
-  box-shadow:
-    0 4px 6px rgba(0,0,0,0.04),
-    0 16px 32px rgba(50,50,93,0.10),
-    0 2px 4px rgba(0,0,0,0.04);
+  box-shadow: var(--shadow-elevated);
 }
 
 .card-img {
@@ -764,7 +874,7 @@ nav {
   margin: 0 auto;
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 12px;
+  border-radius: var(--r-card);
   padding: var(--sp-1) var(--sp-1) var(--sp-1) var(--sp-3);
   transition: border-color 120ms var(--ease);
 }
@@ -776,8 +886,9 @@ nav {
   border: none;
   outline: none;
   color: var(--vellum);
-  font-size: 15px;
   font-family: var(--ff-sans);
+  font-size: 16px; /* body — 15px is off-scale */
+  font-weight: 400;
 }
 .prompt-box input::placeholder { color: rgba(250,249,241,0.4); }
 
@@ -797,6 +908,542 @@ nav {
 }
 .prompt-submit:hover  { background: var(--vellum-shade-1); }
 .prompt-submit:active { background: var(--vellum-shade-2); transform: scale(0.96); }
+
+/* ── ATLAS BENTO ─────────────────────────────────────────── */
+/*    Tokens: CSS custom properties from this file.          */
+/*    Layout: 3-col × 3-row. Card 1 = 2 cols × 2 rows hero. */
+
+.atlas-bento {
+  padding: var(--sp-12) var(--sp-8);
+  border-top: 1px solid var(--surface-divider);
+}
+
+.atlas-bento__header {
+  max-width: var(--container);
+  margin: 0 auto var(--sp-8);
+}
+.atlas-bento__section-heading {
+  max-width: 640px;
+}
+
+/* Bento grid wrapper */
+.atlas-bento__wrap {
+  position: relative;
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+/* ── Grid ───────────────────────────────────────────────── */
+/* 4 columns, 3 explicit rows — varied card shapes:         */
+/*   card 1: 2×2 (large square)   card 3: 1×2 (portrait)   */
+/*   card 2: 1×1 (square)         card 4: 1×1 (square)     */
+/*   card 5: 2×1 (landscape)      card 6: 2×1 (landscape)  */
+.atlas-bento__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 300px 300px 260px;
+  gap: var(--sp-2);
+}
+
+/* ── Card base ──────────────────────────────────────────── */
+.atlas-bento__card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: border-color 200ms var(--ease);
+}
+.atlas-bento__card:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+/* ── Background layer (image placeholder) ──────────────── */
+/* Swap .atlas-bento__bg's inline `background` style for a  */
+/* real <img> / next/image when assets are ready.           */
+.atlas-bento__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 400ms var(--ease);
+}
+.atlas-bento__bg--img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.atlas-bento__card:hover .atlas-bento__bg {
+  transform: scale(1.025);
+}
+
+/* ── Progressive blur — 3 stacked backdrop-filter passes ── */
+/* Each layer covers a taller band and uses less blur.       */
+/* Mask-image fades them from opaque at bottom → transparent */
+.atlas-bento__blur--wide,
+.atlas-bento__blur--mid,
+.atlas-bento__blur--tight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+/* Widest coverage — lightest blur */
+.atlas-bento__blur--wide {
+  height: 65%;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  mask-image: linear-gradient(to top, black 0%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
+}
+/* Mid coverage — medium blur */
+.atlas-bento__blur--mid {
+  height: 44%;
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  mask-image: linear-gradient(to top, black 25%, transparent 88%);
+  -webkit-mask-image: linear-gradient(to top, black 25%, transparent 88%);
+}
+/* Tightest coverage — strongest blur (right above text) */
+.atlas-bento__blur--tight {
+  height: 28%;
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  mask-image: linear-gradient(to top, black 40%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 40%, transparent 100%);
+}
+
+/* ── Vignette — dark gradient for text contrast ─────────── */
+.atlas-bento__vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.22) 35%,
+    transparent 58%
+  );
+  pointer-events: none;
+}
+/* ── Text content — pinned bottom-left ──────────────────── */
+.atlas-bento__content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--sp-4);
+}
+.atlas-bento__heading {
+  color: var(--vellum);
+  margin-bottom: var(--sp-1-5);
+}
+.atlas-bento__body {
+  color: rgba(250, 249, 241, 0.72);
+  /* Show max 3 lines in card view */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Responsive — 1024 px: collapse to 2-col flow ───────── */
+@media (max-width: 1024px) {
+  .atlas-bento__grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 300px 260px 260px 260px;
+  }
+  .atlas-bento__grid .atlas-bento__card:nth-child(1) { grid-column: 1 / 3 !important; grid-row: 1 / 2 !important; }
+  .atlas-bento__grid .atlas-bento__card:nth-child(2) { grid-column: 1 / 2 !important; grid-row: 2 / 3 !important; }
+  .atlas-bento__grid .atlas-bento__card:nth-child(3) { grid-column: 2 / 3 !important; grid-row: 2 / 4 !important; }
+  .atlas-bento__grid .atlas-bento__card:nth-child(4) { grid-column: 1 / 2 !important; grid-row: 3 / 4 !important; }
+  .atlas-bento__grid .atlas-bento__card:nth-child(5) { grid-column: 1 / 2 !important; grid-row: 4 / 5 !important; }
+  .atlas-bento__grid .atlas-bento__card:nth-child(6) { grid-column: 2 / 3 !important; grid-row: 4 / 5 !important; }
+}
+
+/* ── Responsive — 768 px: single column stack ───────────── */
+@media (max-width: 768px) {
+  .atlas-bento {
+    padding: var(--sp-10) var(--sp-3);
+  }
+  .atlas-bento__grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: unset;
+    grid-auto-rows: 280px;
+  }
+  .atlas-bento__grid .atlas-bento__card {
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+  }
+}
+
+/* ── BATTLE-TESTED STATS ─────────────────────────────────── */
+/*    Tokens: CSS custom properties from this file.          */
+/*    Scroll-stack on desktop; simple stack on mobile /      */
+/*    reduced-motion (toggled in BattleTestedStats.tsx).     */
+
+/* ── Section wrapper ────────────────────────────────────── */
+.bts {
+  background: var(--surface-page);
+  border-top: 1px solid var(--surface-divider);
+}
+
+/* Simple layout: auto height, normal page flow */
+.bts--simple {
+  padding: var(--sp-12) var(--sp-8);
+}
+.bts__simple-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+}
+.bts__simple-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin-top: var(--sp-8);
+}
+
+/* Heading sits just above the card stack — flows in the flex column */
+.bts__sticky-heading {
+  width: 100%;
+  max-width: var(--container);
+  margin-bottom: calc(var(--sp-6) * 3);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+/* Simple-layout heading (mobile/reduced-motion) */
+.bts__section-heading {
+  max-width: 640px;
+}
+
+/* ── Scroll space — provides 5 × 100vh of scroll distance ── */
+.bts__scroll-space {
+  height: 500vh;
+}
+
+/* ── Sticky viewport lock ───────────────────────────────── */
+/* Flex column so heading + card-area center together as one unit */
+.bts__sticky-inner {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  /* Container-aligned horizontal padding — same logic as bento section */
+  padding: 0 max(var(--sp-8), calc((100% - var(--container)) / 2));
+}
+
+/* ── Card stack area — all tracks overlap here ──────────── */
+.bts__card-area {
+  position: relative;
+  width: 100%;
+  max-width: var(--container);
+  /* Height matches bts-card min-height so the stack has a fixed footprint */
+  height: 300px;
+  flex-shrink: 0;
+}
+
+/* ── Card track wrapper ─────────────────────────────────── */
+/* Fills card-area; Motion applies y (translateY) + scale on this element. */
+.bts__card-track {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+/* ── Stat card — uniform size for all four cards ────────── */
+.bts-card {
+  width: 100%;
+  /* card-area defines the height; card fills it */
+  height: 100%;
+  background: var(--surface-card);
+  border-radius: var(--r-card);
+  padding: var(--sp-8);
+  box-shadow: var(--shadow-border);
+  /* Flex column lets content sit at the top while the card keeps its height */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* ── KPI block (number + label) ─────────────────────────── */
+.bts-card__kpi {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2-5);
+  margin-bottom: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+/* Large stat number — bigger than t-display for hero weight */
+.bts-card__number {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(56px, 7.5vw, 96px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  /* Prevents the number from hyphenating on narrow viewports */
+  white-space: nowrap;
+}
+
+.bts-card__label {
+  color: var(--text-secondary);
+  /* Align to baseline of the number */
+  align-self: flex-end;
+  padding-bottom: 6px;
+}
+
+/* ── Sub-heading (Card 1 only) ──────────────────────────── */
+.bts-card__subheading {
+  color: var(--text-primary);
+  margin-bottom: var(--sp-2);
+  max-width: 600px;
+}
+
+/* ── Description ────────────────────────────────────────── */
+.bts-card__desc {
+  color: var(--text-secondary);
+  max-width: 540px;
+}
+
+/* ── Bullet list ────────────────────────────────────────── */
+.bts-card__bullets {
+  list-style: none;
+  margin-top: var(--sp-4);
+  display: grid;
+  /* Two-column grid on wide cards; single column on narrow */
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-2) var(--sp-6);
+}
+
+.bts-card__bullet {
+  display: flex;
+  gap: var(--sp-1-5);
+  align-items: flex-start;
+  color: var(--text-secondary);
+  font-family: var(--ff-sans);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Scarlet check mark — uses design system accent colour */
+.bts-card__check {
+  color: var(--scarlet);
+  flex-shrink: 0;
+  font-size: 13px;
+  margin-top: 2px;
+  font-weight: var(--fw-bold);
+}
+
+.bts-card__bullet strong {
+  color: var(--text-primary);
+  font-weight: 700; /* Mallory Bold — only valid heavy weight */
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .bts-card__bullets {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .bts--simple {
+    padding: var(--sp-10) var(--sp-3);
+  }
+  .bts-card {
+    padding: var(--sp-5);
+  }
+  .bts-card--hero {
+    padding: var(--sp-5);
+  }
+  .bts-card__number {
+    font-size: clamp(48px, 14vw, 72px);
+  }
+  .bts__sticky-inner {
+    padding: 0 var(--sp-3);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TESTIMONIALS — infinite horizontal ticker
+   ═══════════════════════════════════════════════════════════ */
+
+.testimonials {
+  background: var(--surface-page);
+  border-top: 1px solid var(--surface-divider);
+  padding-top: var(--sp-20);
+  padding-bottom: var(--sp-20);
+  overflow: hidden;
+}
+
+/* Section heading — container-aligned */
+.testimonials__header {
+  padding: 0 max(var(--sp-8), calc((100% - var(--container)) / 2));
+  margin-bottom: var(--sp-10);
+}
+
+.testimonials__eyebrow {
+  margin-bottom: var(--sp-2);
+}
+
+.testimonials__heading {
+  max-width: 560px;
+}
+
+/* ── Viewport: clips overflow, fades edges ── */
+.testimonials__viewport {
+  overflow: hidden;
+  /* Left/right fade so cards appear to scroll in from nothing */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+}
+
+/* ── Track: JS-driven position (no CSS animation) ── */
+/* Position is set via trackRef.style.transform in Testimonials.tsx.
+   will-change: transform tells the browser to composite this layer. */
+.testimonials__track {
+  display: flex;
+  gap: var(--sp-10);
+  width: max-content;
+  will-change: transform;
+}
+
+/* ── Individual testimonial — open layout, no box ── */
+.testimonial-card {
+  display: flex;
+  gap: var(--sp-3);
+  width: 720px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* Left column: avatar + name + role + listen button */
+.testimonial-card__left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 160px;
+  flex-shrink: 0;
+}
+
+/* Avatar tile: coloured square with initials (swap for <img> when assets exist) */
+.testimonial-card__avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--r-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ff-display);
+  font-size: 26px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.45);
+  margin-bottom: var(--sp-2);
+  flex-shrink: 0;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+/* Name — Season Mix 400 via .t-h4 utility class on the element */
+.testimonial-card__name {
+  color: var(--text-primary);
+  margin-bottom: var(--sp-1);
+  font-size: 16px;
+}
+
+/* Role — Mallory 400 */
+.testimonial-card__role {
+  font-family: var(--ff-sans);
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--text-tertiary);
+  margin-bottom: var(--sp-2);
+}
+
+.testimonial-card__listen {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-2);
+  border: 1px solid var(--text-primary);
+  border-radius: var(--r-pill);
+  font-family: var(--ff-sans);
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--dur-instant) var(--ease), color var(--dur-instant) var(--ease);
+  pointer-events: auto;
+}
+
+.testimonial-card__listen:hover {
+  background: var(--text-primary);
+  color: var(--surface-page);
+}
+
+/* Right column: quote — Mallory 400 (not Season Mix) */
+.testimonial-card__right {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+.testimonial-card__quote {
+  /* Design system: quotes are body-level text, not headings → Mallory 400 */
+  font-family: var(--ff-sans);
+  font-weight: 400;
+  font-size: clamp(13px, 1.2vw, 17px);
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .testimonials__header {
+    padding: 0 var(--sp-3);
+  }
+  .testimonials__track {
+    gap: var(--sp-8);
+  }
+  .testimonial-card {
+    width: 420px;
+    gap: var(--sp-3);
+  }
+  .testimonial-card__left {
+    width: 80px;
+  }
+  .testimonial-card__avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 14px;
+  }
+  .testimonial-card__name { font-size: 11px; }
+  .testimonial-card__role { font-size: 9px; }
+  .testimonial-card__listen { font-size: 9px; padding: 4px var(--sp-1); }
+  .testimonial-card__quote { font-size: clamp(10px, 1.2vw, 14px); }
+}
 
 /* ── FOOTER ──────────────────────────────────────────────── */
 footer {

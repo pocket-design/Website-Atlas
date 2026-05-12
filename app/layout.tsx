@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
+import 'dialkit/styles.css';
+import { DialRoot } from 'dialkit';
 
 const seasonMix = localFont({
   src: '../public/fonts/SeasonMix-Regular.ttf',
@@ -36,7 +38,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${seasonMix.variable} ${malloryNarrow.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <DialRoot productionEnabled defaultOpen />
+      </body>
     </html>
   );
 }

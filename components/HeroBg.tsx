@@ -47,8 +47,11 @@ export default function HeroBg({ mode, city, radiusRef, lagRef, cycleIntervalRef
   const lineartRef = useRef<HTMLImageElement>(null);
 
   // V1 state
-  const displayedCityRef = useRef<HeroCity>(city);
+  const displayedCityRef  = useRef<HeroCity>(city);
   const [displayedCity, setDisplayedCity] = useState<HeroCity>(city);
+
+  // Entrance animation gate — hover reveal is blocked until this is true
+  const entranceDoneRef = useRef(false);
 
   // V2 state
   const [v2Index, setV2Index] = useState(0);
@@ -62,20 +65,92 @@ export default function HeroBg({ mode, city, radiusRef, lagRef, cycleIntervalRef
   // ── Hide container when mode switches; new mode handles reveal ───────────
   useEffect(() => {
     imgsRef.current?.classList.add('hero-imgs-hidden');
+    entranceDoneRef.current = false;
   }, [mode]);
 
-  // ── V1: page-load entrance ───────────────────────────────────────────────
+  // ── V1: circular entrance reveal ─────────────────────────────────────────
+  // Lineart is visible first (realistic starts fully masked).
+  // Then the illustrated image expands in as a feathered circle: 10% → 100%.
   useEffect(() => {
     if (mode !== 'v1') return;
-    const el = imgsRef.current;
-    if (!el) return;
+    const container = imgsRef.current;
+    if (!container) return;
+
+    let rafId: number;
+    let delayId: ReturnType<typeof setTimeout>;
+    let cancelled = false;
+
     preloadCity(displayedCityRef.current).then(() => {
+      if (cancelled) return;
+      const el  = lineartRef.current;
+      const cnt = imgsRef.current;
+      if (!el || !cnt) return;
+
+      // Realistic starts fully hidden — lineart shows through
+      el.style.setProperty('-webkit-mask-image',
+        'radial-gradient(circle 0px at center, transparent 100%)');
+      el.style.setProperty('mask-image',
+        'radial-gradient(circle 0px at center, transparent 100%)');
+
+      // Reveal the container (both layers, but realistic masked = only lineart visible)
       requestAnimationFrame(() => requestAnimationFrame(() => {
-        el.classList.remove('hero-imgs-hidden');
+        if (cancelled) return;
+        cnt.classList.remove('hero-imgs-hidden');
       }));
+
+      // After a short pause so lineart is clearly seen, begin circular expand
+      delayId = setTimeout(() => {
+        if (cancelled) return;
+        const { width, height } = cnt.getBoundingClientRect();
+        // Diagonal/2 = radius needed to cover every corner from center
+        const maxR   = Math.sqrt(width * width + height * height) / 2;
+        const startR = maxR * 0.10;  // 10% of diagonal
+        const endR   = maxR * 1.05;  // just beyond corners
+        const duration = 1800;       // ms
+        let start: number | null = null;
+
+        const animate = (ts: number) => {
+          if (cancelled) return;
+          if (!start) start = ts;
+          const t      = Math.min((ts - start) / duration, 1);
+          const eased  = 1 - Math.pow(1 - t, 2.5); // ease-out
+          const r      = startR + (endR - startR) * eased;
+          const feather = r * 0.14;                 // 14% of current radius = soft edge
+          const inner  = Math.max(0, r - feather);
+          const outer  = r + feather;
+          const mask   =
+            `radial-gradient(circle ${r}px at center, ` +
+            `black 0%, black ${inner}px, transparent ${outer}px)`;
+
+          const curEl = lineartRef.current;
+          if (curEl) {
+            curEl.style.setProperty('-webkit-mask-image', mask);
+            curEl.style.setProperty('mask-image',         mask);
+          }
+
+          if (t < 1) {
+            rafId = requestAnimationFrame(animate);
+          } else {
+            // Fully revealed — remove mask entirely
+            if (curEl) {
+              curEl.style.removeProperty('-webkit-mask-image');
+              curEl.style.removeProperty('mask-image');
+            }
+            entranceDoneRef.current = true;
+          }
+        };
+
+        rafId = requestAnimationFrame(animate);
+      }, 700); // 700ms of lineart visible before reveal starts
     });
+
+    return () => {
+      cancelled = true;
+      clearTimeout(delayId);
+      cancelAnimationFrame(rafId);
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode]); // re-entrance whenever mode switches to v1
+  }, [mode]);
 
   // ── V1: city crossfade ───────────────────────────────────────────────────
   useEffect(() => {
@@ -86,6 +161,7 @@ export default function HeroBg({ mode, city, radiusRef, lagRef, cycleIntervalRef
 
     let cancelled = false;
     el.classList.add('hero-imgs-hidden');
+    entranceDoneRef.current = false;
 
     Promise.all([
       preloadCity(city),
@@ -97,13 +173,14 @@ export default function HeroBg({ mode, city, radiusRef, lagRef, cycleIntervalRef
       requestAnimationFrame(() => requestAnimationFrame(() => {
         if (cancelled) return;
         el.classList.remove('hero-imgs-hidden');
+        entranceDoneRef.current = true; // skip re-animation on city switch
       }));
     });
 
     return () => { cancelled = true; };
   }, [mode, city]);
 
-  // ── V1: reset lineart mask on city change ────────────────────────────────
+  // ── V1: reset realistic mask on city change ──────────────────────────────
   useEffect(() => {
     const el = lineartRef.current;
     if (!el) return;
@@ -149,7 +226,6 @@ export default function HeroBg({ mode, city, radiusRef, lagRef, cycleIntervalRef
       }, FADE_DURATION);
     };
 
-    // Entrance: preload all V2 images then reveal
     preloadV2().then(() => {
       if (cancelled) return;
       const el = imgsRef.current;
@@ -195,7 +271,8 @@ export default function HeroBg({ mode, city, radiusRef, lagRef, cycleIntervalRef
 
     const tick = () => {
       const el = lineartRef.current;
-      if (el) {
+      // Only apply hover mask after entrance animation completes
+      if (el && entranceDoneRef.current) {
         if (!isInside) {
           history.length = 0;
           showFull(el);
@@ -259,16 +336,16 @@ export default function HeroBg({ mode, city, radiusRef, lagRef, cycleIntervalRef
         {mode === 'v1' ? (
           <>
             <img
-              src={v1Imgs.realistic}
+              src={v1Imgs.lineart}
               alt=""
-              className="hero-bg-img hero-bg-realistic"
+              className="hero-bg-img hero-bg-lineart"
               draggable={false}
             />
             <img
               ref={lineartRef}
-              src={v1Imgs.lineart}
+              src={v1Imgs.realistic}
               alt=""
-              className="hero-bg-img hero-bg-lineart"
+              className="hero-bg-img hero-bg-realistic"
               draggable={false}
             />
           </>
