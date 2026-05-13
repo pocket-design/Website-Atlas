@@ -253,6 +253,17 @@ of 8, with fractional half-steps for tight UI rhythm.
 | `--container` | `1200px` | Default page container — bento, cascade, proof, stats |
 | `--container-wide` | `1376px` | Wide layouts (testimonials ticker, etc.) |
 
+### Section rhythm
+
+| Token | Value | Use |
+|---|---|---|
+| `--sp-section` | `var(--sp-10)` = **80 px** | Top **and** bottom padding on every top-level section so adjacent sections always share the same breathing room (2 × 80 = 160 px between any pair). Tune in one place to retune the whole page. |
+
+Applied uniformly to `.hero` (bottom only — top keeps nav clearance),
+`.atlas-bento`, `.proof-section`, `.testimonials`, `.final-cta`, and
+`footer` (top only — terminal). Hero's nested locale-cascade keeps its
+12 px internal gaps; only the section's own padding follows this token.
+
 ### Section padding convention
 
 Top-level sections use the BEM-style `.<section>__wrap` pattern (see

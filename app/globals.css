@@ -168,6 +168,13 @@
   --sp-15:   120px;
   --sp-20:   160px;
 
+  /* ── Section rhythm ───────────────────────────────────────
+     Top and bottom vertical padding applied uniformly to every
+     top-level section so the eye reads equal "rest" between
+     content blocks. 2 × this value = breathing room between
+     any two adjacent section bodies. */
+  --sp-section: var(--sp-10);    /* 80px → 160px between sections */
+
   /* ── Container widths ────────────────────────────────────── */
   --container:        1200px;
   --container-narrow:  720px;
@@ -519,7 +526,9 @@
 /* ── FOLD 1 — HERO ───────────────────────────────────────── */
 .hero {
   min-height: 100vh;
-  padding: calc(var(--sp-20) + 72px) var(--sp-8) var(--sp-20);
+  /* Top padding keeps nav clearance (60 px nav + 24 px offset + 72 px
+     breathing room ≈ 232 px). Bottom uses the shared section rhythm. */
+  padding: calc(var(--sp-20) + 72px) var(--sp-8) var(--sp-section);
   text-align: center;
   position: relative;
   /* Visible so the nested .cascade section can extend below the
@@ -736,7 +745,7 @@
 
 /* ── FOLD 4 — FINAL CTA ──────────────────────────────────── */
 .final-cta {
-  padding: var(--sp-20) var(--sp-8);
+  padding: var(--sp-section) var(--sp-8);
   text-align: center;
   background: var(--surface-inverse);
 }
@@ -792,7 +801,7 @@
 /*    Layout: 3-col × 3-row. Card 1 = 2 cols × 2 rows hero. */
 
 .atlas-bento {
-  padding: var(--sp-12) var(--sp-8);
+  padding: var(--sp-section) var(--sp-8);
 }
 
 .atlas-bento__header {
@@ -964,13 +973,14 @@
   }
 }
 
+/* ═══════════════════════════════════════════════════════════
    TESTIMONIALS — infinite horizontal ticker
    ═══════════════════════════════════════════════════════════ */
 
 .testimonials {
   background: var(--surface-page);
-  padding-top: var(--sp-20);
-  padding-bottom: var(--sp-20);
+  padding-top: var(--sp-section);
+  padding-bottom: var(--sp-section);
   overflow: hidden;
 }
 
@@ -1138,8 +1148,11 @@
 }
 
 /* ── FOOTER ──────────────────────────────────────────────── */
+/* Top padding matches the section-rhythm constant so the gap from
+   FinalCTA → Footer matches every other boundary. Bottom stays small
+   since the footer is terminal — no content below it needs breathing. */
 footer {
-  padding: var(--sp-4) var(--sp-8);
+  padding: var(--sp-section) var(--sp-8) var(--sp-4);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1859,11 +1872,11 @@ footer .t-caption {
    Ported from hardik branch (originally inline in app/page.tsx).
    See components/Proof.tsx + components/CountUp.tsx.
    Tokens used: --fs-xl, --lh-snug, --lh-normal (added to :root)
-                plus standard --ff-display/--ff-sans/--fs-*/--sp-*/--r-*
-                /--ink/--text-secondary/--surface-card/--border-hairline.
+                plus standard ff-display, ff-sans, fs- scale, sp- scale,
+                r- scale, ink, text-secondary, surface-card, border-hairline.
    ═══════════════════════════════════════════════════════════ */
 .proof-section {
-  padding: var(--sp-8) var(--sp-8);
+  padding: var(--sp-section) var(--sp-8);
 }
 .proof-section .section-header {
   max-width: var(--container);
