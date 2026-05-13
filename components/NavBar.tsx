@@ -6,7 +6,7 @@ interface NavBarProps {
   ctaHref?: string;
 }
 
-export default function NavBar({ centerLabel, ctaLabel = 'Try it now', ctaHref = '/try' }: NavBarProps) {
+export default function NavBar({ centerLabel, ctaLabel = 'Try it now', ctaHref = '/playground' }: NavBarProps) {
   return (
     <nav className="site-nav">
       <a className="nav-logo" href="/" aria-label="Pocket Atlas — home">

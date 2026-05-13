@@ -6,6 +6,7 @@ import NavBar from '@/components/NavBar';
 import AtlasBento from '@/components/AtlasBento';
 import Proof from '@/components/Proof';
 import Testimonials from '@/components/Testimonials';
+import DraggableMagnets from '@/components/DraggableMagnets';
 
 export default function Home() {
   return (
@@ -43,6 +44,11 @@ export default function Home() {
 
       {/* FOLD 4 — TESTIMONIALS */}
       <Testimonials />
+
+      {/* MAGNETS — playful draggable teaser between Testimonials and FinalCTA */}
+      <section className="magnets-section" aria-hidden="true">
+        <DraggableMagnets />
+      </section>
 
       {/* FOLD 5 — FINAL CTA */}
       <section className="final-cta">
