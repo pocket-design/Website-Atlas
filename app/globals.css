@@ -1048,7 +1048,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 340px 340px 300px;
-  gap: var(--sp-2);
+  gap: var(--sp-half);
 }
 
 /* ── Card base ──────────────────────────────────────────── */

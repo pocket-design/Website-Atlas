@@ -78,10 +78,10 @@ const CARDS: BentoCard[] = [
 ];
 
 // ── Blur layer config ─────────────────────────────────────────────────────────
+// Single 20px backdrop-filter layer (was previously a three-layer progressive
+// stack: wide 20px / mid 50px / tight 100px).
 const BLUR_LAYERS = [
-  ['atlas-bento__blur atlas-bento__blur--wide',   '65%', '2px' ],
-  ['atlas-bento__blur atlas-bento__blur--mid',    '44%', '8px' ],
-  ['atlas-bento__blur atlas-bento__blur--tight',  '28%', '20px'],
+  ['atlas-bento__blur atlas-bento__blur--wide', '70%', '20px'],
 ] as const;
 
 // ── Main component ────────────────────────────────────────────────────────────
