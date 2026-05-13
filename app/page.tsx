@@ -1,5 +1,5 @@
 import HeroBgWithDialKit from '@/components/HeroBgWithDialKit';
-import TranslationWindow from '@/components/TranslationWindow';
+import HeroAdapter from '@/components/HeroAdapter';
 import RevealOnScroll from '@/components/RevealOnScroll';
 import NavBar from '@/components/NavBar';
 import AtlasBento from '@/components/AtlasBento';
@@ -19,7 +19,7 @@ export default function Home() {
         <h1 className="t-display hero-title">
           Incredibly powerful story adaptation engine for writers
         </h1>
-        <TranslationWindow />
+        <HeroAdapter />
       </section>
 
       {/* FOLD 2 — ATLAS BENTO (feature cards) */}
