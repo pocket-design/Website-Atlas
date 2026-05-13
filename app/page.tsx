@@ -8,6 +8,7 @@ import CountUp from '@/components/CountUp';
 import NavBar from '@/components/NavBar';
 import TryItSection from '@/components/TryItSection';
 import HeroBg from '@/components/HeroBg';
+import DraggableMagnets from '@/components/DraggableMagnets';
 
 export default function Home() {
   const jsonLd = {
@@ -44,9 +45,11 @@ export default function Home() {
       {/* FOLD 1 — HERO */}
       <section className="hero">
         <HeroBg />
-        <div className="hero-eyebrow">Meet Atlas by Pocket</div>
-        <div className="hero-divider" aria-hidden="true">
-          <svg
+        <div className="hero-copy-wrap">
+          <div className="hero-puff" aria-hidden="true" />
+          <div className="hero-eyebrow">Take your story global with Atlas</div>
+          <div className="hero-divider" aria-hidden="true">
+            <svg
             className="hero-divider-ornament"
             viewBox="0 0 220 18"
             fill="none"
@@ -75,28 +78,53 @@ export default function Home() {
             />
           </svg>
         </div>
-        <h1 className="t-hero hero-title">
-          Incredibly powerful story adaptation engine for writers
-        </h1>
+          <h1 className="t-hero hero-title">
+            Incredibly powerful story adaptation engine for writers
+          </h1>
+        </div>
         <HeroAdapter />
       </section>
 
       {/* FOLD 2 — Cascade: one English passage, five locales */}
       <section id="locale-cascade" className="cascade">
-        <InteractiveGlobe />
         <LocaleCascade />
       </section>
 
-      {/* FOLD — TRY IT (hidden for now, will become /try page) */}
-      {/* <section id="try-it" className="try-it">
-        <div className="section-header tryit-header">
-          <h2 className="t-h3">Write it <RoughUnderline>once</RoughUnderline>,<br />adapt it for the world.</h2>
-          <p className="tryit-desc">Paste your prose, pick a locale. Atlas adapts it in seconds.<br />Battle-tested over millions of words.</p>
+      {/* FOLD — HAVE YOUR OWN STORY */}
+      <section className="story-cta-section">
+        <div className="section-header">
+          <h2 className="t-h3">Have your own story?</h2>
         </div>
-        <TryItSection />
-      </section> */}
+
+        <div className="story-bento-wrap">
+          <div className="story-bento-grid">
+            <div className="story-bento-cell">
+            <h3 className="t-h4">Paste your story</h3>
+            <p className="t-body-sm">Drop in your prose. Short fiction, a full chapter, or an entire season of scripts. Any length, any genre.</p>
+          </div>
+          <div className="story-bento-cell">
+            <h3 className="t-h4">Pick your locales</h3>
+            <p className="t-body-sm">Choose from 14 locale-pairs. Each carries deep cultural intelligence built from thousands of adapted stories.</p>
+          </div>
+          <div className="story-bento-cell">
+            <h3 className="t-h4">Atlas adapts it</h3>
+            <p className="t-body-sm">Names, places, food, idioms, humor. Every cultural thread is rebuilt so the story feels native to its new audience.</p>
+          </div>
+          <div className="story-bento-cell">
+            <h3 className="t-h4">Tweak and ship</h3>
+            <p className="t-body-sm">Review the adaptation, adjust any mappings, then export. Your story is ready for a new market.</p>
+            </div>
+          </div>
+          <DraggableMagnets />
+        </div>
+
+        <div className="story-cta-action">
+          <a href="/try" className="btn-primary">Try Atlas now</a>
+        </div>
+      </section>
 
       {/* FOLD — BENTO */}
+
       <section id="how-it-works" className="bento">
         <div className="section-header">
           <BentoHeader />
@@ -167,25 +195,27 @@ export default function Home() {
                 <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>600+</strong> AI-adapted shows across drama, romance, crime, fantasy</li>
                 <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>8</strong> language markets live including US, UK, Europe, LATAM, India</li>
                 <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>$20.5M+</strong> lifetime revenue from adapted content</li>
-                <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>36 shows in 4 months</strong> scaled for Germany alone after launch</li>
               </ul>
             </div>
           </div>
-          <div className="proof-card">
+        </div>
+
+        <div className="proof-metrics-row">
+          <div className="proof-metric-item">
             <div className="proof-stat"><CountUp end={10000} suffix="+" /></div>
             <h3 className="t-h4">Stories adapted</h3>
             <p className="t-body-sm">
               From short fiction to 200-chapter epics. Every genre, every length.
             </p>
           </div>
-          <div className="proof-card">
+          <div className="proof-metric-item">
             <div className="proof-stat"><CountUp end={14} /></div>
             <h3 className="t-h4">Locale-pairs supported</h3>
             <p className="t-body-sm">
               Deep cultural intelligence, not just language swaps.
             </p>
           </div>
-          <div className="proof-card">
+          <div className="proof-metric-item">
             <div className="proof-stat"><CountUp end={99.2} suffix="%" decimals={1} /></div>
             <h3 className="t-h4">Consistency score</h3>
             <p className="t-body-sm">

@@ -12,7 +12,7 @@ export default function HeroBg() {
         imgsRef.current?.classList.remove('hero-imgs-hidden');
       }));
     };
-    img.src = '/assets/hero-newyork.jpg';
+    img.src = '/assets/brazil-bg.webp';
   }, []);
 
   return (
@@ -20,7 +20,7 @@ export default function HeroBg() {
       <div ref={imgsRef} className="hero-bg-imgs hero-imgs-hidden">
         <div
           className="hero-bg-img"
-          style={{ backgroundImage: `url(/assets/hero-newyork.jpg)` }}
+          style={{ backgroundImage: `url(/assets/brazil-bg.webp)` }}
         />
       </div>
       <div className="hero-bg-fade hero-bg-fade-bottom" />

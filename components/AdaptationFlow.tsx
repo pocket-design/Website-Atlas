@@ -622,7 +622,9 @@ export function LocaleCascade() {
     }
 
     const measure = () => {
-      const card = strip.querySelectorAll<HTMLElement>('.locale-card')[owner];
+      const grid = gridRef.current;
+      if (!grid || !strip) return;
+      const card = grid.querySelectorAll<HTMLElement>('.locale-card')[owner];
       if (!card) return;
       const hl = card.querySelector<HTMLElement>(
         `.locale-highlight[data-bucket="${currentBucket}"]`,
@@ -631,8 +633,12 @@ export function LocaleCascade() {
       const fragments = hl.getClientRects();
       const hlRect = fragments.length > 0 ? fragments[0] : hl.getBoundingClientRect();
       const stripRect = strip.getBoundingClientRect();
+      const rawX = hlRect.left + hlRect.width / 2 - stripRect.left;
+      const tooltipHalfWidth = 80;
+      const minX = tooltipHalfWidth;
+      const maxX = stripRect.width - tooltipHalfWidth;
       setTooltipPos({
-        x: hlRect.left + hlRect.width / 2 - stripRect.left,
+        x: Math.max(minX, Math.min(rawX, maxX)),
         y: hlRect.top - stripRect.top,
       });
     };
@@ -791,15 +797,6 @@ export function LocaleCascade() {
       <CascadeBranches />
 
       <div ref={stripRef} className="cascade-strip">
-        <div
-          className={'cascade-tooltip' + (hasTooltip && isActive ? ' is-visible' : '')}
-          data-bucket={currentBucket >= 0 ? currentBucket : undefined}
-          style={tooltipPos ? { left: tooltipPos.x, top: tooltipPos.y } : { left: 0, top: 0 }}
-          aria-hidden={!hasTooltip}
-        >
-          {currentBucket >= 0 && currentBucket < BUCKETS.length ? BUCKETS[currentBucket] : ''}
-        </div>
-
         <div ref={gridRef} className="cascade-grid">
           {visibleLocales.map((l, i) => (
             <LocaleCard
@@ -844,6 +841,14 @@ export function LocaleCascade() {
               ))}
             </div>
           )}
+        </div>
+        <div
+          className={'cascade-tooltip' + (hasTooltip && isActive ? ' is-visible' : '')}
+          data-bucket={currentBucket >= 0 ? currentBucket : undefined}
+          style={tooltipPos ? { left: tooltipPos.x, top: tooltipPos.y } : { left: 0, top: 0 }}
+          aria-hidden={!hasTooltip}
+        >
+          {currentBucket >= 0 && currentBucket < BUCKETS.length ? BUCKETS[currentBucket] : ''}
         </div>
       </div>
     </div>
