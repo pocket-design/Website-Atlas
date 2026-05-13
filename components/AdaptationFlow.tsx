@@ -36,7 +36,7 @@ const ALL_LOCALES: Locale[] = [
     key: 'de',
     countryCode: 'de',
     name: 'Germany',
-    image: '/assets/berlin-locale.jpg',
+    image: '/assets/berlin-locale.webp',
     imageLabel: 'Berlin',
     segments: [
       'Nach dem Unterricht schlüpfte ',
@@ -76,7 +76,7 @@ const ALL_LOCALES: Locale[] = [
     key: 'br',
     countryCode: 'br',
     name: 'Brazil',
-    image: '/assets/sao-paulo-locale.jpg',
+    image: '/assets/sao-paulo-locale.webp',
     imageLabel: 'São Paulo',
     segments: [
       'Depois da aula, ',
@@ -116,7 +116,7 @@ const ALL_LOCALES: Locale[] = [
     key: 'jp',
     countryCode: 'jp',
     name: 'Japan',
-    image: '/assets/tokyo-locale.jpg',
+    image: '/assets/tokyo-locale.webp',
     imageLabel: 'Tokyo',
     segments: [
       '放課後、',
@@ -156,7 +156,7 @@ const ALL_LOCALES: Locale[] = [
     key: 'it',
     countryCode: 'it',
     name: 'Italy',
-    image: '/assets/rome-locale.jpg',
+    image: '/assets/rome-locale.webp',
     imageLabel: 'Rome',
     segments: [
       'Dopo la scuola, ',
@@ -196,7 +196,7 @@ const ALL_LOCALES: Locale[] = [
     key: 'fr',
     countryCode: 'fr',
     name: 'France',
-    image: '/assets/paris-locale.jpg',
+    image: '/assets/paris-locale.webp',
     imageLabel: 'Paris',
     segments: [
       "Après les cours, ",
@@ -234,7 +234,7 @@ const ALL_LOCALES: Locale[] = [
     key: 'in',
     countryCode: 'in',
     name: 'India (Hindi)',
-    image: '/assets/mumbai-locale.jpg',
+    image: '/assets/mumbai-locale.webp',
     imageLabel: 'Mumbai',
     segments: [
       'स्कूल के बाद, ',
@@ -272,7 +272,7 @@ const ALL_LOCALES: Locale[] = [
     key: 'ta',
     countryCode: 'in',
     name: 'India (Tamil)',
-    image: '/assets/chennai-locale.jpg',
+    image: '/assets/chennai-locale.webp',
     imageLabel: 'Chennai',
     segments: [
       'பள்ளி முடிந்ததும், ',
@@ -310,7 +310,7 @@ const ALL_LOCALES: Locale[] = [
     key: 'es',
     countryCode: 'es',
     name: 'Spain',
-    image: '/assets/madrid-locale.jpg',
+    image: '/assets/madrid-locale.webp',
     imageLabel: 'Madrid',
     segments: [
       'Después de clase, ',
@@ -348,7 +348,7 @@ const ALL_LOCALES: Locale[] = [
     key: 'nl',
     countryCode: 'nl',
     name: 'Netherlands',
-    image: '/assets/amsterdam-locale.jpg',
+    image: '/assets/amsterdam-locale.webp',
     imageLabel: 'Amsterdam',
     segments: [
       'Na school dook ',
