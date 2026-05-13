@@ -6,15 +6,15 @@ export type LocaleMeta = {
 };
 
 export const ALL_LOCALES: LocaleMeta[] = [
-  { code: 'de', countryCode: 'de', name: 'Germany', region: 'Germany' },
-  { code: 'fr', countryCode: 'fr', name: 'France', region: 'France' },
-  { code: 'in', countryCode: 'in', name: 'India (Hindi)', region: 'India' },
-  { code: 'ta', countryCode: 'in', name: 'India (Tamil)', region: 'India' },
-  { code: 'es', countryCode: 'es', name: 'Spain', region: 'Spain' },
-  { code: 'it', countryCode: 'it', name: 'Italy', region: 'Italy' },
-  { code: 'jp', countryCode: 'jp', name: 'Japan', region: 'Japan' },
-  { code: 'nl', countryCode: 'nl', name: 'Netherlands', region: 'Netherlands' },
-  { code: 'br', countryCode: 'br', name: 'Brazil', region: 'Brazil' },
+  { code: 'de', countryCode: 'de', name: 'German', region: 'Germany' },
+  { code: 'fr', countryCode: 'fr', name: 'French', region: 'France' },
+  { code: 'in', countryCode: 'in', name: 'Hindi', region: 'India' },
+  { code: 'ta', countryCode: 'in', name: 'Tamil', region: 'India' },
+  { code: 'es', countryCode: 'es', name: 'Spanish', region: 'Spain' },
+  { code: 'it', countryCode: 'it', name: 'Italian', region: 'Italy' },
+  { code: 'jp', countryCode: 'jp', name: 'Japanese', region: 'Japan' },
+  { code: 'nl', countryCode: 'nl', name: 'Dutch', region: 'Netherlands' },
+  { code: 'br', countryCode: 'br', name: 'Portuguese', region: 'Brazil' },
 ];
 
 export const SOURCE_LOCALES: LocaleMeta[] = [

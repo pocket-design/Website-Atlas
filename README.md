@@ -1,6 +1,6 @@
 # Atlas by Pocket
 
-Atlas is the marketing site and interactive demo for Pocket's AI story adaptation engine. The site explains what Atlas does, demonstrates the adaptation pipeline with real locale-specific prose, and provides an interactive `/try` page where users can paste a story and see it adapted across multiple target locales.
+Atlas is the marketing site and interactive demo for Pocket's AI story adaptation engine. The site explains what Atlas does, demonstrates the adaptation pipeline with real locale-specific prose, and provides an interactive `/playground` page where users can paste a story and see it adapted across multiple target locales.
 
 Production URL: **https://atlas.pocketfm.com**
 
@@ -11,7 +11,7 @@ The project is a static Next.js site (exported HTML/CSS/JS, no server runtime) w
 
 **`/` (Landing page)** showcases the adaptation engine through an animated hero with a demo story that types itself out, a cascade of four locale cards with highlighted adaptation differences (names, places, food, family terms, everyday objects), interactive category pills, a bento grid explaining how the engine works, social proof stats, and a story CTA section with a thumbnail grid.
 
-**`/try` (Adaptation demo)** is a split-pane interface where the left side accepts source text and the right side displays adapted output in up to three target locales. It includes locale switcher dropdowns, a loading state with a square-grid loader, word/character counts, a download button, and a "Change mappings" modal for editing individual adaptation mappings per locale.
+**`/playground` (Adaptation demo)** is a split-pane interface where the left side accepts source text and the right side displays adapted output in up to three target locales. It includes locale switcher dropdowns, a loading state with a square-grid loader, word/character counts, a download button, and a "Change mappings" modal for editing individual adaptation mappings per locale.
 
 
 ## Tech stack
@@ -34,8 +34,8 @@ app/
   layout.tsx            Root layout: font loading, metadata, global CSS import
   globals.css           All styling: design tokens, component styles, responsive rules
   page.tsx              Landing page route (/, server component)
-  try/
-    page.tsx            Adaptation demo route (/try, client component)
+  playground/
+    page.tsx            Adaptation demo route (/playground, client component)
 
 components/
   NavBar.tsx            Fixed glass navigation bar, configurable center label and CTA
@@ -101,9 +101,9 @@ Locale metadata lives in `lib/locales.ts` as a single source of truth. It export
 The rich per-locale adaptation data (segmented text with highlight buckets and city images) lives in `components/AdaptationFlow.tsx` because it is tightly coupled to the cascade's highlight and tooltip system.
 
 
-## The `/try` page for engineering integration
+## The `/playground` page for engineering integration
 
-The `/try` page at `app/try/page.tsx` is where the engineering team will wire up the actual Atlas adaptation API. Here is how the current placeholder flow works and where to make changes:
+The `/playground` page at `app/playground/page.tsx` is where the engineering team will wire up the actual Atlas adaptation API. Here is how the current placeholder flow works and where to make changes:
 
 **Source input** is a standard `<textarea>` bound to `source` state. The source locale is selectable via a dropdown defaulting to English with an "(auto)" label.
 
@@ -135,7 +135,7 @@ npm install
 npm run dev
 ```
 
-The dev server starts at `http://localhost:3000`. The `/try` page is at `http://localhost:3000/try`.
+The dev server starts at `http://localhost:3000`. The `/playground` page is at `http://localhost:3000/playground`.
 
 For a production build:
 
@@ -155,7 +155,7 @@ The site deploys automatically to Vercel when changes are pushed to the `hardik`
 
 | File | What to do |
 |---|---|
-| `app/try/page.tsx` | Replace `handleAdapt` placeholder with real API calls. Replace `DEMO_MAPPINGS` with API-returned mappings. |
+| `app/playground/page.tsx` | Replace `handleAdapt` placeholder with real API calls. Replace `DEMO_MAPPINGS` with API-returned mappings. |
 | `lib/locales.ts` | Add or modify supported locales here. All UI across both pages will pick up changes automatically. |
 | `components/AdaptationFlow.tsx` | The landing page cascade uses hardcoded adapted passages in `ALL_LOCALES`. If the landing page should use live API data instead, replace the `segments` arrays with API responses. |
 | `app/globals.css` | All styling. Follows the token system in `STYLEGUIDE.md`. |

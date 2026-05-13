@@ -2699,7 +2699,7 @@ footer {
   }
 }
 
-/* ── TRY PAGE (/try) ─────────────────────────────────────── */
+/* ── PLAYGROUND PAGE (/playground) ─────────────────────────────────────── */
 .try-page {
   display: flex;
   flex-direction: column;
@@ -3483,6 +3483,86 @@ body:has(.try-page) .site-nav {
   gap: var(--sp-1);
   padding: var(--sp-3) var(--sp-3);
   border-top: var(--border-hairline);
+}
+
+/* Wiggle attention for locale picker */
+@keyframes try-pick-wiggle {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  15% { transform: translateX(-4px) rotate(-1.5deg); }
+  30% { transform: translateX(4px) rotate(1.5deg); }
+  45% { transform: translateX(-3px) rotate(-1deg); }
+  60% { transform: translateX(3px) rotate(1deg); }
+  75% { transform: translateX(-1.5px) rotate(-0.5deg); }
+}
+
+@keyframes try-pick-hint-pulse {
+  0%, 100% { color: var(--text-tertiary); }
+  50% { color: var(--scarlet); }
+}
+
+.try-pick-grid.is-wiggling .try-pick-chip {
+  animation: try-pick-wiggle 0.7s ease both;
+}
+.try-pick-grid.is-wiggling .try-pick-chip:nth-child(1) { animation-delay: 0s; }
+.try-pick-grid.is-wiggling .try-pick-chip:nth-child(2) { animation-delay: 0.04s; }
+.try-pick-grid.is-wiggling .try-pick-chip:nth-child(3) { animation-delay: 0.08s; }
+.try-pick-grid.is-wiggling .try-pick-chip:nth-child(4) { animation-delay: 0.12s; }
+.try-pick-grid.is-wiggling .try-pick-chip:nth-child(5) { animation-delay: 0.16s; }
+.try-pick-grid.is-wiggling .try-pick-chip:nth-child(6) { animation-delay: 0.20s; }
+.try-pick-grid.is-wiggling .try-pick-chip:nth-child(7) { animation-delay: 0.24s; }
+.try-pick-grid.is-wiggling .try-pick-chip:nth-child(8) { animation-delay: 0.28s; }
+.try-pick-grid.is-wiggling .try-pick-chip:nth-child(9) { animation-delay: 0.32s; }
+
+.try-pick-hint.is-wiggling {
+  animation: try-pick-hint-pulse 0.9s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .try-pick-grid.is-wiggling .try-pick-chip,
+  .try-pick-hint.is-wiggling {
+    animation: none;
+  }
+}
+
+/* Rate-limit modal */
+.rate-limit-overlay {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+}
+
+.rate-limit-modal {
+  height: auto;
+  max-width: 480px;
+}
+
+.rate-limit-body {
+  padding: var(--sp-4) var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  text-align: left;
+}
+
+.rate-limit-title {
+  font-family: var(--ff-sans);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.rate-limit-subtitle {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: var(--fs-md);
+  line-height: 1.5;
+}
+
+.rate-limit-actions {
+  display: flex;
+  gap: var(--sp-1);
+  justify-content: flex-end;
+  margin-top: var(--sp-2);
 }
 
 /* Sticky bottom action bar */

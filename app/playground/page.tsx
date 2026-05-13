@@ -178,16 +178,17 @@ function AddLocaleTabButton({ onClick, isActive }: { onClick: () => void; isActi
   );
 }
 
-function LocalePickerGrid({ exclude, onPick, title }: {
+function LocalePickerGrid({ exclude, onPick, title, wiggle }: {
   exclude: string[];
   onPick: (code: string) => void;
   title: string;
+  wiggle?: boolean;
 }) {
   const available = ALL_LOCALES.filter((l) => !exclude.includes(l.code));
   return (
     <div className="try-pick-locale">
-      <p className="try-pick-hint">{title}</p>
-      <div className="try-pick-grid">
+      <p className={`try-pick-hint${wiggle ? ' is-wiggling' : ''}`}>{title}</p>
+      <div className={`try-pick-grid${wiggle ? ' is-wiggling' : ''}`}>
         {available.map((opt) => (
           <button key={opt.code} className="try-pick-chip" onClick={() => onPick(opt.code)}>
             <span className={`locale-flag fi fi-${opt.flag}`} aria-hidden="true" />
@@ -718,10 +719,11 @@ let nextChapterId = 2;
 
 const CHAPTER_CHAR_LIMIT = 2000;
 
-function ChapterEditor({ chapters, onChange, onAddChapter }: {
+function ChapterEditor({ chapters, onChange, onAddChapter, onDeleteChapter }: {
   chapters: Chapter[];
   onChange: (chapters: Chapter[]) => void;
   onAddChapter: () => void;
+  onDeleteChapter: (id: number, idx: number) => void;
 }) {
   const lastChapterRef = useRef<HTMLDivElement>(null);
   const lastTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -739,11 +741,6 @@ function ChapterEditor({ chapters, onChange, onAddChapter }: {
     onChange(chapters.map((ch) => ch.id === id ? { ...ch, content } : ch));
   };
 
-  const deleteChapter = (id: number) => {
-    if (chapters.length <= 1) return;
-    onChange(chapters.filter((ch) => ch.id !== id));
-  };
-
   return (
     <div className="chapter-editor">
       {chapters.map((ch, idx) => {
@@ -755,9 +752,11 @@ function ChapterEditor({ chapters, onChange, onAddChapter }: {
             <div className="chapter-header">
               <span className="chapter-title">
                 Chapter {idx + 1}
-                <span className={`chapter-count${overLimit ? ' is-over' : charCount > CHAPTER_CHAR_LIMIT * 0.9 ? ' is-near' : ''}`}>
-                  ({charCount.toLocaleString()} / {CHAPTER_CHAR_LIMIT.toLocaleString()})
-                </span>
+                {(overLimit || charCount > CHAPTER_CHAR_LIMIT * 0.9) && (
+                  <span className={`chapter-count${overLimit ? ' is-over' : ' is-near'}`}>
+                    ({charCount.toLocaleString()} / {CHAPTER_CHAR_LIMIT.toLocaleString()})
+                  </span>
+                )}
               </span>
               <div className="chapter-actions">
                 {idx === 0 ? (
@@ -777,7 +776,7 @@ function ChapterEditor({ chapters, onChange, onAddChapter }: {
                   <Tooltip label="Delete chapter">
                     <button
                       className="icon-btn-tertiary"
-                      onClick={() => deleteChapter(ch.id)}
+                      onClick={() => onDeleteChapter(ch.id, idx)}
                       aria-label="Delete chapter"
                     >
                       <svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -820,9 +819,8 @@ function ChapterEditor({ chapters, onChange, onAddChapter }: {
   );
 }
 
-function ChapterOutput({ chapterResults, onDelete }: {
+function ChapterOutput({ chapterResults }: {
   chapterResults: ChapterResult[];
-  onDelete: (idx: number) => void;
 }) {
   return (
     <div className="chapter-output">
@@ -838,21 +836,6 @@ function ChapterOutput({ chapterResults, onDelete }: {
                 <>Chapter {idx + 1}</>
               )}
             </span>
-            {cr.status === 'done' && chapterResults.length > 1 && (
-              <div className="chapter-actions">
-                <Tooltip label="Delete chapter">
-                  <button
-                    className="icon-btn-tertiary"
-                    onClick={() => onDelete(idx)}
-                    aria-label="Delete chapter"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                      <path d="M2.5 3.5h9M5.5 3.5V2.5a1 1 0 011-1h1a1 1 0 011 1v1M11 3.5l-.5 8a1 1 0 01-1 1h-5a1 1 0 01-1-1l-.5-8M5.5 6v4M8.5 6v4" />
-                    </svg>
-                  </button>
-                </Tooltip>
-              </div>
-            )}
           </div>
           <div className="chapter-result-text">
             {cr.status === 'pending' ? null : cr.text}
@@ -863,6 +846,8 @@ function ChapterOutput({ chapterResults, onDelete }: {
   );
 }
 
+const ADAPT_FREE_LIMIT = 10;
+
 export default function TryPage() {
   const [chapters, setChapters] = useState<Chapter[]>([{ id: 1, content: '' }]);
   const [sourceLocale, setSourceLocale] = useState(SOURCE_LOCALES[0]);
@@ -872,6 +857,17 @@ export default function TryPage() {
   const [isAdapting, setIsAdapting] = useState(false);
   const [results, setResults] = useState<Record<string, ChapterResult[]>>({});
   const [showTweak, setShowTweak] = useState(false);
+  const [lastAdaptedSource, setLastAdaptedSource] = useState<string>('');
+  const [adaptCount, setAdaptCount] = useState(0);
+  const [showRateLimit, setShowRateLimit] = useState(false);
+  const [wiggleKey, setWiggleKey] = useState(0);
+  const [adaptingMode, setAdaptingMode] = useState<'adapting' | 'regenerating' | 'updating' | null>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const stored = window.localStorage.getItem('atlas_adapt_count');
+    if (stored) setAdaptCount(Number(stored) || 0);
+  }, []);
 
   const hasAdapted = Object.values(results).some((arr) => arr.some((r) => r.status === 'done'));
 
@@ -899,6 +895,9 @@ export default function TryPage() {
     const next = sample.chapters.map((content, i) => ({ id: i + 1, content }));
     setChapters(next);
     nextChapterId = next.length + 1;
+    if (selectedLocales.length === 0) {
+      setWiggleKey((k) => k + 1);
+    }
   };
 
   const handleResetAll = () => {
@@ -906,22 +905,76 @@ export default function TryPage() {
     nextChapterId = 2;
     setResults({});
     setIsAdapting(false);
+    setAdaptingMode(null);
+    setLastAdaptedSource('');
   };
+
+  const handleDeleteChapter = (id: number, idx: number) => {
+    if (chapters.length <= 1) return;
+    setChapters((prev) => prev.filter((ch) => ch.id !== id));
+    setResults((prev) => {
+      const next: Record<string, ChapterResult[]> = {};
+      Object.keys(prev).forEach((code) => {
+        next[code] = prev[code].filter((_, i) => i !== idx);
+      });
+      return next;
+    });
+  };
+
+  const sourceChanged = hasAdapted && lastAdaptedSource !== '' && lastAdaptedSource !== totalSource;
+  const hasUnadaptedLocale = selectedLocales.some((c) => !(results[c]?.length));
+  const adaptLabel = !hasAdapted
+    ? 'Adapt'
+    : sourceChanged
+      ? 'Update'
+      : hasUnadaptedLocale
+        ? 'Adapt'
+        : 'Regenerate';
+  const adaptingLabel = adaptingMode === 'updating'
+    ? 'Updating...'
+    : adaptingMode === 'regenerating'
+      ? 'Regenerating...'
+      : 'Adapting...';
 
   const handleAdapt = () => {
     if (!totalSource.trim() || isAdapting || selectedLocales.length === 0 || hasOverLimitChapter) return;
+    if (adaptCount >= ADAPT_FREE_LIMIT) {
+      setShowRateLimit(true);
+      return;
+    }
+
+    const mode: 'adapting' | 'regenerating' | 'updating' = sourceChanged
+      ? 'updating'
+      : (hasAdapted && !hasUnadaptedLocale)
+        ? 'regenerating'
+        : 'adapting';
+
+    const needsFullRerun = sourceChanged || !hasAdapted || !hasUnadaptedLocale;
+    const targetLocales = needsFullRerun
+      ? selectedLocales
+      : selectedLocales.filter((c) => !(results[c]?.length));
+    if (targetLocales.length === 0) return;
+
     setIsAdapting(true);
-    setResults({});
+    setAdaptingMode(mode);
+    setLastAdaptedSource(totalSource);
+
+    const newCount = adaptCount + 1;
+    setAdaptCount(newCount);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('atlas_adapt_count', String(newCount));
+    }
+
+    setResults((prev) => {
+      const next = { ...prev };
+      targetLocales.forEach((code) => {
+        next[code] = chapters.map(() => ({ status: 'pending' as const, text: '' }));
+      });
+      return next;
+    });
 
     const chapterCount = chapters.length;
-
-    const initialResults: Record<string, ChapterResult[]> = {};
-    selectedLocales.forEach((code) => {
-      initialResults[code] = chapters.map(() => ({ status: 'pending' as const, text: '' }));
-    });
-    setResults(initialResults);
-
-    selectedLocales.forEach((code) => {
+    targetLocales.forEach((code) => {
       const locale = ALL_LOCALES.find((l) => l.code === code);
       chapters.forEach((ch, chIdx) => {
         const delay = chIdx * 2000 + 800;
@@ -961,9 +1014,10 @@ export default function TryPage() {
           });
 
           const isLastChapter = chIdx === chapterCount - 1;
-          const isLastLocale = code === selectedLocales[selectedLocales.length - 1];
+          const isLastLocale = code === targetLocales[targetLocales.length - 1];
           if (isLastChapter && isLastLocale) {
             setIsAdapting(false);
+            setAdaptingMode(null);
           }
         }, doneDelay);
       });
@@ -988,6 +1042,7 @@ export default function TryPage() {
                 chapters={chapters}
                 onChange={setChapters}
                 onAddChapter={() => setChapters((prev) => [...prev, { id: nextChapterId++, content: '' }])}
+                onDeleteChapter={handleDeleteChapter}
               />
               {showSamples && <SamplePicker onPick={handlePickSample} samples={currentSamples} />}
             </div>
@@ -1033,9 +1088,11 @@ export default function TryPage() {
             <div className={`try-pane-body try-pane-output${hasAnyResult && !showLocalePicker ? ' has-result' : ''}`}>
               {showLocalePicker ? (
                 <LocalePickerGrid
+                  key={wiggleKey}
                   exclude={selectedLocales}
                   onPick={handlePickLocale}
-                  title={selectedLocales.length === 0 ? 'Pick a locale to adapt into' : 'Try adaption for another locale'}
+                  title={selectedLocales.length === 0 ? 'Pick a locale to adapt to' : 'Try adaption for another locale'}
+                  wiggle={wiggleKey > 0 && selectedLocales.length === 0}
                 />
               ) : isAdapting && !hasAnyResult ? (
                 <div className="try-loading">
@@ -1043,18 +1100,7 @@ export default function TryPage() {
                   <p className="try-loading-text">Adapting your story...</p>
                 </div>
               ) : activeResults.length > 0 ? (
-                <ChapterOutput
-                  chapterResults={activeResults}
-                  onDelete={(idx) => {
-                    setResults((prev) => {
-                      const next = { ...prev };
-                      Object.keys(next).forEach((code) => {
-                        next[code] = next[code].filter((_, i) => i !== idx);
-                      });
-                      return next;
-                    });
-                  }}
-                />
+                <ChapterOutput chapterResults={activeResults} />
               ) : (
                 <div className="try-empty">
                   <p>Your adaptation will appear here.</p>
@@ -1070,20 +1116,28 @@ export default function TryPage() {
             <div className="try-action-meta">
               <span className="try-meta-item">{totalSourceWords} words</span>
             </div>
-            <button
-              className="btn-secondary try-clear-btn"
-              onClick={handleResetAll}
-              disabled={isAdapting || (chapters.length === 1 && chapters[0].content.length === 0 && !hasAdapted)}
-            >
-              Clear all
-            </button>
-            <button
-              className={`${hasAdapted ? 'btn-secondary' : 'btn-brand'} try-adapt-btn`}
-              disabled={!totalSource.trim() || isAdapting || selectedLocales.length === 0 || hasOverLimitChapter}
-              onClick={handleAdapt}
-            >
-              {isAdapting ? (hasAdapted ? 'Regenerating...' : 'Adapting...') : hasAdapted ? <>Regenerate <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4" /></svg></> : 'Adapt'}
-            </button>
+            {!(chapters.length === 1 && chapters[0].content.length === 0 && !hasAdapted) && (
+              <button
+                className="btn-secondary try-clear-btn"
+                onClick={handleResetAll}
+                disabled={isAdapting}
+              >
+                Clear all
+              </button>
+            )}
+            {selectedLocales.length > 0 && (
+              <button
+                className={`${hasAdapted ? 'btn-secondary' : 'btn-brand'} try-adapt-btn`}
+                disabled={!totalSource.trim() || isAdapting || hasOverLimitChapter}
+                onClick={handleAdapt}
+              >
+                {isAdapting
+                  ? adaptingLabel
+                  : adaptLabel === 'Regenerate' || adaptLabel === 'Update' ? (
+                      <>{adaptLabel} <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4" /></svg></>
+                    ) : adaptLabel}
+              </button>
+            )}
           </div>
           <div className="try-action-half try-action-right">
             <div className="try-action-meta">
@@ -1091,18 +1145,8 @@ export default function TryPage() {
             </div>
             {hasAnyResult && (
               <>
-                <button className="try-icon-btn" onClick={() => setResults({})} aria-label="Clear" data-tooltip="Clear">
-                  <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                    <path d="M4 4l8 8M12 4l-8 8" />
-                  </svg>
-                </button>
-                <button className="try-icon-btn" onClick={() => setShowTweak(true)} aria-label="Change mappings" data-tooltip="Change mappings">
-                  <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M2 4h3m3 0h6M2 8h6m3 0h3M2 12h1m3 0h8" />
-                    <circle cx="7" cy="4" r="1.5" />
-                    <circle cx="10" cy="8" r="1.5" />
-                    <circle cx="5" cy="12" r="1.5" />
-                  </svg>
+                <button className="btn-secondary" onClick={() => setShowTweak(true)}>
+                  Change mappings
                 </button>
                 <button className="btn-secondary" onClick={() => {
                   const text = activeResults.map((r, i) => `Chapter ${i + 1}\n\n${r.text}`).join('\n\n---\n\n');
@@ -1128,6 +1172,26 @@ export default function TryPage() {
       {showTweak && (
         <TweakModal locales={selectedLocales} onClose={() => setShowTweak(false)} />
       )}
+      {showRateLimit && <RateLimitModal onClose={() => setShowRateLimit(false)} />}
     </>
+  );
+}
+
+function RateLimitModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="tweak-overlay rate-limit-overlay" onClick={onClose}>
+      <div className="tweak-modal rate-limit-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="rate-limit-body">
+          <h2 className="rate-limit-title">You&apos;ve hit the free demo limit</h2>
+          <p className="rate-limit-subtitle">
+            You&apos;ve run {ADAPT_FREE_LIMIT} adaptations on this device. Create an account to keep adapting, save your work, and use the full Atlas API.
+          </p>
+          <div className="rate-limit-actions">
+            <button className="btn-secondary" onClick={onClose}>Maybe later</button>
+            <a className="btn-brand" href="/signin">Log in / Sign up</a>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

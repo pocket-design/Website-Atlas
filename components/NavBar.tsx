@@ -11,8 +11,8 @@ interface NavBarProps {
 export default function NavBar({
   centerLabel,
   ctaLabel = 'Try it now',
-  ctaHref = '/try',
-  signInLabel = 'Sign in',
+  ctaHref = '/playground',
+  signInLabel = 'Log in / Sign up',
   signInHref = '/signin',
 }: NavBarProps) {
   return (
