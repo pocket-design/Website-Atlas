@@ -415,8 +415,11 @@
   padding: 10px 10px 10px 20px;
   z-index: var(--z-nav);
   background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
+  /* -webkit- declared first so Tailwind v4 PostCSS minification
+     doesn't strip the standard property (same fix as the bento
+     blur layers, see PR #2). */
   -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
   border: var(--border-glass);
   border-radius: var(--r-pill);
   box-shadow: var(--shadow-elevated);
