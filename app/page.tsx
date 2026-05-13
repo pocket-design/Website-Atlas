@@ -98,7 +98,7 @@ export default function Home() {
 
         <div className="story-bento-wrap">
           <div className="story-bento-grid">
-            <div className="story-bento-cell">
+          <div className="story-bento-cell">
             <h3 className="t-h4">Paste your story</h3>
             <p className="t-body-sm">Drop in your prose. Short fiction, a full chapter, or an entire season of scripts. Any length, any genre.</p>
           </div>
@@ -113,13 +113,21 @@ export default function Home() {
           <div className="story-bento-cell">
             <h3 className="t-h4">Tweak and ship</h3>
             <p className="t-body-sm">Review the adaptation, adjust any mappings, then export. Your story is ready for a new market.</p>
-            </div>
           </div>
           <DraggableMagnets />
+          </div>
         </div>
 
         <div className="story-cta-action">
-          <a href="/try" className="btn-primary">Try Atlas now</a>
+          <a href="/try?from=en&to=in" className="btn btn-secondary story-cta-btn">
+            <span className="locale-flag fi fi-us" /> English <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4" /></svg> <span className="locale-flag fi fi-in" /> Hindi
+          </a>
+          <a href="/try?from=en&to=de" className="btn btn-secondary story-cta-btn">
+            <span className="locale-flag fi fi-us" /> English <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4" /></svg> <span className="locale-flag fi fi-de" /> German
+          </a>
+          <a href="/try?from=en&to=es" className="btn btn-secondary story-cta-btn">
+            <span className="locale-flag fi fi-us" /> English <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4" /></svg> <span className="locale-flag fi fi-es" /> Spanish
+          </a>
         </div>
       </section>
 

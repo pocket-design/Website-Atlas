@@ -233,7 +233,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'in',
     countryCode: 'in',
-    name: 'India',
+    name: 'India (Hindi)',
     image: '/assets/mumbai-locale.jpg',
     imageLabel: 'Mumbai',
     segments: [
@@ -271,7 +271,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'ta',
     countryCode: 'in',
-    name: 'Tamil Nadu',
+    name: 'India (Tamil)',
     image: '/assets/chennai-locale.jpg',
     imageLabel: 'Chennai',
     segments: [

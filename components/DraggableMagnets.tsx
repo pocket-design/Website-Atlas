@@ -3,49 +3,38 @@
 import { useRef, useCallback, useState } from 'react';
 
 const MAGNETS = [
-  { src: '/assets/magnet-1.png', x: -20, y: -30, angle: -12 },
-  { src: '/assets/magnet-2.png', x: 820, y: -25, angle: 6 },
-  { src: '/assets/magnet-3.png', x: 200, y: 140, angle: -5 },
-  { src: '/assets/magnet-4.png', x: 500, y: 145, angle: 14 },
-  { src: '/assets/magnet-5.png', x: 750, y: 130, angle: -9 },
+  { src: '/assets/magnet-1.png', x: 230, y: -30, angle: -8 },
+  { src: '/assets/magnet-2.png', x: 510, y: -25, angle: 5 },
+  { src: '/assets/magnet-3.png', x: 790, y: -35, angle: -3 },
+  { src: '/assets/magnet-4.png', x: 120, y: 100, angle: 6 },
+  { src: '/assets/magnet-5.png', x: 650, y: 95, angle: -5 },
 ];
 
-interface MagnetState {
-  x: number;
-  y: number;
-  angle: number;
-}
-
 export default function DraggableMagnets() {
-  const [positions, setPositions] = useState<MagnetState[]>(
-    MAGNETS.map(m => ({ x: m.x, y: m.y, angle: m.angle }))
+  const [positions, setPositions] = useState(
+    MAGNETS.map(m => ({ x: m.x, y: m.y }))
   );
   const [dragging, setDragging] = useState<number | null>(null);
-  const dragOffset = useRef({ x: 0, y: 0 });
-  const containerRef = useRef<HTMLDivElement>(null);
+  const dragStart = useRef({ x: 0, y: 0, px: 0, py: 0 });
 
   const handlePointerDown = useCallback((e: React.PointerEvent, idx: number) => {
     e.preventDefault();
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
-    const container = containerRef.current;
-    if (!container) return;
-    const rect = container.getBoundingClientRect();
-    dragOffset.current = {
-      x: e.clientX - rect.left - positions[idx].x,
-      y: e.clientY - rect.top - positions[idx].y,
+    dragStart.current = {
+      x: e.clientX,
+      y: e.clientY,
+      px: positions[idx].x,
+      py: positions[idx].y,
     };
     setDragging(idx);
   }, [positions]);
 
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
     if (dragging === null) return;
-    const container = containerRef.current;
-    if (!container) return;
-    const rect = container.getBoundingClientRect();
-    const newX = e.clientX - rect.left - dragOffset.current.x;
-    const newY = e.clientY - rect.top - dragOffset.current.y;
+    const dx = e.clientX - dragStart.current.x;
+    const dy = e.clientY - dragStart.current.y;
     setPositions(prev => prev.map((p, i) =>
-      i === dragging ? { ...p, x: newX, y: newY } : p
+      i === dragging ? { x: dragStart.current.px + dx, y: dragStart.current.py + dy } : p
     ));
   }, [dragging]);
 
@@ -55,7 +44,6 @@ export default function DraggableMagnets() {
 
   return (
     <div
-      ref={containerRef}
       className="magnets-container"
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -66,11 +54,11 @@ export default function DraggableMagnets() {
           key={i}
           src={m.src}
           alt=""
-          className={`magnet magnet-scattered${dragging === i ? ' is-dragging' : ''}`}
+          className={`magnet-scattered${dragging === i ? ' is-dragging' : ''}`}
           style={{
             left: positions[i].x,
             top: positions[i].y,
-            transform: `rotate(${positions[i].angle}deg)`,
+            transform: `rotate(${m.angle}deg)`,
             zIndex: dragging === i ? 10 : 2,
           }}
           onPointerDown={(e) => handlePointerDown(e, i)}
