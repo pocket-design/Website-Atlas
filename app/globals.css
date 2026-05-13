@@ -1148,18 +1148,117 @@
 }
 
 /* ── FOOTER ──────────────────────────────────────────────── */
-/* Top padding matches the section-rhythm constant so the gap from
-   FinalCTA → Footer matches every other boundary. Bottom stays small
-   since the footer is terminal — no content below it needs breathing. */
+/* Multi-column dark band ported from hardik. Top padding uses the
+   section-rhythm constant so the gap from FinalCTA → Footer matches
+   every other boundary. .footer-bottom inside provides its own padding
+   so the footer block doesn't need its own bottom padding. Hardcoded
+   #000/#fff in the upstream source are tokenized to --ink/--text-on-dark. */
 footer {
-  padding: var(--sp-section) var(--sp-8) var(--sp-4);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--surface-page);
+  position: relative;
+  z-index: var(--z-raised);
+  background: var(--ink);
+  color: var(--text-on-dark);
+  padding: var(--sp-section) var(--sp-8) 0;
 }
-footer .t-caption {
-  color: var(--text-tertiary);
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--sp-8);
+  max-width: var(--container);
+  margin: 0 auto;
+  align-items: stretch;
+}
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.footer-brand-top {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1-5);
+}
+.footer-brand .footer-logo img {
+  height: 40px;
+  width: auto;
+  filter: none;
+}
+.footer-byline {
+  font-family: var(--ff-display);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-xl);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-wide);
+  color: rgba(255, 255, 255, 0.7);
+}
+.footer-nav {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: var(--sp-8);
+  align-items: start;
+}
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.footer-col-title {
+  font-family: var(--ff-sans);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-caps);  /* hardik uses --ls-widest (0.1em); substituted with --ls-caps (0.08em) */
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: var(--sp-1);
+}
+.footer-col a {
+  font-family: var(--ff-sans);
+  font-size: var(--fs-base);
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color var(--dur-instant) var(--ease);
+}
+.footer-col a:hover {
+  color: var(--text-on-dark);
+}
+.footer-bottom {
+  max-width: var(--container);
+  margin: var(--sp-8) auto 0;
+  padding: var(--sp-3) 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-bottom span {
+  font-family: var(--ff-sans);
+  font-size: var(--fs-base);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Footer responsive — single-column nav at 2 cols, stacked bottom strip */
+@media (max-width: 768px) {
+  footer {
+    padding-left: var(--sp-2-5);
+    padding-right: var(--sp-2-5);
+  }
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: var(--sp-6);
+  }
+  .footer-brand {
+    text-align: left;
+    align-items: flex-start;
+  }
+  .footer-nav {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--sp-6) var(--sp-4);
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: var(--sp-1);
+    text-align: center;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
