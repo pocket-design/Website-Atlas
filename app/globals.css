@@ -516,7 +516,7 @@
   color: var(--text-primary);
   text-decoration: none;
   font-family: var(--ff-sans);
-  font-size: 13px;   /* label */
+  font-size: var(--fs-ui);
   font-weight: 400;  /* Mallory Book — only 400/700 are valid */
   border-radius: var(--r-pill);
   transition: background-color var(--dur-instant) var(--ease), transform var(--dur-normal) var(--ease-spring);
@@ -791,7 +791,7 @@
   padding: var(--sp-1) var(--sp-3);
   border-radius: var(--r-btn);
   font-family: var(--ff-sans);
-  font-size: 13px;
+  font-size: var(--fs-ui);
   font-weight: 400;
   cursor: pointer;
   white-space: nowrap;
@@ -1079,7 +1079,7 @@
 .testimonial-card__role {
   font-family: var(--ff-sans);
   font-weight: 400;
-  font-size: 11px;
+  font-size: var(--fs-xs);
   line-height: 1.4;
   color: var(--text-tertiary);
   margin-bottom: var(--sp-2);
@@ -1143,9 +1143,9 @@
   .testimonial-card__avatar {
     width: 60px;
     height: 60px;
-    font-size: 14px;
+    font-size: var(--fs-base);
   }
-  .testimonial-card__name { font-size: 11px; }
+  .testimonial-card__name { font-size: var(--fs-xs); }
   .testimonial-card__role { font-size: 9px; }
   .testimonial-card__listen { font-size: 9px; padding: 4px var(--sp-1); }
   .testimonial-card__quote { font-size: clamp(10px, 1.2vw, 14px); }
@@ -1744,7 +1744,7 @@ footer .t-caption {
   z-index: var(--z-dropdown);
   padding: 9px 14px;
   background: var(--ink);
-  color: #fff;
+  color: var(--text-on-dark);
   border-radius: var(--r-pill);
   font-family: var(--ff-sans);
   font-size: var(--fs-xs);
@@ -1850,12 +1850,12 @@ footer .t-caption {
 }
 .cascade-pill.is-active,
 .cascade-pill.is-selected {
-  color: #fff;
+  color: var(--text-on-dark);
   border-color: transparent;
 }
 .cascade-pill.is-selected-all {
   background: var(--text-primary);
-  color: #fff;
+  color: var(--text-on-dark);
   border-color: transparent;
 }
 .cascade-pill.is-active[data-bucket="0"],
