@@ -3290,3 +3290,177 @@ body:has(.try-page) .site-nav {
   min-width: 180px;
   justify-content: center;
 }
+/* ═══════════════════════════════════════════════════════════
+   TESTIMONIALS — infinite horizontal ticker
+   ═══════════════════════════════════════════════════════════ */
+
+.testimonials {
+  background: var(--surface-page);
+  border-top: 1px solid var(--surface-divider);
+  padding-top: var(--sp-20);
+  padding-bottom: var(--sp-20);
+  overflow: hidden;
+}
+
+/* Section heading — container-aligned */
+.testimonials__header {
+  padding: 0 max(var(--sp-8), calc((100% - var(--container)) / 2));
+  margin-bottom: var(--sp-10);
+}
+
+.testimonials__eyebrow {
+  margin-bottom: var(--sp-2);
+}
+
+.testimonials__heading {
+  max-width: 560px;
+}
+
+/* ── Viewport: clips overflow, fades edges ── */
+.testimonials__viewport {
+  overflow: hidden;
+  /* Left/right fade so cards appear to scroll in from nothing */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+}
+
+/* ── Track: JS-driven position (no CSS animation) ── */
+/* Position is set via trackRef.style.transform in Testimonials.tsx.
+   will-change: transform tells the browser to composite this layer. */
+.testimonials__track {
+  display: flex;
+  gap: var(--sp-10);
+  width: max-content;
+  will-change: transform;
+}
+
+/* ── Individual testimonial — open layout, no box ── */
+.testimonial-card {
+  display: flex;
+  gap: var(--sp-3);
+  width: 720px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* Left column: avatar + name + role + listen button */
+.testimonial-card__left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 160px;
+  flex-shrink: 0;
+}
+
+/* Avatar tile: coloured square with initials (swap for <img> when assets exist) */
+.testimonial-card__avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--r-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ff-display);
+  font-size: 26px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.45);
+  margin-bottom: var(--sp-2);
+  flex-shrink: 0;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+/* Name — Season Mix 400 via .t-h4 utility class on the element */
+.testimonial-card__name {
+  color: var(--text-primary);
+  margin-bottom: var(--sp-1);
+  font-size: 16px;
+}
+
+/* Role — Mallory 400 */
+.testimonial-card__role {
+  font-family: var(--ff-sans);
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--text-tertiary);
+  margin-bottom: var(--sp-2);
+}
+
+.testimonial-card__listen {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-2);
+  border: 1px solid var(--text-primary);
+  border-radius: var(--r-pill);
+  font-family: var(--ff-sans);
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--dur-instant) var(--ease), color var(--dur-instant) var(--ease);
+  pointer-events: auto;
+}
+
+.testimonial-card__listen:hover {
+  background: var(--text-primary);
+  color: var(--surface-page);
+}
+
+/* Right column: quote — Mallory 400 (not Season Mix) */
+.testimonial-card__right {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+.testimonial-card__quote {
+  /* Design system: quotes are body-level text, not headings → Mallory 400 */
+  font-family: var(--ff-sans);
+  font-weight: 400;
+  font-size: clamp(13px, 1.2vw, 17px);
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .testimonials__header {
+    padding: 0 var(--sp-3);
+  }
+  .testimonials__track {
+    gap: var(--sp-8);
+  }
+  .testimonial-card {
+    width: 420px;
+    gap: var(--sp-3);
+  }
+  .testimonial-card__left {
+    width: 80px;
+  }
+  .testimonial-card__avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 14px;
+  }
+  .testimonial-card__name { font-size: 11px; }
+  .testimonial-card__role { font-size: 9px; }
+  .testimonial-card__listen { font-size: 9px; padding: 4px var(--sp-1); }
+  .testimonial-card__quote { font-size: clamp(10px, 1.2vw, 14px); }
+}

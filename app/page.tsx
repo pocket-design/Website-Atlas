@@ -9,6 +9,7 @@ import NavBar from '@/components/NavBar';
 import TryItSection from '@/components/TryItSection';
 import HeroBg from '@/components/HeroBg';
 import DraggableMagnets from '@/components/DraggableMagnets';
+import Testimonials from '@/components/Testimonials';
 
 export default function Home() {
   const jsonLd = {
@@ -318,6 +319,9 @@ export default function Home() {
           <p className="social-proof-text">Atlas is free to try.</p>
         </div>
       </section>
+
+      {/* FOLD — TESTIMONIALS */}
+      <Testimonials />
 
       {/* FOLD 4 — FINAL CTA */}
       {/* FOOTER */}
