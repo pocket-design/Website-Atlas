@@ -414,15 +414,22 @@ This bug was fixed in PR #2 and again for `.site-nav` in commit dbc8dd3.
 
 ### 9.1 Buttons
 
-Three button hierarchies. **All buttons share** the same height
-(`min-height: 40px`), padding (`10px var(--sp-3)`), radius
-(`var(--r-pill)`), font (Mallory bold), and press-state
-(`transform: scale(0.95); transition: var(--dur-normal) var(--ease-spring)`).
+Two primary patterns plus one secondary. **All buttons share** these
+foundations: `min-height: 40px`, `border-radius: var(--r-pill)`,
+`font-family: var(--ff-sans)`, press-state `transform: scale(0.95);
+transition: transform var(--dur-normal) var(--ease-spring)`.
 
-#### Primary — conversion-critical action
+Padding and weight differ by variant — see each below.
 
-Used by hero CTA, "Adapt the story" in `HeroAdapter`, "Try it now" in nav.
-Class: `.btn-global` or `.btn-primary`.
+#### Primary (hero CTA) — conversion-critical action
+
+Used by hero CTA: "Adapt the story" in `HeroAdapter`. Class: `.btn-global`.
+
+| Spec | Value |
+|---|---|
+| padding | `10px var(--sp-3)` (= 10 24) |
+| font-size | `var(--fs-base)` (14 px) |
+| font-weight | `var(--fw-bold)` (700, Mallory Bold) |
 
 | State | Background | Text |
 |---|---|---|
@@ -433,6 +440,34 @@ Class: `.btn-global` or `.btn-primary`.
 
 Shadow: `var(--shadow-elevated)` default, `var(--shadow-border)` on active
 (to reinforce the pressed feel).
+
+#### Primary (nav) — smaller nav CTA
+
+Used by nav "Try it now" pill. Class: `.btn-primary` (lifted by the
+nav-nested override `.site-nav .btn-primary` which downsizes it).
+
+Same overall structure as the hero CTA but **smaller min-height,
+tighter padding, regular weight** so it reads as a navigation element
+rather than a hero conversion target.
+
+| Spec | Value |
+|---|---|
+| min-height | `34px` (nav-nested; the standalone `.btn-primary` rule defaults to `40px`) |
+| padding | `8px var(--sp-2)` (= 8 16) |
+| font-size | `var(--fs-base)` (14 px) |
+| font-weight | `400` (Mallory Book) |
+| radius | `var(--r-pill)` |
+
+| State | Background | Text |
+|---|---|---|
+| default | `var(--ink)` | `var(--text-on-dark)` |
+| `:hover` | `var(--ink-tint-1)` | same |
+| `:active` | `var(--ink-shade-2)` | same + `scale(0.95)` |
+
+The standalone `.btn-primary` base rule (used outside the nav, currently
+never instantiated) defines a larger 40-px-tall variant with
+`var(--fs-ui)` (13 px) and `padding: 10px var(--sp-2-5)`. Both rules are
+in `app/globals.css`; the nav override has higher specificity.
 
 #### Secondary — optional / read-more action
 

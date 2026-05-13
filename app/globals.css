@@ -417,6 +417,10 @@
 
 /* ── Buttons ─────────────────────────────────────────────── */
 /* Primary CTA: ink fill · vellum text · pill shape */
+/* Nav-sized primary — slightly smaller than .btn-global (used by the
+   nav "Try it now" pill). Keeps Mallory Book + tighter padding so it
+   reads as a nav element rather than a hero CTA. Press-state matches
+   the design-system spec (scale 0.95, ease-spring). */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -427,34 +431,16 @@
   padding: 10px var(--sp-2-5);
   border-radius: var(--r-pill);
   font-family: var(--ff-sans);
-  font-size: 13px;
-  font-weight: 400;
+  font-size: var(--fs-ui);
+  font-weight: 400;  /* Mallory Book — only 400/700 are valid */
   cursor: pointer;
   min-height: 40px;
-  transition: background 120ms var(--ease), transform 120ms var(--ease);
+  transition:
+    background var(--dur-instant) var(--ease),
+    transform  var(--dur-normal)  var(--ease-spring);
 }
 .btn-primary:hover  { background: var(--ink-tint-1); }
-.btn-primary:active { background: var(--ink-shade-2); transform: scale(0.96); }
-
-.btn-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-1);
-  background: var(--scarlet);
-  color: var(--vellum);
-  border: none;
-  padding: 10px var(--sp-3);
-  border-radius: var(--r-btn);
-  font-family: var(--ff-sans);
-  font-size: 14px;
-  font-weight: 400;
-  cursor: pointer;
-  min-height: 40px;
-  transition: background 120ms var(--ease), transform 120ms var(--ease);
-}
-.btn-brand:hover    { background: var(--scarlet-shade-1); }
-.btn-brand:active   { background: var(--scarlet-shade-2); transform: scale(0.96); }
-.btn-brand:disabled { opacity: 0.5; cursor: default; }
+.btn-primary:active { background: var(--ink-shade-2); transform: scale(0.95); }
 
 /* ── NAV ─────────────────────────────────────────────────── */
 .site-nav {
@@ -1327,7 +1313,6 @@ footer .t-caption {
 
 
 /* ── Region 2: branches / grid / overlay / cards / pickers / pills ── */
-.btn-global:disabled { opacity: 0.6; cursor: default; transform: none; }
 
 /* SVG branch container — rendered inside .hero (after the HeroAdapter
    card), 16 px below the adapt-flow, sitting over the dial-kit
