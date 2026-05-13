@@ -1095,24 +1095,24 @@
 /* Widest coverage — lightest blur, reaches the upper-middle of the card */
 .atlas-bento__blur--wide {
   height: 70%;
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   mask-image: linear-gradient(to top, black 30%, transparent 100%);
   -webkit-mask-image: linear-gradient(to top, black 30%, transparent 100%);
 }
 /* Mid coverage — heavier blur, sits across the bottom half */
 .atlas-bento__blur--mid {
   height: 50%;
-  backdrop-filter: blur(50px);
   -webkit-backdrop-filter: blur(50px);
+  backdrop-filter: blur(50px);
   mask-image: linear-gradient(to top, black 50%, transparent 100%);
   -webkit-mask-image: linear-gradient(to top, black 50%, transparent 100%);
 }
 /* Tightest coverage — frosted-glass strength right under the text */
 .atlas-bento__blur--tight {
   height: 38%;
-  backdrop-filter: blur(100px);
   -webkit-backdrop-filter: blur(100px);
+  backdrop-filter: blur(100px);
   mask-image: linear-gradient(to top, black 70%, transparent 100%);
   -webkit-mask-image: linear-gradient(to top, black 70%, transparent 100%);
 }
