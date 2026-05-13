@@ -1,6 +1,101 @@
 /* Fonts loaded via next/font/local in app/layout.tsx and exposed as
    --font-season-mix and --font-mallory-narrow CSS variables. */
 
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════
+   TAILWIND THEME  ·  exposes the design tokens below as utilities
+   (bg-ink, text-scarlet, font-display, p-3, rounded-card, etc.)
+   so Tailwind classes and the raw CSS variables stay in sync.
+   ═══════════════════════════════════════════════════════════ */
+@theme {
+  /* ── Colour palette ─────────────────────────────────────── */
+  /* Ink */
+  --color-ink:           #1C1C1C;
+  --color-ink-tint-1:    #383838;
+  --color-ink-tint-2:    #545454;
+  --color-ink-tint-3:    #717171;
+  --color-ink-tint-4:    #8D8D8D;
+  --color-ink-tint-5:    #A9A9A9;
+  --color-ink-tint-6:    #C6C6C6;
+  --color-ink-tint-7:    #E2E2E2;
+  --color-ink-shade-1:   #181818;
+  --color-ink-shade-2:   #151515;
+  --color-ink-shade-3:   #111111;
+
+  /* Vellum */
+  --color-vellum:         #FAF9F1;
+  --color-vellum-tint-1:  #FAF9F2;
+  --color-vellum-tint-2:  #FBFAF4;
+  --color-vellum-tint-3:  #FBFBF6;
+  --color-vellum-tint-4:  #FCFCF8;
+  --color-vellum-tint-5:  #FDFCF9;
+  --color-vellum-tint-6:  #FDFDFB;
+  --color-vellum-tint-7:  #FEFEFD;
+  --color-vellum-shade-1: #DAD9D2;
+  --color-vellum-shade-2: #BBBAB4;
+  --color-vellum-shade-3: #9C9B96;
+  --color-vellum-shade-4: #7D7C78;
+  --color-vellum-shade-5: #5D5D5A;
+  --color-vellum-shade-6: #3E3E3C;
+  --color-vellum-shade-7: #1F1F1E;
+
+  /* Scarlet */
+  --color-scarlet:         #F51D00;
+  --color-scarlet-tint-3:  #F8715F;
+  --color-scarlet-tint-6:  #FCC6BF;
+  --color-scarlet-tint-7:  #FDE2DF;
+  --color-scarlet-shade-1: #D61900;
+  --color-scarlet-shade-2: #B71500;
+
+  /* Semantic aliases (so bg-page / text-primary just work) */
+  --color-page:    #FAF9F1;
+  --color-card:    #FEFEFD;
+  --color-alt:     #DAD9D2;
+  --color-divider: #BBBAB4;
+  --color-inverse: #1C1C1C;
+  --color-primary:   #1C1C1C;
+  --color-secondary: #717171;
+  --color-tertiary:  #8D8D8D;
+
+  /* ── Type families ──────────────────────────────────────── */
+  --font-display: var(--font-season-mix), Georgia, serif;
+  --font-sans:    var(--font-mallory-narrow), 'Inter', system-ui, sans-serif;
+
+  /* ── Spacing (matches the --sp-* scale; --sp-1 = 8px) ───── */
+  --spacing-half: 4px;
+  --spacing-1:    8px;
+  --spacing-1_5:  12px;
+  --spacing-2:    16px;
+  --spacing-2_5:  20px;
+  --spacing-3:    24px;
+  --spacing-4:    32px;
+  --spacing-5:    40px;
+  --spacing-6:    48px;
+  --spacing-8:    64px;
+  --spacing-10:   80px;
+  --spacing-12:   96px;
+  --spacing-15:   120px;
+  --spacing-20:   160px;
+
+  /* ── Containers ─────────────────────────────────────────── */
+  --container-narrow: 720px;
+  --container-base:   1200px;
+  --container-wide:   1376px;
+
+  /* ── Radii ──────────────────────────────────────────────── */
+  --radius-input: 6px;
+  --radius-tag:   6px;
+  --radius-btn:   8px;
+  --radius-card:  12px;
+  --radius-panel: 16px;
+  --radius-pill:  9999px;
+
+  /* ── Animation / Motion ─────────────────────────────────── */
+  --ease-base:   cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS  ·  docs/design-system.md is the source of truth
    ═══════════════════════════════════════════════════════════ */
@@ -135,16 +230,20 @@
   --ff-sans:    var(--font-mallory-narrow), 'Inter', system-ui, sans-serif;
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+/* Reset + base element styling — placed in @layer base so Tailwind utilities
+   in @layer utilities can still override (utilities cascade above base). */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
 
-body {
-  font-family: var(--ff-sans);
-  background: var(--surface-page);
-  color: var(--text-primary);
-  font-size: 16px;
-  line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
+  body {
+    font-family: var(--ff-sans);
+    background: var(--surface-page);
+    color: var(--text-primary);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
 }
 
 /* ── Scroll reveal ───────────────────────────────────────── */
@@ -938,10 +1037,14 @@ body {
 /*   card 1: 2×2 (large square)   card 3: 1×2 (portrait)   */
 /*   card 2: 1×1 (square)         card 4: 1×1 (square)     */
 /*   card 5: 2×1 (landscape)      card 6: 2×1 (landscape)  */
+/*                                                          */
+/* Row heights sized so every body copy fits without        */
+/* truncation, even on the narrowest 1-col cards where the  */
+/* longest text wraps to ~5 lines of t-body-sm.             */
 .atlas-bento__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 300px 300px 260px;
+  grid-template-rows: 340px 340px 300px;
   gap: var(--sp-2);
 }
 
@@ -989,32 +1092,36 @@ body {
   bottom: 0;
   pointer-events: none;
 }
-/* Widest coverage — lightest blur */
+/* Widest coverage — lightest blur, reaches the upper-middle of the card */
 .atlas-bento__blur--wide {
-  height: 65%;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  mask-image: linear-gradient(to top, black 0%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
+  height: 70%;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  mask-image: linear-gradient(to top, black 30%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 30%, transparent 100%);
 }
-/* Mid coverage — medium blur */
+/* Mid coverage — heavier blur, sits across the bottom half */
 .atlas-bento__blur--mid {
-  height: 44%;
-  backdrop-filter: blur(9px);
-  -webkit-backdrop-filter: blur(9px);
-  mask-image: linear-gradient(to top, black 25%, transparent 88%);
-  -webkit-mask-image: linear-gradient(to top, black 25%, transparent 88%);
+  height: 50%;
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+  mask-image: linear-gradient(to top, black 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 50%, transparent 100%);
 }
-/* Tightest coverage — strongest blur (right above text) */
+/* Tightest coverage — frosted-glass strength right under the text */
 .atlas-bento__blur--tight {
-  height: 28%;
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  mask-image: linear-gradient(to top, black 40%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to top, black 40%, transparent 100%);
+  height: 38%;
+  backdrop-filter: blur(100px);
+  -webkit-backdrop-filter: blur(100px);
+  mask-image: linear-gradient(to top, black 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 70%, transparent 100%);
 }
 
-/* ── Vignette — dark gradient for text contrast ─────────── */
+/* ── Vignette — dark gradient under the text, restored from
+   the original deploy. Sits on top of the blur layers so the
+   bottom of every card reads as a clearly treated band, even
+   on cards whose backgrounds are flat colour gradients (where
+   the backdrop-filter blur alone is invisible). ─────────── */
 .atlas-bento__vignette {
   position: absolute;
   inset: 0;
@@ -1032,7 +1139,7 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: var(--sp-4);
+  padding: var(--sp-2);
 }
 .atlas-bento__heading {
   color: var(--vellum);
@@ -1040,18 +1147,18 @@ body {
 }
 .atlas-bento__body {
   color: rgba(250, 249, 241, 0.72);
-  /* Show max 3 lines in card view */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  /* No line-clamp — full body text must remain readable in every card.
+     The grid row heights below are sized to fit the longest copy on the
+     narrowest column without truncation. */
 }
 
 /* ── Responsive — 1024 px: collapse to 2-col flow ───────── */
 @media (max-width: 1024px) {
   .atlas-bento__grid {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 300px 260px 260px 260px;
+    /* 1-col cards on tablet are even narrower, so the longest body copy
+       wraps further. Generous row heights prevent any truncation. */
+    grid-template-rows: 360px 320px 320px 320px;
   }
   .atlas-bento__grid .atlas-bento__card:nth-child(1) { grid-column: 1 / 3 !important; grid-row: 1 / 2 !important; }
   .atlas-bento__grid .atlas-bento__card:nth-child(2) { grid-column: 1 / 2 !important; grid-row: 2 / 3 !important; }
@@ -1069,7 +1176,9 @@ body {
   .atlas-bento__grid {
     grid-template-columns: 1fr;
     grid-template-rows: unset;
-    grid-auto-rows: 280px;
+    /* Single column = full width per card → text wraps less, but use
+       min-content fallback in case a heading or body still needs space. */
+    grid-auto-rows: minmax(320px, auto);
   }
   .atlas-bento__grid .atlas-bento__card {
     grid-column: 1 / -1 !important;

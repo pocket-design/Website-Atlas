@@ -40,6 +40,7 @@ const CARDS: BentoCard[] = [
     gridColumn: '3 / 4',
     gridRow: '1 / 2',
     bg: 'linear-gradient(145deg, #1C1C1C 0%, #383838 100%)',
+    img: '/assets/bento-long-prose.png',
   },
   {
     id: 'atlas-bento-3',
@@ -48,6 +49,7 @@ const CARDS: BentoCard[] = [
     gridColumn: '4 / 5',
     gridRow: '1 / 3',
     bg: 'linear-gradient(145deg, #92400E 0%, #D97706 100%)',
+    img: '/assets/bento-strategy-first.png',
   },
   {
     id: 'atlas-bento-4',

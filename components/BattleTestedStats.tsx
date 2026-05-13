@@ -14,7 +14,7 @@
  *  - server-side render (avoids hydration mismatch)
  */
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import {
   motion,
   useScroll,
@@ -89,7 +89,17 @@ function lerp(a: number, b: number, t: number) {
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function BattleTestedStats() {
-  const scrollSpaceRef = useRef<HTMLDivElement>(null);
+  // Callback ref: Motion 12 throws "Target ref is defined but not hydrated"
+  // when useScroll reads a ref before its DOM node is committed. Using a
+  // state-managed element + a derived ref makes the target visible to
+  // useScroll only after mount.
+  const [scrollTarget, setScrollTarget] = useState<HTMLDivElement | null>(null);
+  const scrollSpaceRef = useCallback((node: HTMLDivElement | null) => {
+    setScrollTarget(node);
+  }, []);
+  const scrollTargetRef = useRef<HTMLDivElement | null>(null);
+  scrollTargetRef.current = scrollTarget;
+
   const prefersReducedMotion = useReducedMotion();
 
   // Mount-gated to prevent SSR/hydration mismatch on section height
@@ -107,7 +117,7 @@ export default function BattleTestedStats() {
   // useScroll targets the tall scroll-space div so progress 0 = sticky-inner
   // starts sticking and progress 1 = last card fully settled.
   const { scrollYProgress } = useScroll({
-    target: scrollSpaceRef,
+    target: scrollTarget ? scrollTargetRef : undefined,
     offset: ['start start', 'end end'],
   });
 
@@ -208,7 +218,7 @@ export default function BattleTestedStats() {
     <section className="bts">
       {/* Tall div provides the scroll distance; heading lives inside the sticky
           inner so it stays visible alongside the first card. */}
-      <div ref={scrollSpaceRef} className="bts__scroll-space">
+      <div ref={scrollSpaceRef as React.RefCallback<HTMLDivElement>} className="bts__scroll-space">
         <div className="bts__sticky-inner">
           {/* Heading + card stack grouped so they center as a unit */}
           <h2 className="t-h2 bts__sticky-heading">
