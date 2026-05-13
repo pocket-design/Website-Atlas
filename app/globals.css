@@ -228,6 +228,60 @@
   /* Season Mix = headings only · Mallory = everything else    */
   --ff-display: var(--font-season-mix), Georgia, serif;
   --ff-sans:    var(--font-mallory-narrow), 'Inter', system-ui, sans-serif;
+
+  /* ── Tokens pulled from `hardik` for LocaleCascade port ───
+     Verbatim where possible; --ff-sans-compact falls back to
+     main's Mallory Narrow because we haven't shipped the
+     Compact font files. */
+  --ff-sans-compact: var(--font-mallory-narrow), 'Inter', system-ui, sans-serif;
+
+  --fs-xs:  11px;
+  --fs-sm:  12px;
+  --fs-md:  15px;
+  --fs-lg:  18px;
+  --fs-xl:  20px;     /* added for Proof.tsx (hardik port) */
+  --fs-2xl: 22px;
+
+  --lh-snug:     1.25;   /* added for Proof.tsx (hardik port) */
+  --lh-normal:   1.5;    /* added for Proof.tsx (hardik port) */
+  --lh-spacious: 1.7;
+  --ls-normal:   0.005em;
+  --ls-wide:     0.01em;
+  --ls-wider:    0.02em;
+  --ls-caps:     0.08em;
+
+  --border-hairline:        1px solid var(--surface-divider);
+  --surface-divider-hover:  var(--vellum-shade-1);
+
+  --dur-fast:   160ms;
+  --dur-slow:   300ms;
+  --dur-slower: 500ms;
+  --ease-out:   cubic-bezier(0.4, 0, 0.2, 1);
+
+  --r-sm:          6px;
+  --r-card-inner:  8px;
+  --r-input-inner: 10px;
+  --r-tw-inner:    12px;
+  --r-input-outer: 16px;
+  --r-tw-outer:    20px;
+  --r-full:        9999px;
+
+  --shadow-xs:
+    0px 0px 0px 1px rgba(0, 0, 0, 0.04),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.03);
+  --shadow-sm:
+    0px 0px 0px 1px rgba(0, 0, 0, 0.05),
+    0px 1px 2px 0px rgba(0, 0, 0, 0.04);
+  --shadow-card:        var(--shadow-border);
+  --shadow-card-hover:  var(--shadow-border-hover);
+  --shadow-btn-brand:
+    0px 0px 0px 1px rgba(214, 25, 0, 0.10),
+    0px 2px 6px -1px rgba(214, 25, 0, 0.30),
+    0px 4px 12px -2px rgba(214, 25, 0, 0.20);
+
+  --text-muted: var(--ink-tint-5);
+
+  --z-overlay: 3;
 }
 
 /* Reset + base element styling — placed in @layer base so Tailwind utilities
@@ -482,14 +536,23 @@
   padding: calc(var(--sp-20) + 72px) var(--sp-8) var(--sp-20);
   text-align: center;
   position: relative;
-  overflow: hidden;
+  /* Visible so the nested .cascade section can extend below the
+     100vh dial-kit bg band without being clipped. */
+  overflow: visible;
 }
 .hero > * { position: relative; z-index: 1; }
 
 /* ── Hero two-layer image background ─────────────────────── */
 .hero-bg-wrap {
+  /* Anchored to the top of .hero at exactly 100vh tall (not inset:0)
+     so the lineart/realistic dial-kit images stay at their designed
+     viewport-height frame even when .hero grows beyond 100vh to fit
+     the nested locale-cascade fold. */
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
   z-index: 0;
   overflow: hidden;
   /* pointer-events off on the wrap itself — events handled on the section */
@@ -575,279 +638,6 @@
   text-wrap: pretty;
 }
 
-/* ── TRANSLATION WINDOW ─────────────────────────────────────── */
-.tw-window {
-  max-width: 1080px;
-  margin: 0 auto;
-  background: var(--surface-card);
-  border: 1px solid var(--surface-divider);
-  border-radius: var(--r-panel);
-  padding: var(--sp-1);
-  box-shadow:
-    0 1px 2px rgba(0,0,0,0.04),
-    0 4px 14px rgba(0,0,0,0.05);
-  overflow: hidden;
-}
-
-/* Node Canvas */
-.tw-canvas {
-  padding: 28px 24px 24px;
-}
-.tw-canvas-flow {
-  display: flex;
-  align-items: center;
-}
-
-.tw-cn-node {
-  flex: 0 0 auto;
-  width: 220px;
-  background: var(--vellum-tint-7);
-  border: 1px solid var(--surface-divider);
-  border-radius: var(--r-card);
-  overflow: hidden;
-}
-.tw-cn-atlas {
-  flex: 0 0 240px;
-  width: 240px;
-}
-.tw-cn-atlas.is-processing {
-  border-color: rgba(210,25,10,0.35);
-  box-shadow: 0 0 0 3px rgba(210,25,10,0.08);
-}
-.tw-cn-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--surface-divider);
-  font-family: var(--ff-sans);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-}
-.tw-cn-icon { font-size: 14px; line-height: 1; }
-.tw-cn-body { padding: 12px 14px 14px; }
-.tw-cn-preview {
-  /* caption: 11px Mallory 400 — body text at the smallest on-scale size */
-  font-family: var(--ff-sans);
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 1.6;
-  color: var(--text-secondary);
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.tw-cn-port-row {
-  display: flex;
-  justify-content: flex-end;
-  padding: 0 10px 10px;
-}
-.tw-cn-port-row-left { justify-content: flex-start; }
-.tw-cn-port {
-  display: block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-
-.tw-cn-params {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-bottom: 12px;
-}
-.tw-cn-param {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.tw-cn-plabel {
-  /* eyebrow: Mallory 700, 12px, 0.08em, uppercase */
-  font-family: var(--ff-sans);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-}
-.tw-cn-pval {
-  /* caption: Mallory 400, 11px — value emphasis via color not weight */
-  font-size: 11px;
-  font-weight: 700;  /* 700 to distinguish from label */
-  color: var(--text-primary);
-}
-
-.tw-cn-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 8px 0;
-}
-.tw-cn-loading span {
-  display: block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--scarlet);
-  animation: twDot 0.9s ease-in-out infinite;
-}
-.tw-cn-loading span:nth-child(2) { animation-delay: 0.15s; }
-.tw-cn-loading span:nth-child(3) { animation-delay: 0.3s; }
-@keyframes twDot {
-  0%, 100% { opacity: 0.2; transform: scale(0.8); }
-  50%       { opacity: 1;   transform: scale(1.15); }
-}
-
-.tw-cn-langs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-.tw-cn-lang {
-  /* eyebrow-adjacent chip: Mallory 700, 11px (caption size fits the tight chip) */
-  font-size: 11px;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: var(--r-tag);
-  background: var(--vellum-shade-1);
-  color: var(--text-primary);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.tw-adapt-btn {
-  width: 100%;
-  padding: 9px 0;
-  border-radius: var(--r-btn);
-  border: none;
-  background: var(--scarlet);
-  color: var(--vellum);
-  font-family: var(--ff-sans);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background 120ms var(--ease), transform 120ms var(--ease);
-}
-.tw-adapt-btn:hover  { background: var(--scarlet-shade-1); }
-.tw-adapt-btn:active { background: var(--scarlet-shade-2); transform: scale(0.97); }
-
-.tw-cn-wire {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  min-width: 28px;
-}
-.tw-cn-dot {
-  display: block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.tw-cn-line {
-  flex: 1;
-  height: 2px;
-}
-
-/* Adapted cards */
-.tw-adapted {
-  padding: 20px 16px 16px;
-}
-.tw-adapt-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  text-align: left;
-  margin-bottom: 14px;
-}
-.tw-adapt-card {
-  background: var(--vellum-tint-7);
-  border: 1px solid var(--surface-divider);
-  border-radius: var(--r-btn);
-  overflow: hidden;
-  animation: twCardIn 0.35s var(--ease) both;
-}
-@keyframes twCardIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.tw-adapt-head {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 9px 10px 8px;
-  border-bottom: 1px solid var(--surface-divider);
-}
-.tw-adapt-flag  { font-size: 14px; line-height: 1; }
-.tw-adapt-country {
-  /* eyebrow: Mallory 700, 11px minimum (10px is below scale) */
-  font-family: var(--ff-sans);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  flex: 1;
-}
-.tw-adapt-sort {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  cursor: pointer;
-}
-.tw-adapt-img {
-  height: 60px;
-  width: 100%;
-}
-.tw-adapt-text {
-  /* caption: 11px — nearest on-scale value to the previous 11.5px */
-  font-family: var(--ff-sans);
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 1.6;
-  color: var(--text-secondary);
-  padding: 9px 10px 10px;
-  margin: 0;
-}
-
-/* Filter chips */
-.tw-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.tw-chip {
-  padding: 5px 12px;
-  border-radius: var(--r-pill);
-  border: 1px solid var(--surface-divider);
-  background: transparent;
-  font-family: var(--ff-sans);
-  font-size: 13px; /* label */
-  font-weight: 400; /* Mallory Book */
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: background 120ms var(--ease), border-color 120ms var(--ease), color 120ms var(--ease);
-}
-.tw-chip:hover {
-  background: var(--vellum-shade-1);
-  color: var(--text-primary);
-}
-.tw-chip.is-active {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--vellum);
-}
-.tw-chip.is-active:hover {
-  background: var(--ink-tint-1);
-  border-color: var(--ink-tint-1);
-}
 
 /* ── FOLD 2 — BENTO ──────────────────────────────────────── */
 .bento {
@@ -1017,7 +807,6 @@
 
 .atlas-bento {
   padding: var(--sp-12) var(--sp-8);
-  border-top: 1px solid var(--surface-divider);
 }
 
 .atlas-bento__header {
@@ -1189,206 +978,11 @@
   }
 }
 
-/* ── BATTLE-TESTED STATS ─────────────────────────────────── */
-/*    Tokens: CSS custom properties from this file.          */
-/*    Scroll-stack on desktop; simple stack on mobile /      */
-/*    reduced-motion (toggled in BattleTestedStats.tsx).     */
-
-/* ── Section wrapper ────────────────────────────────────── */
-.bts {
-  background: var(--surface-page);
-  border-top: 1px solid var(--surface-divider);
-}
-
-/* Simple layout: auto height, normal page flow */
-.bts--simple {
-  padding: var(--sp-12) var(--sp-8);
-}
-.bts__simple-inner {
-  max-width: var(--container);
-  margin: 0 auto;
-}
-.bts__simple-cards {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-3);
-  margin-top: var(--sp-8);
-}
-
-/* Heading sits just above the card stack — flows in the flex column */
-.bts__sticky-heading {
-  width: 100%;
-  max-width: var(--container);
-  margin-bottom: calc(var(--sp-6) * 3);
-  pointer-events: none;
-  flex-shrink: 0;
-}
-
-/* Simple-layout heading (mobile/reduced-motion) */
-.bts__section-heading {
-  max-width: 640px;
-}
-
-/* ── Scroll space — provides 5 × 100vh of scroll distance ── */
-.bts__scroll-space {
-  height: 500vh;
-}
-
-/* ── Sticky viewport lock ───────────────────────────────── */
-/* Flex column so heading + card-area center together as one unit */
-.bts__sticky-inner {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  /* Container-aligned horizontal padding — same logic as bento section */
-  padding: 0 max(var(--sp-8), calc((100% - var(--container)) / 2));
-}
-
-/* ── Card stack area — all tracks overlap here ──────────── */
-.bts__card-area {
-  position: relative;
-  width: 100%;
-  max-width: var(--container);
-  /* Height matches bts-card min-height so the stack has a fixed footprint */
-  height: 300px;
-  flex-shrink: 0;
-}
-
-/* ── Card track wrapper ─────────────────────────────────── */
-/* Fills card-area; Motion applies y (translateY) + scale on this element. */
-.bts__card-track {
-  position: absolute;
-  inset: 0;
-  will-change: transform;
-}
-
-/* ── Stat card — uniform size for all four cards ────────── */
-.bts-card {
-  width: 100%;
-  /* card-area defines the height; card fills it */
-  height: 100%;
-  background: var(--surface-card);
-  border-radius: var(--r-card);
-  padding: var(--sp-8);
-  box-shadow: var(--shadow-border);
-  /* Flex column lets content sit at the top while the card keeps its height */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-/* ── KPI block (number + label) ─────────────────────────── */
-.bts-card__kpi {
-  display: flex;
-  align-items: baseline;
-  gap: var(--sp-2-5);
-  margin-bottom: var(--sp-3);
-  flex-wrap: wrap;
-}
-
-/* Large stat number — bigger than t-display for hero weight */
-.bts-card__number {
-  font-family: var(--ff-display);
-  font-weight: 400;
-  font-size: clamp(56px, 7.5vw, 96px);
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: var(--text-primary);
-  /* Prevents the number from hyphenating on narrow viewports */
-  white-space: nowrap;
-}
-
-.bts-card__label {
-  color: var(--text-secondary);
-  /* Align to baseline of the number */
-  align-self: flex-end;
-  padding-bottom: 6px;
-}
-
-/* ── Sub-heading (Card 1 only) ──────────────────────────── */
-.bts-card__subheading {
-  color: var(--text-primary);
-  margin-bottom: var(--sp-2);
-  max-width: 600px;
-}
-
-/* ── Description ────────────────────────────────────────── */
-.bts-card__desc {
-  color: var(--text-secondary);
-  max-width: 540px;
-}
-
-/* ── Bullet list ────────────────────────────────────────── */
-.bts-card__bullets {
-  list-style: none;
-  margin-top: var(--sp-4);
-  display: grid;
-  /* Two-column grid on wide cards; single column on narrow */
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--sp-2) var(--sp-6);
-}
-
-.bts-card__bullet {
-  display: flex;
-  gap: var(--sp-1-5);
-  align-items: flex-start;
-  color: var(--text-secondary);
-  font-family: var(--ff-sans);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-/* Scarlet check mark — uses design system accent colour */
-.bts-card__check {
-  color: var(--scarlet);
-  flex-shrink: 0;
-  font-size: 13px;
-  margin-top: 2px;
-  font-weight: var(--fw-bold);
-}
-
-.bts-card__bullet strong {
-  color: var(--text-primary);
-  font-weight: 700; /* Mallory Bold — only valid heavy weight */
-}
-
-/* ── Responsive ─────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  .bts-card__bullets {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .bts--simple {
-    padding: var(--sp-10) var(--sp-3);
-  }
-  .bts-card {
-    padding: var(--sp-5);
-  }
-  .bts-card--hero {
-    padding: var(--sp-5);
-  }
-  .bts-card__number {
-    font-size: clamp(48px, 14vw, 72px);
-  }
-  .bts__sticky-inner {
-    padding: 0 var(--sp-3);
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════
    TESTIMONIALS — infinite horizontal ticker
    ═══════════════════════════════════════════════════════════ */
 
 .testimonials {
   background: var(--surface-page);
-  border-top: 1px solid var(--surface-divider);
   padding-top: var(--sp-20);
   padding-bottom: var(--sp-20);
   overflow: hidden;
@@ -1559,12 +1153,14 @@
 
 /* ── FOOTER ──────────────────────────────────────────────── */
 footer {
-  border-top: 1px solid var(--surface-divider);
   padding: var(--sp-4) var(--sp-8);
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: var(--surface-page);
+}
+footer .t-caption {
+  color: var(--text-tertiary);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1679,3 +1275,750 @@ footer {
   box-shadow: var(--shadow-border);
 }
 .btn-global:disabled { opacity: 0.6; cursor: default; transform: none; }
+
+
+/* ═══════════════════════════════════════════════════════════
+   LOCALE CASCADE — pulled from hardik branch.
+   Section wrapper + branches + grid + overlay + loader + locale
+   cards + pickers + dropdown + flags + tooltips + bucket pills.
+   Tokens reference :root entries added above for the cascade port.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Region 1: section wrapper + decorative globe ── */
+/* Section is full-width with padding (matches the .atlas-bento pattern);
+   the container constraint moves to .cascade__wrap below so the inner
+   content stays inside the website's horizontal margins.
+   Nested inside .hero — sits 12px below .cascade-branches and renders
+   over the dial-kit hero background via z-index. */
+.cascade {
+  margin-top: var(--sp-1-5); /* 12 px gap below cascade-branches */
+  padding: 0 var(--sp-8) var(--sp-8);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.cascade__wrap {
+  position: relative;
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+/* Interactive wireframe globe — decorative bg behind locale cards */
+.cascade-globe {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: var(--z-base);
+}
+.cascade-globe svg {
+  width: 600px;
+  height: 600px;
+  color: var(--ink);
+  opacity: 0.08;
+}
+.cascade > *:not(.cascade-globe) {
+  position: relative;
+  z-index: var(--z-raised);
+}
+
+
+
+/* ── Region 2: branches / grid / overlay / cards / pickers / pills ── */
+.btn-global:disabled { opacity: 0.6; cursor: default; transform: none; }
+
+/* SVG branch container — rendered inside .hero (after the HeroAdapter
+   card), 16 px below the adapt-flow, sitting over the dial-kit
+   background. Constrained to the page container so the four branch
+   endpoints align with the 4-column locale grid in the next section. */
+.cascade-branches {
+  /* In-flow inside .hero, directly after the HeroAdapter card.
+     12 px gap above (from adapt-flow) and 0 below — the .cascade
+     section's own margin-top: 12px provides the gap underneath. */
+  display: block;
+  width: 100%;
+  max-width: var(--container);
+  height: 96px;
+  margin: var(--sp-1-5) auto 0;
+  pointer-events: none;
+  position: relative;
+  z-index: 2;
+}
+.cascade-branches path {
+  stroke: #FFFFFF;
+  stroke-width: 1;
+  fill: none;
+}
+
+/* Scarlet shimmer overlay — a short bright segment travels
+   the length of each branch from origin to card. All four
+   paths animate simultaneously and only ONCE: the
+   IntersectionObserver in <CascadeBranches> adds the
+   `.is-active` class to the SVG when the cascade enters the
+   viewport, which triggers the keyframe. After the single
+   sweep completes (opacity: 0), the segment stays hidden.
+   Each path normalizes to pathLength=100 so the dasharray
+   and offset values stay branch-agnostic. */
+.cascade-branches .branch-shimmer path {
+  stroke: var(--scarlet);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  /* Longer visible streak (40 units of path-length 100) so
+     the pulse reads as a sustained shimmer rather than a
+     short dot. Same duration/easing — only the segment
+     length changes. */
+  stroke-dasharray: 40 100;
+  stroke-dashoffset: 40;
+  opacity: 0;
+  /* No animation by default — see .is-active rule below */
+}
+.cascade-branches .branch-dots circle {
+  opacity: 1;
+  transition: opacity var(--dur-slower) ease-out;
+}
+.cascade-branches.is-active .branch-dots circle {
+  opacity: 0;
+}
+.cascade-branches.is-active .branch-shimmer path {
+  animation: shimmerPulse 1.6s var(--ease) both;
+}
+
+@keyframes shimmerPulse {
+  0%   { stroke-dashoffset:  40; opacity: 0; }
+  6%   {                          opacity: 1; }
+  90%  { stroke-dashoffset: -100; opacity: 1; }
+  100% { stroke-dashoffset: -100; opacity: 0; }
+}
+
+@keyframes branchDraw {
+  from { stroke-dashoffset: 600; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* The 5 locale cards — joined as one wide folio strip with
+   single-line dividers between columns. Outer border lives
+   on the grid wrapper; each card has only a right divider
+   (except the last). Adjacent borders never double up. */
+.cascade-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  /* Inherit the parent .cascade-strip / .cascade__wrap width
+     (max-width: var(--container)) instead of breaking out edge-to-edge.
+     Removed: width: 100vw; max-width: 1600px; margin-left: 50%;
+              transform: translateX(-50%). */
+  width: 100%;
+  border-top: var(--border-hairline);
+  border-bottom: var(--border-hairline);
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  overflow: hidden;
+  /* box-shadow: var(--shadow-card); */
+  box-shadow: none;
+  background: var(--surface-card);
+}
+
+/* Adaptation loading overlay — covers locale card content below headers */
+.cascade-overlay {
+  position: absolute;
+  top: 54px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-card);
+  border-radius: 0 0 var(--r-card) var(--r-card);
+}
+.cascade-overlay .cascade-loader {
+  transition: opacity var(--dur-slow) ease-out;
+}
+.cascade-overlay.is-fading .cascade-loader,
+.cascade-overlay.is-collapsing .cascade-loader {
+  opacity: 0;
+}
+.cascade-overlay.is-collapsing {
+  animation: overlayCollapse var(--dur-slower) var(--ease-out) forwards;
+}
+@keyframes overlayCollapse {
+  0%   { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(100% 0 0 0); }
+}
+.cascade-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.cascade-loader-text {
+  font-family: var(--ff-sans);
+  font-size: var(--fs-base);
+  color: var(--ink-tint-3);
+  letter-spacing: 0;
+}
+.square-loader-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  width: 42px;
+  height: 42px;
+}
+.square-loader-cell {
+  border-radius: 0;
+  background: var(--vellum-shade-1);
+  transition: background var(--dur-fast) var(--ease);
+}
+.square-loader-cell.is-red {
+  background: var(--scarlet);
+}
+
+.locale-card {
+  background: var(--surface-card);
+  border: none;
+  border-right: var(--border-hairline);
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+}
+.locale-card:last-child { border-right: none; }
+
+.locale-card-locale {
+  position: relative;
+  z-index: var(--z-dropdown);
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border-bottom: var(--border-hairline);
+  font-family: var(--ff-sans);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-1);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--text-primary);
+  background: var(--vellum-tint-3);
+}
+
+.locale-picker-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1-5);
+  width: 100%;
+  padding: var(--sp-2-5) var(--sp-3);
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  transition: background var(--dur-instant) var(--ease);
+}
+.locale-picker-btn:hover {
+  background: var(--vellum-shade-half);
+}
+.locale-picker-name {
+  flex: 1;
+  text-align: left;
+}
+.locale-chevrons {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.locale-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: var(--sp-1-5);
+  right: var(--sp-1-5);
+  z-index: var(--z-tooltip);
+  background: var(--surface-card);
+  border: var(--border-hairline);
+  border-radius: var(--r-card);
+  padding: var(--sp-1);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.locale-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1-5);
+  padding: var(--sp-2) var(--sp-2-5);
+  background: none;
+  border: none;
+  border-radius: var(--r-card-inner);
+  font-family: var(--ff-sans);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-1);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background var(--dur-instant) var(--ease);
+}
+.locale-dropdown-item:hover {
+  background: var(--vellum-shade-half);
+}
+.locale-dropdown-item:active {
+  background: var(--vellum-shade-1);
+}
+
+.locale-flag {
+  width: 20px;
+  height: 15px;
+  border-radius: var(--r-xs);
+  flex-shrink: 0;
+  background-size: cover;
+}
+.locale-flag.fi-jp {
+  outline: 1px solid var(--surface-divider);
+}
+
+.locale-card-image {
+  position: relative;
+  margin: var(--sp-3) var(--sp-3) 0;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--r-card-inner);
+  overflow: hidden;
+}
+.locale-card-image img {
+  border-radius: var(--r-card-inner);
+  filter: blur(12px);
+  transform: scale(1.05);
+  transition: filter var(--dur-slowest) var(--ease-out), transform var(--dur-slowest) var(--ease-out);
+}
+.locale-card-image.is-revealed img {
+  filter: blur(0);
+  transform: scale(1);
+}
+
+.locale-card-text {
+  padding: var(--sp-3);
+  /* Body — Mallory Compact, normal line-height (no trim) */
+  font-family: var(--ff-sans-compact);
+  font-size: var(--fs-base);
+  line-height: var(--lh-loose);
+  color: var(--text-primary);
+  text-wrap: pretty;
+  flex: 1;
+  text-align: left;
+}
+
+/* ── Word-by-word sheen reveal ──────────────────────────── */
+.sheen-word,
+.locale-highlight {
+  color: var(--ink-tint-7);
+}
+.sheen-word.is-revealed,
+.locale-highlight.is-revealed {
+  color: var(--text-primary);
+  transition: color var(--dur-slow) var(--ease);
+}
+.sheen-word.is-sheen-current,
+.locale-highlight.is-sheen-current {
+  color: var(--scarlet);
+  transition: color var(--dur-instant) var(--ease);
+}
+
+/* Plain text recedes during tooltip cycling so highlights dominate */
+.sheen-word.text-dimmed {
+  color: var(--ink-tint-5);
+  transition: color var(--dur-slower) var(--ease-out);
+}
+
+/* Adapted-phrase highlights — color-coded per category bucket.
+   Two tiers: once sheen completes, ALL highlights show a subtle
+   persistent background (.is-highlighted). When the tooltip
+   focuses a specific bucket, that bucket gains extra emphasis
+   (.is-active) while all others remain at their persistent level. */
+.locale-highlight {
+  background-color: transparent;
+  border-radius: var(--r-xs);
+  padding: 0 2px;
+  margin: 0 -2px;
+  transition: background-color var(--dur-slower) var(--ease-out), color var(--dur-slow) var(--ease);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Staggered entrance — each bucket fades in sequentially with
+   an overshoot: peaks at high saturation then settles softer. */
+.locale-highlight.is-highlighted {
+  animation: hlReveal 1.2s var(--ease-out) forwards;
+}
+.locale-highlight.is-highlighted[data-bucket="0"] { animation-delay: 0s; }
+.locale-highlight.is-highlighted[data-bucket="1"] { animation-delay: 0.15s; }
+.locale-highlight.is-highlighted[data-bucket="2"] { animation-delay: 0.3s; }
+.locale-highlight.is-highlighted[data-bucket="3"] { animation-delay: 0.45s; }
+.locale-highlight.is-highlighted[data-bucket="4"] { animation-delay: 0.6s; }
+
+/* Once cycling has begun, never replay the entrance animation */
+.locale-highlight.hl-settled {
+  animation: none !important;
+  background-color: var(--hl-color-rest);
+  transition: color var(--dur-slower) var(--ease-out), background-color var(--dur-slower) var(--ease-out);
+}
+
+@keyframes hlReveal {
+  0%   { background-color: var(--hl-color-peak-zero); }
+  35%  { background-color: var(--hl-color-peak); }
+  100% { background-color: var(--hl-color-rest); }
+}
+
+/* Per-bucket color tokens (peak = vivid entrance, rest = persistent) */
+.locale-highlight[data-bucket="0"] {
+  --hl-color-peak-zero: rgba(59, 130, 246, 0);
+  --hl-color-peak: rgba(59, 130, 246, 0.38);
+  --hl-color-rest: rgba(59, 130, 246, 0.22);
+}
+.locale-highlight[data-bucket="1"] {
+  --hl-color-peak-zero: rgba(16, 185, 129, 0);
+  --hl-color-peak: rgba(16, 185, 129, 0.38);
+  --hl-color-rest: rgba(16, 185, 129, 0.22);
+}
+.locale-highlight[data-bucket="2"] {
+  --hl-color-peak-zero: rgba(245, 158, 11, 0);
+  --hl-color-peak: rgba(245, 158, 11, 0.38);
+  --hl-color-rest: rgba(245, 158, 11, 0.22);
+}
+.locale-highlight[data-bucket="3"] {
+  --hl-color-peak-zero: rgba(139, 92, 246, 0);
+  --hl-color-peak: rgba(139, 92, 246, 0.38);
+  --hl-color-rest: rgba(139, 92, 246, 0.22);
+}
+.locale-highlight[data-bucket="4"] {
+  --hl-color-peak-zero: rgba(245, 29, 0, 0);
+  --hl-color-peak: rgba(245, 29, 0, 0.38);
+  --hl-color-rest: rgba(245, 29, 0, 0.22);
+}
+
+/* Emphasis tier — tooltip focus brings bucket to full intensity.
+   animation: none prevents the initial overshoot from replaying during cycling. */
+.locale-highlight.is-active {
+  color: var(--text-primary);
+  transition: color var(--dur-slower) var(--ease-out), background-color var(--dur-slower) var(--ease-out);
+}
+.locale-highlight.is-active[data-bucket="0"] { background-color: rgba(59, 130, 246, 0.30); animation: none; }
+.locale-highlight.is-active[data-bucket="1"] { background-color: rgba(16, 185, 129, 0.30); animation: none; }
+.locale-highlight.is-active[data-bucket="2"] { background-color: rgba(245, 158, 11, 0.30); animation: none; }
+.locale-highlight.is-active[data-bucket="3"] { background-color: rgba(139, 92, 246, 0.30); animation: none; }
+.locale-highlight.is-active[data-bucket="4"] { background-color: rgba(245, 29, 0, 0.30); animation: none; }
+
+/* Dimmed tier — non-focused buckets recede: grey text, faint background */
+.locale-highlight.is-dimmed {
+  color: var(--ink-tint-5);
+  transition: color var(--dur-slower) var(--ease-out), background-color var(--dur-slower) var(--ease-out);
+}
+.locale-highlight.is-dimmed[data-bucket="0"] { background-color: rgba(59, 130, 246, 0.04); animation: none; }
+.locale-highlight.is-dimmed[data-bucket="1"] { background-color: rgba(16, 185, 129, 0.04); animation: none; }
+.locale-highlight.is-dimmed[data-bucket="2"] { background-color: rgba(245, 158, 11, 0.04); animation: none; }
+.locale-highlight.is-dimmed[data-bucket="3"] { background-color: rgba(139, 92, 246, 0.04); animation: none; }
+.locale-highlight.is-dimmed[data-bucket="4"] { background-color: rgba(245, 29, 0, 0.04); animation: none; }
+
+/* Cascade strip wrapper — establishes positioning context so
+   the tooltip can be anchored exactly to the highlighted text
+   it's pointing to. */
+.cascade-strip {
+  position: relative;
+}
+
+/* Tooltip pill — anchored to the actual highlighted phrase
+   in the owner locale via `top`/`left` set inline from
+   getBoundingClientRect. Bottom-center sits ~14px above the
+   highlight's top edge, with a small downward notch (::after)
+   pointing exactly to the phrase. Fades in/out on each
+   bucket; position is teleported while invisible so the
+   tooltip never visibly slides between buckets. */
+.cascade-tooltip {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 14px));
+  z-index: var(--z-dropdown);
+  padding: 9px 14px;
+  background: var(--ink);
+  color: #fff;
+  border-radius: var(--r-pill);
+  font-family: var(--ff-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-1);
+  letter-spacing: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: var(--shadow-tooltip);
+  opacity: 0;
+}
+.cascade-tooltip.is-visible {
+  animation: tooltipLife 3s ease-in-out forwards;
+}
+
+@keyframes tooltipLife {
+  0%   { opacity: 0; transform: translate(-50%, calc(-100% - 14px)); }
+  12%  { opacity: 1; transform: translate(-50%, calc(-100% - 18px)); }
+  50%  { opacity: 1; transform: translate(-50%, calc(-100% - 14px)); }
+  85%  { opacity: 1; transform: translate(-50%, calc(-100% - 18px)); }
+  100% { opacity: 0; transform: translate(-50%, calc(-100% - 14px)); }
+}
+
+/* Category-colored tooltip backgrounds */
+.cascade-tooltip[data-bucket="0"] { background: rgb(37, 99, 235); }
+.cascade-tooltip[data-bucket="1"] { background: rgb(5, 150, 105); }
+.cascade-tooltip[data-bucket="2"] { background: rgb(217, 119, 6); }
+.cascade-tooltip[data-bucket="3"] { background: rgb(109, 40, 217); }
+.cascade-tooltip[data-bucket="4"] { background: rgb(220, 38, 38); }
+
+.cascade-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid currentColor;
+}
+.cascade-tooltip[data-bucket="0"]::after { border-top-color: rgb(37, 99, 235); }
+.cascade-tooltip[data-bucket="1"]::after { border-top-color: rgb(5, 150, 105); }
+.cascade-tooltip[data-bucket="2"]::after { border-top-color: rgb(217, 119, 6); }
+.cascade-tooltip[data-bucket="3"]::after { border-top-color: rgb(109, 40, 217); }
+.cascade-tooltip[data-bucket="4"]::after { border-top-color: rgb(220, 38, 38); }
+
+/* Category pills row — spans full width inside the locale grid box */
+.cascade-pills-sep {
+  width: 1px;
+  align-self: stretch;
+  margin: 4px 4px;
+  background: var(--surface-divider);
+}
+.cascade-pills {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 var(--sp-4);
+  border-top: var(--border-hairline);
+  max-height: 0;
+  overflow: hidden;
+  animation: pillsExpand var(--dur-slower) var(--ease-out) forwards;
+}
+@keyframes pillsExpand {
+  from { max-height: 0; padding-top: 0; padding-bottom: 0; }
+  to   { max-height: 80px; padding-top: var(--sp-3); padding-bottom: var(--sp-3); }
+}
+.cascade-pill {
+  font-family: var(--ff-sans);
+  font-size: var(--fs-ui);
+  font-weight: var(--fw-bold);
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  border: var(--border-hairline);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: pillFadeIn 0.35s var(--ease-out) forwards;
+  transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-instant) var(--ease);
+}
+.cascade-pill:nth-child(1) { animation-delay: 0.25s; }
+.cascade-pill:nth-child(2) { animation-delay: 0.35s; }
+.cascade-pill:nth-child(3) { animation-delay: 0.45s; }
+.cascade-pill:nth-child(4) { animation-delay: 0.55s; }
+.cascade-pill:nth-child(5) { animation-delay: 0.65s; }
+.cascade-pill:nth-child(6) { animation-delay: 0.75s; }
+@keyframes pillFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.cascade-pill:hover {
+  background: var(--vellum-tint-7);
+  border-color: var(--surface-divider-hover);
+}
+.cascade-pill:active {
+  transform: scale(0.96);
+}
+.cascade-pill.is-active,
+.cascade-pill.is-selected {
+  color: #fff;
+  border-color: transparent;
+}
+.cascade-pill.is-selected-all {
+  background: var(--text-primary);
+  color: #fff;
+  border-color: transparent;
+}
+.cascade-pill.is-active[data-bucket="0"],
+.cascade-pill.is-selected[data-bucket="0"] { background: rgb(37, 99, 235); }
+.cascade-pill.is-active[data-bucket="1"],
+.cascade-pill.is-selected[data-bucket="1"] { background: rgb(5, 150, 105); }
+.cascade-pill.is-active[data-bucket="2"],
+.cascade-pill.is-selected[data-bucket="2"] { background: rgb(217, 119, 6); }
+.cascade-pill.is-active[data-bucket="3"],
+.cascade-pill.is-selected[data-bucket="3"] { background: rgb(109, 40, 217); }
+.cascade-pill.is-active[data-bucket="4"],
+.cascade-pill.is-selected[data-bucket="4"] { background: rgb(220, 38, 38); }
+
+/* ═══════════════════════════════════════════════════════════
+   PROOF — "Battle-tested at global scale." section.
+   Ported from hardik branch (originally inline in app/page.tsx).
+   See components/Proof.tsx + components/CountUp.tsx.
+   Tokens used: --fs-xl, --lh-snug, --lh-normal (added to :root)
+                plus standard --ff-display/--ff-sans/--fs-*/--sp-*/--r-*
+                /--ink/--text-secondary/--surface-card/--border-hairline.
+   ═══════════════════════════════════════════════════════════ */
+.proof-section {
+  padding: var(--sp-8) var(--sp-8);
+}
+.proof-section .section-header {
+  max-width: var(--container);
+  margin: 0 auto var(--sp-4);
+  text-align: left;
+}
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  max-width: var(--container);
+  margin: 0 auto;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+}
+.proof-card {
+  padding: var(--sp-4);
+  text-align: left;
+  border: var(--border-hairline);
+  border-radius: var(--r-card);
+  background: var(--surface-card);
+  /* box-shadow: var(--shadow-card); */
+  box-shadow: none;
+}
+.proof-card:last-child { border-right: var(--border-hairline); }
+.proof-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  max-width: var(--container);
+  margin: var(--sp-4) auto 0;
+}
+.proof-metric-item {
+  padding: var(--sp-3) var(--sp-4);
+  position: relative;
+}
+.proof-metric-item + .proof-metric-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: var(--sp-2);
+  bottom: var(--sp-2);
+  width: 1px;
+  background: var(--surface-divider);
+}
+.proof-card-hero {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: start;
+  padding: 0;
+  border: var(--border-hairline);
+  border-radius: var(--r-card);
+  background: var(--surface-card);
+  /* box-shadow: var(--shadow-card); */
+  box-shadow: none;
+}
+.proof-hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--sp-4) var(--sp-4) var(--sp-2);
+}
+.proof-hero-right {
+  grid-column: 2 / -1;
+  padding: var(--sp-4);
+}
+.proof-hero-number {
+  font-family: var(--ff-display);
+  font-size: clamp(56px, 6vw, 72px);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-1);
+  color: var(--ink);
+  font-variation-settings: "SERF" 65, "slnt" 0;
+}
+.proof-hero-pct {
+  font-size: 0.5em;
+  vertical-align: baseline;
+}
+.proof-hero-label {
+  font-family: var(--ff-display);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-regular);
+  color: var(--ink);
+  line-height: var(--lh-snug);
+  font-variation-settings: "SERF" 65, "slnt" 0;
+}
+.proof-hero-right h3 {
+  margin-bottom: var(--sp-1);
+}
+.proof-hero-stats {
+  list-style: none;
+  padding: 0;
+  margin: var(--sp-2) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.proof-hero-stats li {
+  font-family: var(--ff-sans);
+  font-size: var(--fs-md);
+  color: var(--text-secondary);
+  line-height: var(--lh-normal);
+}
+.proof-hero-stats li svg {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.proof-hero-stats strong {
+  color: var(--ink);
+  font-weight: var(--fw-bold);
+  margin-right: -2px;
+}
+.proof-stat {
+  font-family: var(--ff-display);
+  font-size: clamp(36px, 4vw, 48px);
+  font-weight: var(--fw-regular);
+  font-variation-settings: "SERF" 65, "slnt" 0;
+  line-height: var(--lh-1);
+  color: var(--ink);
+  margin-bottom: var(--sp-1);
+}
+.proof-metric-item .proof-stat {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--sp-1-5);
+}
+.proof-metric-item h3 {
+  margin-bottom: var(--sp-1-5);
+  font-weight: var(--fw-bold);
+}
+.proof-metric-item p {
+  color: var(--text-secondary);
+}
+.proof-card h3 {
+  margin-bottom: var(--sp-1);
+}
+.proof-card p {
+  color: var(--text-secondary);
+}

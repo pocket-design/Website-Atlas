@@ -8,9 +8,9 @@ export type HeroMode = 'v1' | 'v2';
 // V1 — lineart + illustrated pairs for hover-reveal effect
 // illustrated = top layer (visible by default); lineart = bottom (revealed on hover)
 export const CITY_IMAGES: Record<HeroCity, { lineart: string; realistic: string; label: string; icon: string }> = {
-  egypt:   { lineart: '/assets/lineart-egypt.jpg',   realistic: '/assets/Egypt.png',    label: 'Egypt',    icon: '🏛️' },
-  japan:   { lineart: '/assets/lineart-japan.jpg',   realistic: '/assets/Japan.png',    label: 'Japan',    icon: '⛩️' },
-  newyork: { lineart: '/assets/lineart-newyork.jpg', realistic: '/assets/New york.png', label: 'New York', icon: '🗽' },
+  egypt:   { lineart: '/assets/lineart-egypt.jpg',   realistic: '/assets/hero-egypt.jpg',   label: 'Egypt',    icon: '🏛️' },
+  japan:   { lineart: '/assets/lineart-japan.jpg',   realistic: '/assets/hero-japan.jpg',   label: 'Japan',    icon: '⛩️' },
+  newyork: { lineart: '/assets/lineart-newyork.jpg', realistic: '/assets/hero-newyork.jpg', label: 'New York', icon: '🗽' },
 };
 
 // V2 — full illustrations that cycle automatically
