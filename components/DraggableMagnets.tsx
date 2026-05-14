@@ -4,10 +4,10 @@ import { useRef, useCallback, useState, useEffect } from 'react';
 
 const MAGNETS = [
   { src: '/assets/magnet-1.png', x: 230, y: -30, angle: -8, delay: 0,   duration: 6.2 },
-  { src: '/assets/magnet-2.png', x: 510, y: -25, angle: 5,  delay: 3.4, duration: 7.1 },
-  { src: '/assets/magnet-3.png', x: 790, y: -35, angle: -3, delay: 1.6, duration: 5.6 },
-  { src: '/assets/magnet-4.png', x: 120, y: 100, angle: 6,  delay: 4.8, duration: 6.8 },
-  { src: '/assets/magnet-5.png', x: 650, y: 95,  angle: -5, delay: 2.2, duration: 5.9 },
+  { src: '/assets/magnet-2.png', x: 794, y: -46, angle: 5,  delay: 3.4, duration: 7.1 },
+  { src: '/assets/magnet-3.png', x: 1130, y: -35, angle: -3, delay: 1.6, duration: 5.6 },
+  { src: '/assets/magnet-4.png', x: 10,  y: 148, angle: 6,  delay: 4.8, duration: 6.8 },
+  { src: '/assets/magnet-5.png', x: 1020, y: 146, angle: -5, delay: 2.2, duration: 5.9 },
 ];
 
 export default function DraggableMagnets() {

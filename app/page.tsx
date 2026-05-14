@@ -9,6 +9,8 @@ import NavBar from '@/components/NavBar';
 import TryItSection from '@/components/TryItSection';
 import HeroBg from '@/components/HeroBg';
 import DraggableMagnets from '@/components/DraggableMagnets';
+import Testimonials from '@/components/Testimonials';
+import BentoHeroRow from '@/components/BentoHeroRow';
 
 export default function Home() {
   const jsonLd = {
@@ -138,28 +140,8 @@ export default function Home() {
           <BentoHeader />
         </div>
 
+        <BentoHeroRow />
         <div className="bento-grid">
-          <div className="bcell span-4">
-            <BentoGraphic scene="transpose" />
-            <h3 className="t-h4">Full cultural transposition, not translation</h3>
-            <p className="t-body-sm">
-              Names become culturally native. A corner store becomes a Späti in Berlin, a konbini in Tokyo, a duka in Nairobi. Food, humor, family dynamics, and street-level details are rebuilt from scratch. <strong>Readers never sense a foreign origin.</strong>
-            </p>
-          </div>
-          <div className="bcell span-2">
-            <BentoGraphic scene="knowledge" />
-            <h3 className="t-h4">Supports insanely long prose</h3>
-            <p className="t-body-sm">
-              Thousands of words, hundreds of episodes, entire seasons. <strong>Atlas stays perfectly consistent from first page to last.</strong>
-            </p>
-          </div>
-          <div className="bcell span-3">
-            <BentoGraphic scene="strategy" />
-            <h3 className="t-h4">Strategy-first architecture</h3>
-            <p className="t-body-sm">
-              Before changing a single word, Atlas generates a full strategy: tone, naming rules, geographic mappings. <strong>One document governs every downstream decision.</strong>
-            </p>
-          </div>
           <div className="bcell span-3">
             <BentoGraphic scene="triage" />
             <h3 className="t-h4">Fully genre-aware</h3>
@@ -167,14 +149,7 @@ export default function Home() {
               Atlas reads your genre and adapts accordingly. Humor lands differently in comedy, tension builds differently in suspense, intimacy shifts in romance. <strong>A romance adapts differently from a thriller.</strong>
             </p>
           </div>
-          <div className="bcell" style={{gridColumn: 'span 2'}}>
-            <BentoGraphic scene="validation" />
-            <h3 className="t-h4">Self-healing validation</h3>
-            <p className="t-body-sm">
-              A verification pass flags conflicts and cultural mixing. <strong>Only broken items are surgically regenerated.</strong>
-            </p>
-          </div>
-          <div className="bcell" style={{gridColumn: 'span 4'}}>
+          <div className="bcell span-3">
             <BentoGraphic scene="graph" />
             <h3 className="t-h4">Deep knowledge of dependencies</h3>
             <p className="t-body-sm">
@@ -184,56 +159,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOLD 3 — BATTLE-TESTED */}
-      <section id="proof" className="proof-section">
-        <div className="section-header">
-          <h2 className="t-h3">Battle-tested at global scale.</h2>
-        </div>
-
-        <div className="proof-grid">
-          <div className="proof-card proof-card-hero">
-            <div className="proof-hero-left">
-              <span className="proof-hero-number"><CountUp end={50} /><span className="proof-hero-pct">%</span></span>
-              <span className="proof-hero-label">better retention</span>
-            </div>
-            <div className="proof-hero-right">
-              <h3 className="t-h4">Adaptation performs significantly better than translation</h3>
-              <p className="t-body-sm">Atlas rebuilds the cultural fabric so stories feel native. Higher engagement, longer listen times, growing revenue.</p>
-              <ul className="proof-hero-stats">
-                <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>600+</strong> AI-adapted shows across drama, romance, crime, fantasy</li>
-                <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>8</strong> language markets live including US, UK, Europe, LATAM, India</li>
-                <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>$20.5M+</strong> lifetime revenue from adapted content</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="proof-metrics-row">
-          <div className="proof-metric-item">
-            <div className="proof-stat"><CountUp end={10000} suffix="+" /></div>
-            <h3 className="t-h4">Stories adapted</h3>
-            <p className="t-body-sm">
-              From short fiction to 200-chapter epics. Every genre, every length.
-            </p>
-          </div>
-          <div className="proof-metric-item">
-            <div className="proof-stat"><CountUp end={14} /></div>
-            <h3 className="t-h4">Locale-pairs supported</h3>
-            <p className="t-body-sm">
-              Deep cultural intelligence, not just language swaps.
-            </p>
-          </div>
-          <div className="proof-metric-item">
-            <div className="proof-stat"><CountUp end={99.2} suffix="%" decimals={1} /></div>
-            <h3 className="t-h4">Consistency score</h3>
-            <p className="t-body-sm">
-              Names, relationships, and references stay coherent across every chapter.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* FOLD 4 — HAVE A STORY */}
+      {/* FOLD — BLOCKBUSTERS */}
       <section id="writers" className="story-cta">
         <StoryCTAHeader />
 
@@ -327,7 +253,58 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOLD 4 — FINAL CTA */}
+      {/* FOLD — BATTLE-TESTED */}
+      <section id="proof" className="proof-section">
+        <div className="section-header">
+          <h2 className="t-h3">Battle-tested at global scale.</h2>
+        </div>
+
+        <div className="proof-grid">
+          <div className="proof-card proof-card-hero">
+            <div className="proof-hero-left">
+              <span className="proof-hero-number"><CountUp end={50} /><span className="proof-hero-pct">%</span></span>
+              <span className="proof-hero-label">better retention</span>
+            </div>
+            <div className="proof-hero-right">
+              <h3 className="t-h4">Adaptation performs significantly better than translation</h3>
+              <p className="t-body-sm">Atlas rebuilds the cultural fabric so stories feel native. Higher engagement, longer listen times, growing revenue.</p>
+              <ul className="proof-hero-stats">
+                <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>600+</strong> AI-adapted shows across drama, romance, crime, fantasy</li>
+                <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>8</strong> language markets live including US, UK, Europe, LATAM, India</li>
+                <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><strong>$20.5M+</strong> lifetime revenue from adapted content</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="proof-metrics-row">
+          <div className="proof-metric-item">
+            <div className="proof-stat"><CountUp end={10000} suffix="+" /></div>
+            <h3 className="t-h4">Stories adapted</h3>
+            <p className="t-body-sm">
+              From short fiction to 200-chapter epics. Every genre, every length.
+            </p>
+          </div>
+          <div className="proof-metric-item">
+            <div className="proof-stat"><CountUp end={14} /></div>
+            <h3 className="t-h4">Locale-pairs supported</h3>
+            <p className="t-body-sm">
+              Deep cultural intelligence, not just language swaps.
+            </p>
+          </div>
+          <div className="proof-metric-item">
+            <div className="proof-stat"><CountUp end={99.2} suffix="%" decimals={1} /></div>
+            <h3 className="t-h4">Consistency score</h3>
+            <p className="t-body-sm">
+              Names, relationships, and references stay coherent across every chapter.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* FOLD — TESTIMONIALS */}
+      <Testimonials />
+
       {/* FOOTER */}
       <footer>
         <div className="footer-inner">

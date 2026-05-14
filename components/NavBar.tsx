@@ -12,7 +12,7 @@ export default function NavBar({
   centerLabel,
   ctaLabel = 'Try it now',
   ctaHref = '/playground',
-  signInLabel = 'Log in / Sign up',
+  signInLabel = 'Sign in',
   signInHref = '/signin',
 }: NavBarProps) {
   return (
@@ -32,10 +32,13 @@ export default function NavBar({
             <a href="#how-it-works">Features</a>
           </li>
           <li>
+            <a href="#writers">Blockbusters</a>
+          </li>
+          <li>
             <a href="#proof">Proof</a>
           </li>
           <li>
-            <a href="#writers">Adapted shows</a>
+            <a href="#testimonials">Testimonials</a>
           </li>
         </ul>
       )}

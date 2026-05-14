@@ -172,6 +172,9 @@ Pure 8px grid with half-step (4px) and quarter steps where needed.
 | `--sp-12` | 96 |
 | `--sp-15` | 120 |
 | `--sp-20` | 160 |
+| `--sp-section` | 64 |
+
+`--sp-section` is the **mandatory vertical rhythm token** for gaps between page folds/sections. Every top-level `<section>` must use `padding: var(--sp-section) var(--sp-8)` (or `padding-top` / `padding-bottom` separately). Never hardcode section padding inline or use a different spacing token for fold gaps.
 
 ### Containers
 
@@ -182,10 +185,14 @@ Pure 8px grid with half-step (4px) and quarter steps where needed.
 
 ### Section padding
 
-- Hero: `var(--sp-20) var(--sp-8) var(--sp-4)` (160 / 64 / 32) — top space dramatic, bottom tight because cascade follows
-- Cascade: `0 var(--sp-8) var(--sp-15)` (0 / 64 / 120)
-- Body sections (bento, cards): `var(--sp-12) var(--sp-8)` (96 / 64)
-- Final CTA / dark fold: `var(--sp-20) var(--sp-8)` (160 / 64)
+All sections use `var(--sp-section)` (64px) for top and bottom padding. Horizontal padding is `var(--sp-8)` (64px). Exceptions are documented below — these are the only sections allowed to deviate:
+
+| Section | Padding | Reason |
+| --- | --- | --- |
+| **Default (all sections)** | `var(--sp-section) var(--sp-8)` | Standard rhythm between folds |
+| Hero | `calc(var(--sp-8) + 120px) var(--sp-8) var(--sp-2-5)` | Extra top for nav clearance, tight bottom because cascade follows immediately |
+| Cascade | `0 0 var(--sp-8)` | No top padding — visually continuous with hero |
+| Footer | `var(--sp-section) var(--sp-8) 0` | No bottom padding — footer bottom handled internally |
 
 ---
 
@@ -294,7 +301,81 @@ Outer max-width **`--container-narrow` (720px)** — the story passage should fe
 
 Hover/focus state: outer border deepens to `--vellum-shade-3`, shadow lifts (1+2 / 8+24 layered).
 
-### 6.3 Locale cards (cascade)
+### 6.3 Bento cards (the universal card pattern)
+
+**This is the ONE card style used everywhere on the page.** Testimonials, features, proof stats, story steps — all use the same card. Never invent a new card style.
+
+```css
+.any-card {
+  background: var(--surface-card);
+  border: var(--border-hairline);
+  border-radius: var(--r-card);
+  padding: var(--sp-4);
+  box-shadow: none;
+}
+```
+
+Properties (all mandatory, no exceptions):
+- Background: `var(--surface-card)` (white)
+- Border: `var(--border-hairline)` (1px solid `--surface-divider`)
+- Radius: `var(--r-card)` (14px)
+- Padding: `var(--sp-4)` (32px)
+- Box-shadow: `none` (shadows are currently disabled site-wide)
+- No hover state change on cards (background stays the same)
+
+Card title: `t-h4` (20px, semibold), `margin-bottom: var(--sp-1-5)`
+Card body: `t-body-sm` (14px), `color: var(--text-secondary)`
+
+### 6.4 Section grids (the universal grid pattern)
+
+All multi-card sections use the same grid setup:
+
+```css
+.any-grid {
+  display: grid;
+  grid-template-columns: repeat(N, 1fr);  /* N = number of columns */
+  gap: 2px;
+  max-width: var(--container);
+  margin: 0 auto;
+}
+```
+
+Mandatory properties:
+- `gap: 2px` — tight packing between cards, always
+- `max-width: var(--container)` — never wider than 1200px
+- `margin: 0 auto` — centered
+
+Column counts used on this site:
+- 6 columns: feature bento (with span-2, span-3, span-4 on cells)
+- 3 columns: proof cards
+- 2 columns: testimonials
+- 4 columns: story steps
+
+On mobile (`max-width: 767px`), all grids collapse to `grid-template-columns: 1fr`.
+
+### 6.5 Section wrapper
+
+Every section on the page follows this structure:
+
+```css
+.any-section {
+  padding: var(--sp-section) var(--sp-8);
+}
+.any-section .section-header {
+  max-width: var(--container);
+  margin: 0 auto var(--sp-4);
+}
+```
+
+Section header uses `t-h3` for the heading. Never skip `--sp-section` for vertical padding. Never skip `var(--sp-8)` for horizontal padding.
+
+### 6.6 Separators / dividers
+
+All visible dividers use `var(--surface-divider)` (`--vellum-shade-half`, #ECEBE4). Exception: separators on beige backgrounds (where `--surface-divider` is too faint) use `var(--vellum-shade-1)` (#DAD9D2) instead. Both are 1px wide/tall.
+
+Never use arbitrary greys, rgba values, or hardcoded hex for separators.
+
+### 6.7 Locale cards (cascade)
 
 Each card:
 - Outer container `--surface-card`, 1px `--surface-divider`, radius `--r-card` (6px), `overflow: hidden`
@@ -303,13 +384,13 @@ Each card:
 - Story text: `t-body-sm` (Mallory Compact 14px / 1.55), padded `sp-3`, color `--text-secondary`
 - Hover: `translateY(-2px)` + layered shadow (4+6 / 16+32 / 2+4)
 
-### 6.4 Cascade branches
+### 6.8 Cascade branches
 
 5 SVG paths from a single anchor `(540, 0)` in viewBox `0 0 1080 96` to centers of the 5 columns at the bottom (`108, 324, 540, 756, 972`). The middle path is straight; the four outer paths use cubic beziers with control points at midheight to create a smooth fan.
 
 Stroke `--vellum-shade-2`, 1px, no fill. On entry each path animates `stroke-dashoffset: 600 → 0` with the staggered delays in §5.
 
-### 6.5 Globe (existing — Satyam)
+### 6.9 Globe (existing — Satyam)
 
 Hand-coded canvas wireframe with cursor-repel physics, multilingual character glyphs, and scarlet hover halo. Rotation paused under `prefers-reduced-motion`. Anchored to bottom of hero, only top hemisphere visible. Don't touch unless tasked.
 

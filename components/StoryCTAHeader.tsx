@@ -26,8 +26,7 @@ export default function StoryCTAHeader() {
 
   return (
     <h2 ref={ref} className="t-h3">
-      Blockbusters on Pocket<br />
-      have gone global <RoughUnderline trigger={visible} delay={400}>through Atlas</RoughUnderline>.
+      Atlas powers the blockbusters on <RoughUnderline trigger={visible} delay={400}>Pocket</RoughUnderline>.
     </h2>
   );
 }
