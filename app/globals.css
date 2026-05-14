@@ -213,8 +213,8 @@
   --dur-normal:  200ms;
 
   /* ── Type scale extras ───────────────────────────────────── */
-  --fs-ui:       13px;
-  --fs-base:     14px;
+  --fs-ui:       15px;
+  --fs-base:     16px;
   --fw-regular:  400;
   --fw-medium:   500;
   --fw-semibold: 600;
@@ -242,12 +242,14 @@
      Compact font files. */
   --ff-sans-compact: var(--font-mallory-narrow), 'Inter', system-ui, sans-serif;
 
-  --fs-xs:  11px;
-  --fs-sm:  12px;
-  --fs-md:  15px;
-  --fs-lg:  18px;
-  --fs-xl:  20px;     /* added for Proof.tsx (hardik port) */
-  --fs-2xl: 22px;
+  --fs-xs:   13px;
+  --fs-sm:   14px;
+  --fs-md:   17px;
+  --fs-body: 18px;    /* parity with hardik */
+  --fs-lg:   20px;
+  --fs-xl:   22px;    /* added for Proof.tsx (hardik port) */
+  --fs-2xl:  24px;
+  --fs-stat: 50px;    /* parity with hardik */
 
   --lh-snug:     1.25;   /* added for Proof.tsx (hardik port) */
   --lh-normal:   1.5;    /* added for Proof.tsx (hardik port) */
@@ -285,6 +287,9 @@
     0px 0px 0px 1px rgba(214, 25, 0, 0.10),
     0px 2px 6px -1px rgba(214, 25, 0, 0.30),
     0px 4px 12px -2px rgba(214, 25, 0, 0.20);
+  --shadow-btn-primary:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.06);
 
   --text-muted: var(--ink-tint-5);
 
@@ -317,7 +322,7 @@
     font-family: var(--ff-sans);
     background: var(--surface-page);
     color: var(--text-primary);
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
@@ -341,7 +346,7 @@
 .hero-eyebrow {
   margin: 0 auto var(--sp-2);
   font-family: var(--ff-sans);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -353,10 +358,18 @@
 }
 
 /* ── Type scale ──────────────────────────────────────────── */
+.t-hero {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(58px, 7.5vw, 98px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
 .t-display {
   font-family: var(--ff-display);
   font-weight: 400;
-  font-size: clamp(40px, 5.4vw, 56px);
+  font-size: clamp(42px, 5.4vw, 58px);
   line-height: 1.07;
   letter-spacing: -0.03em;
   text-wrap: balance;
@@ -364,7 +377,7 @@
 .t-h1 {
   font-family: var(--ff-display);
   font-weight: 400;
-  font-size: clamp(36px, 4.5vw, 48px);
+  font-size: clamp(38px, 4.5vw, 50px);
   line-height: 1.10;
   letter-spacing: -0.025em;
   text-wrap: balance;
@@ -372,7 +385,7 @@
 .t-h2 {
   font-family: var(--ff-display);
   font-weight: 400;
-  font-size: clamp(28px, 3.4vw, 36px);
+  font-size: clamp(30px, 3.4vw, 38px);
   line-height: 1.15;
   letter-spacing: -0.02em;
   text-wrap: balance;
@@ -380,7 +393,7 @@
 .t-h3 {
   font-family: var(--ff-display);
   font-weight: 400;
-  font-size: clamp(22px, 2.4vw, 28px);
+  font-size: clamp(24px, 2.4vw, 30px);
   line-height: 1.20;
   letter-spacing: -0.015em;
   text-wrap: balance;
@@ -388,7 +401,7 @@
 .t-h4 {
   font-family: var(--ff-display);
   font-weight: 400;
-  font-size: 20px;
+  font-size: 22px;
   line-height: 1.25;
   letter-spacing: -0.01em;
   text-wrap: balance;
@@ -396,21 +409,21 @@
 .t-subheading {
   font-family: var(--ff-sans);
   font-weight: 400;
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1.5;
   text-wrap: pretty;
 }
 .t-body {
   font-family: var(--ff-sans);
   font-weight: 400;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.55;
   text-wrap: pretty;
 }
 .t-body-sm {
   font-family: var(--ff-sans);
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.45;
   letter-spacing: 0.003em;
   text-wrap: pretty;
@@ -418,22 +431,28 @@
 .t-label {
   font-family: var(--ff-sans);
   font-weight: 400;
-  font-size: 13px;
+  font-size: 16px;
   line-height: 1.4;
   letter-spacing: 0.005em;
 }
 .t-eyebrow {
   font-family: var(--ff-sans);
   font-weight: 700;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.4;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+.t-nav {
+  font-family: var(--ff-sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1;
+}
 .t-caption {
   font-family: var(--ff-sans);
   font-weight: 400;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.4;
   letter-spacing: 0.02em;
 }
@@ -447,23 +466,29 @@
 .btn-primary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--sp-1);
-  background: var(--ink);
-  color: var(--text-on-dark);
+  text-decoration: none;
+  background: linear-gradient(to bottom, var(--ink-tint-1), var(--ink));
+  color: var(--vellum);
   border: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   padding: 10px var(--sp-2-5);
   border-radius: var(--r-pill);
   font-family: var(--ff-sans);
-  font-size: var(--fs-ui);
-  font-weight: 400;  /* Mallory Book — only 400/700 are valid */
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-1);
   cursor: pointer;
   min-height: 40px;
-  transition:
-    background var(--dur-instant) var(--ease),
-    transform  var(--dur-normal)  var(--ease-spring);
+  text-box-trim: both;
+  text-box-edge: cap alphabetic;
+  box-shadow: var(--shadow-btn-primary);
+  transition: background var(--dur-instant) var(--ease), transform var(--dur-normal) var(--ease-spring), box-shadow var(--dur-instant) var(--ease);
 }
-.btn-primary:hover  { background: var(--ink-tint-1); }
-.btn-primary:active { background: var(--ink-shade-2); transform: scale(0.95); }
+.btn-primary:hover  { background: linear-gradient(to bottom, var(--ink), var(--ink-shade-2)); }
+.btn-primary:active { background: linear-gradient(to bottom, var(--ink-shade-2), var(--ink-shade-2)); transform: scale(0.95); box-shadow: var(--shadow-xs); }
 
 /* ── NAV ─────────────────────────────────────────────────── */
 .site-nav {
@@ -485,10 +510,15 @@
   backdrop-filter: var(--glass-blur);
   border: var(--border-glass);
   border-radius: var(--r-pill);
-  box-shadow: var(--shadow-elevated);
+  box-shadow: var(--shadow-md);
 }
-.site-nav .nav-logo  { justify-self: start; }
-.site-nav .btn-primary { justify-self: end; }
+.site-nav .nav-logo { justify-self: start; }
+.nav-actions {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
 
 .nav-logo {
   display: inline-flex;
@@ -523,20 +553,28 @@
   height: 34px;
   padding: 0 12px;
   color: var(--text-primary);
+  text-box-trim: both;
+  text-box-edge: cap alphabetic;
   text-decoration: none;
   font-family: var(--ff-sans);
   font-size: var(--fs-ui);
-  font-weight: 400;  /* Mallory Book — only 400/700 are valid */
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-1);
   border-radius: var(--r-pill);
   transition: background-color var(--dur-instant) var(--ease), transform var(--dur-normal) var(--ease-spring);
 }
 .nav-links a:hover  { background-color: rgba(0,0,0,0.04); }
 .nav-links a:active { transform: scale(0.95); }
 
-.site-nav .btn-primary {
+.site-nav .btn-primary,
+.site-nav .btn-secondary {
   min-height: 34px;
   padding: 8px 16px;
   font-size: var(--fs-base);
+  will-change: transform;
+  isolation: isolate;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* ── FOLD 1 — HERO ───────────────────────────────────────── */
@@ -701,7 +739,7 @@
 .bcell-stat {
   /* Design system: "trust-band stat numbers" = display = Season Mix 400 */
   font-family: var(--ff-display);
-  font-size: clamp(40px, 5.4vw, 56px); /* display scale */
+  font-size: clamp(42px, 5.4vw, 58px); /* display scale */
   font-weight: 400;
   line-height: 1.07;
   letter-spacing: -0.03em;
@@ -746,7 +784,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 44px;
+  font-size: 46px;
   border-bottom: 1px solid var(--surface-divider);
   box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
 }
@@ -790,7 +828,7 @@
   outline: none;
   color: var(--vellum);
   font-family: var(--ff-sans);
-  font-size: 16px; /* body — 15px is off-scale */
+  font-size: 18px; /* body — 15px is off-scale */
   font-weight: 400;
 }
 .prompt-box input::placeholder { color: rgba(250,249,241,0.4); }
@@ -1039,102 +1077,78 @@
    will-change: transform tells the browser to composite this layer. */
 .testimonials__track {
   display: flex;
-  gap: var(--sp-10);
+  gap: var(--sp-8);
   width: max-content;
   will-change: transform;
 }
 
-/* ── Individual testimonial — open layout, no box ── */
+/* ── Individual testimonial — vertical stack: quote on top, attribution below ── */
 .testimonial-card {
   display: flex;
-  gap: var(--sp-3);
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--sp-6);
   width: 720px;
   flex-shrink: 0;
   user-select: none;
 }
 
-/* Left column: avatar + name + role + listen button */
-.testimonial-card__left {
+.testimonial-card__quote {
+  /* Hero pull-quote — Season Mix display serif, large */
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.testimonial-card__footer {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 160px;
-  flex-shrink: 0;
+  gap: var(--sp-2);
 }
 
-/* Avatar tile: coloured square with initials (swap for <img> when assets exist) */
+/* Photo placeholder — rectangular tile, rounded corners, initials inside */
 .testimonial-card__avatar {
-  width: 120px;
-  height: 120px;
+  width: 72px;
+  height: 72px;
   border-radius: var(--r-card);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--ff-display);
-  font-size: 26px;
+  font-size: 32px;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.45);
-  margin-bottom: var(--sp-2);
   flex-shrink: 0;
   overflow: hidden;
   object-fit: cover;
 }
 
-/* Name — Season Mix 400 via .t-h4 utility class on the element */
-.testimonial-card__name {
-  color: var(--text-primary);
-  margin-bottom: var(--sp-1);
-  font-size: 16px;
-}
-
-/* Role — Mallory 400 */
-.testimonial-card__role {
-  font-family: var(--ff-sans);
-  font-weight: 400;
-  font-size: var(--fs-xs);
-  line-height: 1.4;
-  color: var(--text-tertiary);
-  margin-bottom: var(--sp-2);
-}
-
-.testimonial-card__listen {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-1);
-  padding: var(--sp-1) var(--sp-2);
-  border: 1px solid var(--text-primary);
-  border-radius: var(--r-pill);
-  font-family: var(--ff-sans);
-  font-size: 10px;
-  font-weight: 400;
-  color: var(--text-primary);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background var(--dur-instant) var(--ease), color var(--dur-instant) var(--ease);
-  pointer-events: auto;
-}
-
-.testimonial-card__listen:hover {
-  background: var(--text-primary);
-  color: var(--surface-page);
-}
-
-/* Right column: quote — Mallory 400 (not Season Mix) */
-.testimonial-card__right {
-  flex: 1;
-  min-width: 0;
+.testimonial-card__meta {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.testimonial-card__quote {
-  /* Design system: quotes are body-level text, not headings → Mallory 400 */
+.testimonial-card__name {
   font-family: var(--ff-sans);
   font-weight: 400;
-  font-size: clamp(13px, 1.2vw, 17px);
-  line-height: 1.6;
+  font-size: 22px;
+  line-height: 1.3;
   color: var(--text-primary);
-  margin: 0;
+}
+
+.testimonial-card__story {
+  font-family: var(--ff-sans);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--text-secondary);
 }
 
 /* ── Responsive ── */
@@ -1147,20 +1161,18 @@
   }
   .testimonial-card {
     width: 420px;
-    gap: var(--sp-3);
+    gap: var(--sp-6);
   }
-  .testimonial-card__left {
-    width: 80px;
+  .testimonial-card__quote {
+    font-size: clamp(22px, 4.5vw, 28px);
   }
   .testimonial-card__avatar {
-    width: 60px;
-    height: 60px;
-    font-size: var(--fs-base);
+    width: 100px;
+    height: 100px;
+    font-size: 24px;
   }
-  .testimonial-card__name { font-size: var(--fs-xs); }
-  .testimonial-card__role { font-size: 9px; }
-  .testimonial-card__listen { font-size: 9px; padding: 4px var(--sp-1); }
-  .testimonial-card__quote { font-size: clamp(10px, 1.2vw, 14px); }
+  .testimonial-card__name { font-size: 18px; }
+  .testimonial-card__story { font-size: 13px; }
 }
 
 /* ── FOOTER ──────────────────────────────────────────────── */
@@ -1329,7 +1341,7 @@ footer {
   resize: none;
   overflow: hidden;
   font-family: var(--ff-sans);
-  font-size: 15px;       /* Hardik: --fs-md */
+  font-size: 17px;       /* Hardik: --fs-md */
   line-height: 1.65;
   color: var(--text-primary);
   text-wrap: pretty;
@@ -2063,7 +2075,7 @@ footer {
 }
 .proof-hero-number {
   font-family: var(--ff-display);
-  font-size: clamp(56px, 6vw, 72px);
+  font-size: clamp(58px, 6vw, 74px);
   font-weight: var(--fw-regular);
   line-height: var(--lh-1);
   color: var(--ink);
@@ -2110,7 +2122,7 @@ footer {
 }
 .proof-stat {
   font-family: var(--ff-display);
-  font-size: clamp(36px, 4vw, 48px);
+  font-size: clamp(38px, 4vw, 50px);
   font-weight: var(--fw-regular);
   font-variation-settings: "SERF" 65, "slnt" 0;
   line-height: var(--lh-1);
@@ -2247,23 +2259,12 @@ footer {
   .magnet-shimmer { animation: none; opacity: 0; }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .magnets-container {
     display: none;
   }
 }
 
-
-/* Wrapper section for <DraggableMagnets /> — provides positioned, sized
-   anchor for the absolutely-positioned .magnets-container inside, and
-   participates in the page section rhythm (top/bottom = --sp-section). */
-.magnets-section {
-  position: relative;
-  max-width: var(--container);
-  height: 280px;
-  margin: var(--sp-section) auto;
-  padding: 0 var(--sp-8);
-}
 
 /* ═══════════════════════════════════════════════════════════
    PLAYGROUND PAGE (/playground)
@@ -2518,7 +2519,7 @@ body:has(.try-page) .site-nav {
 
 .try-sample-tag {
   font-family: var(--ff-sans);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: var(--fw-bold);
   text-transform: uppercase;
   letter-spacing: var(--ls-caps);
@@ -3287,4 +3288,98 @@ body:has(.try-page) .site-nav {
 .try-adapt-btn {
   min-width: 180px;
   justify-content: center;
+}
+
+/* ── HAVE YOUR OWN STORY (ported from hardik) ─────────────── */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  text-decoration: none;
+  background: linear-gradient(to bottom, #ffffff, #f7f7f5);
+  color: var(--ink);
+  border: var(--border-hairline);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  padding: 10px var(--sp-2-5);
+  border-radius: var(--r-pill);
+  font-family: var(--ff-sans);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-1);
+  cursor: pointer;
+  min-height: 40px;
+  text-box-trim: both;
+  text-box-edge: cap alphabetic;
+  box-shadow: var(--shadow-sm);
+  transition: background var(--dur-instant) var(--ease), transform var(--dur-normal) var(--ease-spring), box-shadow var(--dur-instant) var(--ease), border-color var(--dur-instant) var(--ease);
+}
+.btn-secondary:hover  { background: linear-gradient(to bottom, #f7f7f5, #f0f0ec); border-color: var(--surface-divider-hover); box-shadow: var(--shadow-card-hover); }
+.btn-secondary:active { background: linear-gradient(to bottom, #f0f0ec, #eaeae6); transform: scale(0.95); box-shadow: var(--shadow-xs); }
+
+.story-cta-section {
+  padding: var(--sp-section) var(--sp-8);
+  text-align: center;
+}
+.story-cta-section .section-header {
+  max-width: var(--container);
+  margin: 0 auto var(--sp-4);
+}
+.story-bento-wrap {
+  position: relative;
+  max-width: var(--container);
+  margin: 0 auto;
+}
+.story-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+.story-bento-cell {
+  background: var(--surface-card);
+  border: none;
+  border-radius: var(--r-card);
+  padding: var(--sp-4);
+  text-align: left;
+}
+.story-bento-cell h3 {
+  margin-bottom: var(--sp-1-5);
+  font-weight: var(--fw-semibold);
+}
+.story-bento-cell p {
+  color: var(--text-secondary);
+}
+.story-cta-action {
+  max-width: var(--container);
+  margin: var(--sp-4) auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1-5);
+  flex-wrap: wrap;
+}
+.story-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  text-decoration: none;
+  padding-left: var(--sp-2);
+  padding-right: var(--sp-2);
+  min-width: 220px;
+  justify-content: center;
+}
+.story-cta-btn .locale-flag {
+  width: 18px;
+  height: 14px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 767px) {
+  .story-bento-grid {
+    grid-template-columns: 1fr;
+  }
+  .story-cta-section {
+    padding: var(--sp-section) 20px;
+  }
 }

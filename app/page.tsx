@@ -36,6 +36,53 @@ export default function Home() {
         </section>
       </section>
 
+      {/* FOLD — HAVE YOUR OWN STORY (ported from hardik) */}
+      <section className="story-cta-section">
+        <div className="section-header">
+          <h2 className="t-h3">Have your own story?</h2>
+        </div>
+
+        <div className="story-bento-wrap">
+          <div className="story-bento-grid">
+            <div className="story-bento-cell">
+              <h3 className="t-h4">Paste your story</h3>
+              <p className="t-body-sm">Drop in your prose. Short fiction, a full chapter, or an entire season of scripts. Any length, any genre.</p>
+            </div>
+            <div className="story-bento-cell">
+              <h3 className="t-h4">Pick your locales</h3>
+              <p className="t-body-sm">Choose from 14 locale-pairs. Each carries deep cultural intelligence built from thousands of adapted stories.</p>
+            </div>
+            <div className="story-bento-cell">
+              <h3 className="t-h4">Atlas adapts it</h3>
+              <p className="t-body-sm">Names, places, food, idioms, humor. Every cultural thread is rebuilt so the story feels native to its new audience.</p>
+            </div>
+            <div className="story-bento-cell">
+              <h3 className="t-h4">Tweak and ship</h3>
+              <p className="t-body-sm">Review the adaptation, adjust any mappings, then export. Your story is ready for a new market.</p>
+            </div>
+            <DraggableMagnets />
+          </div>
+        </div>
+
+        <div className="story-cta-action">
+          <a href="/playground?from=en&to=in" className="btn btn-secondary story-cta-btn">
+            <span className="locale-flag fi fi-us" /> English
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" /></svg>
+            <span className="locale-flag fi fi-in" /> Hindi
+          </a>
+          <a href="/playground?from=en&to=de" className="btn btn-secondary story-cta-btn">
+            <span className="locale-flag fi fi-us" /> English
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" /></svg>
+            <span className="locale-flag fi fi-de" /> German
+          </a>
+          <a href="/playground?from=en&to=es" className="btn btn-secondary story-cta-btn">
+            <span className="locale-flag fi fi-us" /> English
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" /></svg>
+            <span className="locale-flag fi fi-es" /> Spanish
+          </a>
+        </div>
+      </section>
+
       {/* FOLD 2 — ATLAS BENTO (feature cards) */}
       <AtlasBento />
 
@@ -44,11 +91,6 @@ export default function Home() {
 
       {/* FOLD 4 — TESTIMONIALS */}
       <Testimonials />
-
-      {/* MAGNETS — playful draggable teaser between Testimonials and FinalCTA */}
-      <section className="magnets-section" aria-hidden="true">
-        <DraggableMagnets />
-      </section>
 
       {/* FOLD 5 — FINAL CTA */}
       <section className="final-cta">

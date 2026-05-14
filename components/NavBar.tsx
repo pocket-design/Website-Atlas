@@ -4,9 +4,17 @@ interface NavBarProps {
   centerLabel?: string;
   ctaLabel?: string;
   ctaHref?: string;
+  signInLabel?: string;
+  signInHref?: string;
 }
 
-export default function NavBar({ centerLabel, ctaLabel = 'Try it now', ctaHref = '/playground' }: NavBarProps) {
+export default function NavBar({
+  centerLabel,
+  ctaLabel = 'Try it now',
+  ctaHref = '/playground',
+  signInLabel = 'Log in / Sign up',
+  signInHref = '/signin',
+}: NavBarProps) {
   return (
     <nav className="site-nav">
       <a className="nav-logo" href="/" aria-label="Pocket Atlas — home">
@@ -27,13 +35,18 @@ export default function NavBar({ centerLabel, ctaLabel = 'Try it now', ctaHref =
             <a href="#proof">Proof</a>
           </li>
           <li>
-            <a href="#writers">Writers</a>
+            <a href="#writers">Adapted shows</a>
           </li>
         </ul>
       )}
-      <a href={ctaHref} className="btn-primary">
-        {ctaLabel}
-      </a>
+      <div className="nav-actions">
+        <a href={signInHref} className="btn-secondary nav-signin">
+          {signInLabel}
+        </a>
+        <a href={ctaHref} className="btn-primary">
+          {ctaLabel}
+        </a>
+      </div>
     </nav>
   );
 }

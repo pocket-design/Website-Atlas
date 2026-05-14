@@ -24,6 +24,7 @@ interface Testimonial {
   avatarBg: string;
   quote: string;
   listenHref?: string;
+  storyName?: string;
 }
 
 const TESTIMONIALS: Testimonial[] = [
@@ -175,8 +176,10 @@ export default function Testimonials() {
               className="testimonial-card"
               aria-label={`Testimonial from ${t.name}`}
             >
-              {/* Left: avatar + attribution */}
-              <div className="testimonial-card__left">
+              <blockquote className="testimonial-card__quote">
+                {t.quote}
+              </blockquote>
+              <div className="testimonial-card__footer">
                 <div
                   className="testimonial-card__avatar"
                   style={{ background: t.avatarBg }}
@@ -184,27 +187,10 @@ export default function Testimonials() {
                 >
                   {t.initials}
                 </div>
-                {/* Season Mix for the name */}
-                <strong className="t-h4 testimonial-card__name">{t.name}</strong>
-                {/* Mallory 400 for the role */}
-                <span className="testimonial-card__role">{t.role}</span>
-                {t.listenHref && (
-                  <a
-                    href={t.listenHref}
-                    className="testimonial-card__listen"
-                    tabIndex={-1}
-                    aria-hidden="true"
-                  >
-                    Listen to story&nbsp;▶
-                  </a>
-                )}
-              </div>
-
-              {/* Right: quote — Mallory 400 */}
-              <div className="testimonial-card__right">
-                <blockquote className="testimonial-card__quote">
-                  {t.quote}
-                </blockquote>
+                <div className="testimonial-card__meta">
+                  <strong className="testimonial-card__name">{t.name}</strong>
+                  <span className="testimonial-card__story">{t.storyName ?? t.role}</span>
+                </div>
               </div>
             </article>
           ))}

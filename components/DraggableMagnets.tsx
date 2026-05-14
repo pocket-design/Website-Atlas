@@ -2,7 +2,16 @@
 
 import { useRef, useCallback, useState, useEffect } from 'react';
 
-const MAGNETS = [
+type Coord = number | string;
+
+const MAGNETS: Array<{
+  src: string;
+  x: Coord;
+  y: Coord;
+  angle: number;
+  delay: number;
+  duration: number;
+}> = [
   { src: '/assets/magnet-1.png', x: 230, y: -30, angle: -8, delay: 0,   duration: 6.2 },
   { src: '/assets/magnet-2.png', x: 510, y: -25, angle: 5,  delay: 3.4, duration: 7.1 },
   { src: '/assets/magnet-3.png', x: 790, y: -35, angle: -3, delay: 1.6, duration: 5.6 },
@@ -11,7 +20,7 @@ const MAGNETS = [
 ];
 
 export default function DraggableMagnets() {
-  const [positions, setPositions] = useState(
+  const [positions, setPositions] = useState<Array<{ x: Coord; y: Coord }>>(
     MAGNETS.map(m => ({ x: m.x, y: m.y }))
   );
   const [dragging, setDragging] = useState<number | null>(null);
@@ -32,15 +41,16 @@ export default function DraggableMagnets() {
 
   const handlePointerDown = useCallback((e: React.PointerEvent, idx: number) => {
     e.preventDefault();
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    const target = e.currentTarget as HTMLElement;
+    target.setPointerCapture(e.pointerId);
     dragStart.current = {
       x: e.clientX,
       y: e.clientY,
-      px: positions[idx].x,
-      py: positions[idx].y,
+      px: target.offsetLeft,
+      py: target.offsetTop,
     };
     setDragging(idx);
-  }, [positions]);
+  }, []);
 
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
     if (dragging === null) return;
