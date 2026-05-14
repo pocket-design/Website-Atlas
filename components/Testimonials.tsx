@@ -25,6 +25,7 @@ interface Testimonial {
   quote: string;
   listenHref?: string;
   storyName?: string;
+  photoSrc?: string;
 }
 
 const TESTIMONIALS: Testimonial[] = [
@@ -35,6 +36,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: '',
     initials: 'DG',
     avatarBg: '#C8B99A',
+    photoSrc: '/assets/testimonials/daniele-grassetti.png',
     quote:
       'Copilot Adaptation has significantly accelerated and refined the DE→IT adaptation process. The Italian dialogue feels natural, the pacing is improved, and the tone and intent of the German original are well preserved. The tool also captures cultural nuances and character voices effectively, reducing the need for manual rewriting and research. It saves a considerable amount of time without compromising quality.',
   },
@@ -55,6 +57,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: '',
     initials: 'MA',
     avatarBg: '#D4A59A',
+    photoSrc: '/assets/testimonials/mallika.png',
     quote:
       'The tool was a great help in getting the script to a polished state faster. It refined the language effectively, tightening the writing and adding the right dramatic weight where needed. The standout feature was its adaptation capability. It transformed my Korean script into an American setting, handling names, locations, and cultural nuances that would have otherwise required considerable manual effort.',
   },
@@ -65,6 +68,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: '',
     initials: 'MD',
     avatarBg: '#C9C2A8',
+    photoSrc: '/assets/testimonials/madhukar.png',
     quote:
       'Our team had a smooth experience using this tool. It helped transform an American setting into a story that connects well with Indian audiences. The localization made scenes more engaging and relatable. The writing quality is strong and well dramatized, giving our writers a solid base that requires only minor edits. Most importantly, it significantly improved our speed. Earlier, we could complete one episode a day; now we produce 10 to 15 episodes daily.',
   },
@@ -75,6 +79,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: '',
     initials: 'KA',
     avatarBg: '#DBCFB4',
+    photoSrc: '/assets/testimonials/kanakavalliy.png',
     quote:
       'Our team had a seamless experience using this tool. It played a key role in transforming our drafts into authentic Tamil narratives that resonate with our audience. The localization made scenes more engaging and relatable. The writing quality is strong and nearly ready to use, requiring only minor adjustments and saving our writers valuable time.',
   },
@@ -85,6 +90,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: '',
     initials: 'PS',
     avatarBg: '#A8BDD1',
+    photoSrc: '/assets/testimonials/preksha-shah.png',
     quote:
       'My experience with Copilot Adaptation has been very positive. The localization felt consistent throughout, with natural dialogue and improved readability. There were fewer errors compared to the usual process, which reduced the need for manual corrections and repetitive edits. This made the workflow smoother and allowed me to focus more on storytelling. Overall, it saved time without compromising quality.',
   },
@@ -95,6 +101,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: '',
     initials: 'FN',
     avatarBg: '#C9B5C4',
+    photoSrc: '/assets/testimonials/francis-nief.png',
     quote:
       'My experience using Copilot was smooth and engaging. The AI helped me quickly access precise information about the show’s complex universe, making the French localization richer and more coherent. It supported the process without limiting creativity, allowing me to focus on rewriting while easily navigating detailed story elements.',
   },
@@ -172,10 +179,15 @@ export default function Testimonials() {
               <div className="testimonial-card__footer">
                 <div
                   className="testimonial-card__avatar"
-                  style={{ background: t.avatarBg }}
+                  style={t.photoSrc ? undefined : { background: t.avatarBg }}
                   aria-hidden="true"
                 >
-                  {t.initials}
+                  {t.photoSrc ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={t.photoSrc} alt="" />
+                  ) : (
+                    t.initials
+                  )}
                 </div>
                 <div className="testimonial-card__meta">
                   <strong className="testimonial-card__name">{t.name}</strong>
