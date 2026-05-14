@@ -115,15 +115,6 @@ export default function Home() {
                 <span className="show-stat-sep">·</span>
                 <span className="show-stat"><strong>21.3M</strong> minutes played</span>
               </div>
-              <a
-                href="https://pocketfm.com/show/a2fa57d4cb8267b2645f2b588c39951fbf65093a"
-                target="_blank"
-                rel="noopener"
-                className="show-card-cta"
-              >
-                <span className="show-card-cta-label">Listen now</span>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M2.5 6h7M6.5 2.5l3.5 3.5-3.5 3.5" /></svg>
-              </a>
             </div>
           </div>
           <div className="show-card show-card-adaptations">
@@ -170,15 +161,6 @@ export default function Home() {
                 <span className="show-stat-sep">·</span>
                 <span className="show-stat"><strong>14.6M</strong> minutes played</span>
               </div>
-              <a
-                href="https://pocketfm.com/show/cbc35fa13bbe154873ec97f78f2b4cf4b66c7d31"
-                target="_blank"
-                rel="noopener"
-                className="show-card-cta"
-              >
-                <span className="show-card-cta-label">Listen now</span>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M2.5 6h7M6.5 2.5l3.5 3.5-3.5 3.5" /></svg>
-              </a>
             </div>
           </div>
           <div className="show-card show-card-adaptations">
@@ -225,15 +207,6 @@ export default function Home() {
                 <span className="show-stat-sep">·</span>
                 <span className="show-stat"><strong>10.1M</strong> minutes played</span>
               </div>
-              <a
-                href="https://pocketfm.com/show/33adb096b04ecd6b23ce9341160b199f2d489311"
-                target="_blank"
-                rel="noopener"
-                className="show-card-cta"
-              >
-                <span className="show-card-cta-label">Listen now</span>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M2.5 6h7M6.5 2.5l3.5 3.5-3.5 3.5" /></svg>
-              </a>
             </div>
           </div>
           <div className="show-card show-card-adaptations">
@@ -280,15 +253,6 @@ export default function Home() {
                 <span className="show-stat-sep">·</span>
                 <span className="show-stat"><strong>7.9M</strong> minutes played</span>
               </div>
-              <a
-                href="https://pocketfm.com/show/cd532605283eb73524e7a93c4f887f670a980c19"
-                target="_blank"
-                rel="noopener"
-                className="show-card-cta"
-              >
-                <span className="show-card-cta-label">Listen now</span>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M2.5 6h7M6.5 2.5l3.5 3.5-3.5 3.5" /></svg>
-              </a>
             </div>
           </div>
           <div className="show-card show-card-adaptations">

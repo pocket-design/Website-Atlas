@@ -3693,36 +3693,6 @@ body:has(.try-page) .site-nav {
   color: var(--text-secondary);
   margin-bottom: 14px;
 }
-.show-card-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  align-self: flex-start;
-  padding: 0;
-  background: transparent;
-  color: var(--text-secondary);
-  font-family: var(--ff-sans);
-  font-size: var(--fs-ui);
-  font-weight: var(--fw-semibold);
-  text-decoration: none;
-  line-height: 1.2;
-  transition: color 0.15s ease;
-}
-.show-card-cta:hover {
-  color: var(--scarlet);
-}
-.show-card-cta:hover .show-card-cta-label {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-}
-.show-card-cta svg {
-  flex-shrink: 0;
-  transition: transform 0.15s ease;
-}
-.show-card-cta:hover svg {
-  transform: translateX(2px);
-}
 .show-stat strong {
   color: var(--ink);
   font-weight: var(--fw-semibold);
@@ -3731,18 +3701,59 @@ body:has(.try-page) .site-nav {
   color: var(--text-tertiary);
 }
 
+/* Tablet — stack each show (main card on top, adaptations row below) */
+@media (max-width: 1024px) {
+  .show-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile — fit all 3 adapted thumbs inside the card width. The hard-coded
+   140px vinyl disc only matters on hover, which touch devices don't have,
+   so we hide the disc/spindle and let the cover image fill the smaller
+   square cell. */
 @media (max-width: 767px) {
   .shows-section {
     padding: var(--sp-section) 20px;
   }
-  .show-grid {
-    grid-template-columns: 1fr;
+  .show-card {
+    padding: var(--sp-3);
   }
   .show-card-adaptations {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+    gap: 10px;
+    padding: 14px var(--sp-3) var(--sp-3);
+  }
+  .show-adapt-thumb {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    perspective: none;
+  }
+  .show-adapt-thumb::before,
+  .show-adapt-thumb::after,
+  .show-adapt-thumb .show-thumb-play {
     display: none;
   }
-  .show-card-thumb {
-    width: 100px;
-    height: 100px;
+  .show-adapt-thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: none;
+    transform: none;
+  }
+  .show-adapt-pill {
+    top: -7px;
+    right: -7px;
+    font-size: 10px;
+    padding: 3px 7px;
+    gap: 4px;
+  }
+  .show-adapt-pill .locale-flag {
+    width: 13px;
+    height: 10px;
   }
 }
