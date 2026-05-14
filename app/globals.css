@@ -1752,8 +1752,8 @@ section.cards-section { background: var(--surface-page); }
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: var(--vellum-shade-1);
-  border: var(--border-hairline);
+  background: var(--vellum-shade-half);
+  border: 1px solid var(--vellum-shade-1);
 }
 .bento-hero-left:hover {
   background: var(--vellum-shade-1);
