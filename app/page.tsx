@@ -89,27 +89,236 @@ export default function Home() {
       {/* FOLD 3 — PROOF (ported from hardik) */}
       <Proof />
 
-      {/* FOLD 4 — TESTIMONIALS */}
-      <Testimonials />
+      {/* FOLD — SHOWS adapted across locales */}
+      <section id="shows" className="shows-section">
+        <div className="section-header">
+          <h2 className="t-h3">Stories adapted across locales</h2>
+        </div>
+        <div className="show-grid">
+          {/* My Vampire System — 21.3M playtime */}
+          <div className="show-card">
+            <a className="show-card-thumb-wrap" href="https://pocketfm.com/show/a2fa57d4cb8267b2645f2b588c39951fbf65093a" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/my-vampire-system.webp" alt="" className="show-card-thumb" />
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+            <div className="show-card-info">
+              <h3 className="t-h4">My Vampire System</h3>
+              <div className="show-tags">
+                <span className="show-tag">Urban fantasy</span>
+                <span className="show-tag">Vampires</span>
+                <span className="show-tag">Power system</span>
+              </div>
+              <div className="show-stats">
+                <span className="show-stat"><strong>2.1M</strong> listeners</span>
+                <span className="show-stat-sep">·</span>
+                <span className="show-stat"><strong>21.3M</strong> minutes played</span>
+              </div>
+              <a
+                href="https://pocketfm.com/show/a2fa57d4cb8267b2645f2b588c39951fbf65093a"
+                target="_blank"
+                rel="noopener"
+                className="show-card-cta"
+              >
+                <span className="show-card-cta-label">Listen now</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M2.5 6h7M6.5 2.5l3.5 3.5-3.5 3.5" /></svg>
+              </a>
+            </div>
+          </div>
+          <div className="show-card show-card-adaptations">
+            <a className="show-adapt-thumb" href="https://pocketfm.com/show/68f1083ce00e4ab5ec119818e92ac62e7c8e20c9" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/my-vampire-system-es.webp" alt="El Código Del Vampiro" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-es" />Spanish</span>
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+            <a className="show-adapt-thumb" href="https://pocketfm.com/show/1b10e970f5837102b1d99e6e5fa98427372a5a41" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/my-vampire-system-de.webp" alt="Das Vampirsystem" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-de" />German</span>
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+            <a className="show-adapt-thumb" href="https://pocketfm.com/show/d84923d9659f6241e8a6943e096ea74c16dc5abd" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/my-vampire-system-fr.jpg" alt="Code Vampire" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-fr" />French</span>
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+          </div>
 
-      {/* FOLD 5 — FINAL CTA */}
-      <section className="final-cta">
-        <h2 className="t-h3">
-          Bring your story to
-          <br />
-          Pocket today
-        </h2>
-        <div className="prompt-box">
-          <input
-            type="text"
-            placeholder="Paste your story or describe what you're building…"
-            aria-label="Your story or project description"
-          />
-          <button type="button" className="prompt-submit">
-            Go global →
-          </button>
+          {/* The Alpha's Bride — 14.6M playtime */}
+          <div className="show-card">
+            <a className="show-card-thumb-wrap" href="https://pocketfm.com/show/cbc35fa13bbe154873ec97f78f2b4cf4b66c7d31" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/alphas-bride.webp" alt="" className="show-card-thumb" />
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+            <div className="show-card-info">
+              <h3 className="t-h4">The Alpha&apos;s Bride</h3>
+              <div className="show-tags">
+                <span className="show-tag">Werewolf</span>
+                <span className="show-tag">Romance</span>
+                <span className="show-tag">Paranormal</span>
+              </div>
+              <div className="show-stats">
+                <span className="show-stat"><strong>1.5M</strong> listeners</span>
+                <span className="show-stat-sep">·</span>
+                <span className="show-stat"><strong>14.6M</strong> minutes played</span>
+              </div>
+              <a
+                href="https://pocketfm.com/show/cbc35fa13bbe154873ec97f78f2b4cf4b66c7d31"
+                target="_blank"
+                rel="noopener"
+                className="show-card-cta"
+              >
+                <span className="show-card-cta-label">Listen now</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M2.5 6h7M6.5 2.5l3.5 3.5-3.5 3.5" /></svg>
+              </a>
+            </div>
+          </div>
+          <div className="show-card show-card-adaptations">
+            <a className="show-adapt-thumb" href="https://pocketfm.com/show/3a195b6ec3953f6a70aae829d7b99b59eff91c9a" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/alphas-bride-es.webp" alt="Una Luna Para Un Alfa" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-es" />Spanish</span>
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+            <a className="show-adapt-thumb" href="https://pocketfm.com/show/84528b8da9e2a026d4a04b73f0a744f2f01d5b1b" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/alphas-bride-de.webp" alt="Vom Alpha Begehrt" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-de" />German</span>
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+            <a className="show-adapt-thumb" href="https://pocketfm.com/show/66b9c77ce99c2c1ff3060e9dc11e0245a9489e37" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/alphas-bride-fr.jpg" alt="La Fiancée De l'Alpha" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-fr" />French</span>
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+          </div>
+
+          {/* Saving Nora — 10.1M playtime */}
+          <div className="show-card">
+            <a className="show-card-thumb-wrap" href="https://pocketfm.com/show/33adb096b04ecd6b23ce9341160b199f2d489311" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/saving-nora.webp" alt="" className="show-card-thumb" />
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+            <div className="show-card-info">
+              <h3 className="t-h4">Saving Nora</h3>
+              <div className="show-tags">
+                <span className="show-tag">Family drama</span>
+                <span className="show-tag">Slow burn</span>
+                <span className="show-tag">Emotional</span>
+              </div>
+              <div className="show-stats">
+                <span className="show-stat"><strong>1.4M</strong> listeners</span>
+                <span className="show-stat-sep">·</span>
+                <span className="show-stat"><strong>10.1M</strong> minutes played</span>
+              </div>
+              <a
+                href="https://pocketfm.com/show/33adb096b04ecd6b23ce9341160b199f2d489311"
+                target="_blank"
+                rel="noopener"
+                className="show-card-cta"
+              >
+                <span className="show-card-cta-label">Listen now</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M2.5 6h7M6.5 2.5l3.5 3.5-3.5 3.5" /></svg>
+              </a>
+            </div>
+          </div>
+          <div className="show-card show-card-adaptations">
+            <a className="show-adapt-thumb" href="https://pocketfm.com/show/1f1318b281496d1abc92e811bb7052a1d821a20a" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/saving-nora-es.webp" alt="Salvando a Nora" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-es" />Spanish</span>
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+            <a className="show-adapt-thumb" href="https://pocketfm.com/show/ce504962514be83e34b3b2c024473452d1eab47b" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/saving-nora-de.webp" alt="Noras Geheimnis" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-de" />German</span>
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+            <a className="show-adapt-thumb" href="https://pocketfm.com/show/c5239b008e0cfb68b98a55da191e17dd019c4616" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/saving-nora-fr.webp" alt="Le Secret De Nora" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-fr" />French</span>
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+          </div>
+
+          {/* The Duke's Masked Bride — 7.9M playtime */}
+          <div className="show-card">
+            <a className="show-card-thumb-wrap" href="https://pocketfm.com/show/cd532605283eb73524e7a93c4f887f670a980c19" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/dukes-masked-bride.webp" alt="" className="show-card-thumb" />
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+            <div className="show-card-info">
+              <h3 className="t-h4">The Duke&apos;s Masked Bride</h3>
+              <div className="show-tags">
+                <span className="show-tag">Regency</span>
+                <span className="show-tag">Romance</span>
+                <span className="show-tag">Historical</span>
+              </div>
+              <div className="show-stats">
+                <span className="show-stat"><strong>1.1M</strong> listeners</span>
+                <span className="show-stat-sep">·</span>
+                <span className="show-stat"><strong>7.9M</strong> minutes played</span>
+              </div>
+              <a
+                href="https://pocketfm.com/show/cd532605283eb73524e7a93c4f887f670a980c19"
+                target="_blank"
+                rel="noopener"
+                className="show-card-cta"
+              >
+                <span className="show-card-cta-label">Listen now</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M2.5 6h7M6.5 2.5l3.5 3.5-3.5 3.5" /></svg>
+              </a>
+            </div>
+          </div>
+          <div className="show-card show-card-adaptations">
+            <a className="show-adapt-thumb" href="https://pocketfm.com/show/dc3db01aaede9859b679931f15a6444a9b7743f6" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/dukes-masked-bride-es.webp" alt="La Novia Enmascarada Del Marqués" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-es" />Spanish</span>
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+            <a className="show-adapt-thumb" href="https://pocketfm.com/show/f2850c5f071ff8b74eadaf90c05bf1d3036775ee" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/dukes-masked-bride-de.webp" alt="Die maskierte Schönheit" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-de" />German</span>
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+            <a className="show-adapt-thumb" href="https://pocketfm.com/show/95e72b715f476626585302cefa3204714880ef81" target="_blank" rel="noopener">
+              <img src="/thumbnails/shows/dukes-masked-bride-fr.png" alt="Beauté Masquée" />
+              <span className="show-adapt-pill"><span className="locale-flag fi fi-fr" />French</span>
+              <span className="show-thumb-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </a>
+          </div>
         </div>
       </section>
+
+      {/* FOLD 4 — TESTIMONIALS */}
+      <Testimonials />
 
       {/* FOOTER — multi-column dark band ported from hardik */}
       <footer>

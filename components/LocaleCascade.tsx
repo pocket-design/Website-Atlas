@@ -46,7 +46,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'de',
     countryCode: 'de',
-    name: 'Germany',
+    name: 'German',
     image: '/assets/berlin-locale.jpg',
     imageLabel: 'Berlin',
     segments: [
@@ -86,7 +86,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'br',
     countryCode: 'br',
-    name: 'Brazil',
+    name: 'Portuguese (BR)',
     image: '/assets/sao-paulo-locale.jpg',
     imageLabel: 'São Paulo',
     segments: [
@@ -126,7 +126,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'jp',
     countryCode: 'jp',
-    name: 'Japan',
+    name: 'Japanese',
     image: '/assets/tokyo-locale.jpg',
     imageLabel: 'Tokyo',
     segments: [
@@ -166,7 +166,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'it',
     countryCode: 'it',
-    name: 'Italy',
+    name: 'Italian',
     image: '/assets/rome-locale.jpg',
     imageLabel: 'Rome',
     segments: [
@@ -206,7 +206,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'fr',
     countryCode: 'fr',
-    name: 'France',
+    name: 'French',
     image: '/assets/paris-locale.jpg',
     imageLabel: 'Paris',
     segments: [
@@ -244,7 +244,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'in',
     countryCode: 'in',
-    name: 'India (Hindi)',
+    name: 'Hindi',
     image: '/assets/mumbai-locale.jpg',
     imageLabel: 'Mumbai',
     segments: [
@@ -282,7 +282,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'ta',
     countryCode: 'in',
-    name: 'India (Tamil)',
+    name: 'Tamil',
     image: '/assets/chennai-locale.jpg',
     imageLabel: 'Chennai',
     segments: [
@@ -320,7 +320,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'es',
     countryCode: 'es',
-    name: 'Spain',
+    name: 'Spanish',
     image: '/assets/madrid-locale.jpg',
     imageLabel: 'Madrid',
     segments: [
@@ -358,7 +358,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'nl',
     countryCode: 'nl',
-    name: 'Netherlands',
+    name: 'Dutch',
     image: '/assets/amsterdam-locale.jpg',
     imageLabel: 'Amsterdam',
     segments: [
@@ -663,7 +663,7 @@ export function LocaleCascade() {
       let msgIdx = 0;
       const scheduleNext = () => {
         if (cancelled) return;
-        const delay = 800 + Math.random() * 1200;
+        const delay = 400 + Math.random() * 600;
         timeouts.push(setTimeout(() => {
           if (cancelled) return;
           msgIdx++;
@@ -673,7 +673,7 @@ export function LocaleCascade() {
               setLoaderFinishing(true);
               timeouts.push(setTimeout(() => {
                 if (!cancelled) finishOverlay();
-              }, 1000));
+              }, 500));
             } else {
               scheduleNext();
             }
@@ -687,7 +687,7 @@ export function LocaleCascade() {
         setOverlayPhase('fading');
         timeouts.push(setTimeout(() => {
           if (cancelled) return;
-          // Hold blank white state for 300ms
+          // Hold blank white state for 150ms
           timeouts.push(setTimeout(() => {
             if (cancelled) return;
             setOverlayPhase('collapsing');
@@ -698,9 +698,9 @@ export function LocaleCascade() {
             timeouts.push(setTimeout(() => {
               if (cancelled) return;
               setOverlayPhase('done');
-            }, 500));
-          }, 300));
-        }, 250));
+            }, 250));
+          }, 150));
+        }, 125));
       };
     };
 

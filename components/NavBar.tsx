@@ -12,7 +12,7 @@ export default function NavBar({
   centerLabel,
   ctaLabel = 'Try it now',
   ctaHref = '/playground',
-  signInLabel = 'Log in / Sign up',
+  signInLabel = 'Sign in',
   signInHref = '/signin',
 }: NavBarProps) {
   return (

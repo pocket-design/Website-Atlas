@@ -12,11 +12,11 @@ const MAGNETS: Array<{
   delay: number;
   duration: number;
 }> = [
-  { src: '/assets/magnet-1.png', x: 230, y: -30, angle: -8, delay: 0,   duration: 6.2 },
-  { src: '/assets/magnet-2.png', x: 510, y: -25, angle: 5,  delay: 3.4, duration: 7.1 },
-  { src: '/assets/magnet-3.png', x: 790, y: -35, angle: -3, delay: 1.6, duration: 5.6 },
-  { src: '/assets/magnet-4.png', x: 120, y: 100, angle: 6,  delay: 4.8, duration: 6.8 },
-  { src: '/assets/magnet-5.png', x: 650, y: 95,  angle: -5, delay: 2.2, duration: 5.9 },
+  { src: '/assets/magnet-1.png', x: 160, y: -55, angle: -8, delay: 0,   duration: 6.2 },
+  { src: '/assets/magnet-2.png', x: 510, y: -65, angle: 5,  delay: 3.4, duration: 7.1 },
+  { src: '/assets/magnet-3.png', x: 860, y: -50, angle: -3, delay: 1.6, duration: 5.6 },
+  { src: '/assets/magnet-4.png', x: 40,  y: 150, angle: 6,  delay: 4.8, duration: 6.8 },
+  { src: '/assets/magnet-5.png', x: 960, y: 160, angle: -5, delay: 2.2, duration: 5.9 },
 ];
 
 export default function DraggableMagnets() {
