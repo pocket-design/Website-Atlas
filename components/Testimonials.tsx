@@ -30,83 +30,73 @@ interface Testimonial {
 const TESTIMONIALS: Testimonial[] = [
   {
     id: 'tm-1',
-    name: 'Kathrin Corpataux',
-    role: 'Indie novelist, Germany',
-    initials: 'KC',
+    name: 'Daniele Grassetti',
+    storyName: 'MVS',
+    role: '',
+    initials: 'DG',
     avatarBg: '#C8B99A',
     quote:
-      'The cultural audit caught the small things I would have flattened in translation. Its substitution prompts helped me rebuild scenes around American rhythms without losing the story\'s quiet German interiority.',
-    listenHref: '#',
+      'Copilot Adaptation has significantly accelerated and refined the DE→IT adaptation process. The Italian dialogue feels natural, the pacing is improved, and the tone and intent of the German original are well preserved. The tool also captures cultural nuances and character voices effectively, reducing the need for manual rewriting and research. It saves a considerable amount of time without compromising quality.',
   },
   {
     id: 'tm-2',
-    name: 'Priya Venkataraman',
-    role: 'Serial fiction writer, India',
-    initials: 'PV',
+    name: 'Blaine Axel Knight',
+    storyName: 'Heir of the Dragon',
+    role: '',
+    initials: 'BK',
     avatarBg: '#B5C4B1',
     quote:
-      'Atlas understood that my protagonist\'s relationship with her mother-in-law carries entirely different weight in an Indian context versus a Western one. It rebuilt those scenes from the inside out.',
-    listenHref: '#',
+      'Using Copilot Adaptation made the scripting process much more efficient. It helped refine dialogue, improve pacing, and make the writing feel more polished and natural. What stood out most was its ability to adapt my Chinese series for an English-speaking audience. It handled cultural references, character dynamics, and setting changes thoughtfully while preserving the core story. What would normally require extensive rewriting and research became a much more streamlined process, saving significant time while maintaining creative quality.',
   },
   {
     id: 'tm-3',
-    name: 'Marco Delgado',
-    role: 'Podcast novelist, Mexico',
-    initials: 'MD',
+    name: 'Mallika',
+    storyName: 'The World I Created',
+    role: '',
+    initials: 'MA',
     avatarBg: '#D4A59A',
     quote:
-      'I was afraid of losing the voice I\'d spent three years building. Atlas kept my narrator\'s sardonic tone intact while swapping every reference that would have confused a Brazilian audience.',
-    listenHref: '#',
+      'The tool was a great help in getting the script to a polished state faster. It refined the language effectively, tightening the writing and adding the right dramatic weight where needed. The standout feature was its adaptation capability. It transformed my Korean script into an American setting, handling names, locations, and cultural nuances that would have otherwise required considerable manual effort.',
   },
   {
     id: 'tm-4',
-    name: 'Yuki Tanaka',
-    role: 'Light novel author, Japan',
-    initials: 'YT',
-    avatarBg: '#A8BDD1',
+    name: 'Madhukar',
+    storyName: 'Trillionaire Ex Husband Revenge',
+    role: '',
+    initials: 'MD',
+    avatarBg: '#C9C2A8',
     quote:
-      'Honorifics, gift-giving scenes, the weight of silence between characters — Atlas mapped all of it onto equivalents that English readers would feel rather than just read.',
-    listenHref: '#',
+      'Our team had a smooth experience using this tool. It helped transform an American setting into a story that connects well with Indian audiences. The localization made scenes more engaging and relatable. The writing quality is strong and well dramatized, giving our writers a solid base that requires only minor edits. Most importantly, it significantly improved our speed. Earlier, we could complete one episode a day; now we produce 10 to 15 episodes daily.',
   },
   {
     id: 'tm-5',
-    name: 'Amara Osei',
-    role: 'Storyteller, Ghana',
-    initials: 'AO',
-    avatarBg: '#C9C2A8',
+    name: 'Kanakavalliy',
+    storyName: 'Sarvashakthi dev',
+    role: '',
+    initials: 'KA',
+    avatarBg: '#DBCFB4',
     quote:
-      'My story was written in Twi-inflected English. Atlas translated that cadence — not just the words but the oral rhythm underneath — into Spanish without making it feel like a textbook.',
-    listenHref: '#',
+      'Our team had a seamless experience using this tool. It played a key role in transforming our drafts into authentic Tamil narratives that resonate with our audience. The localization made scenes more engaging and relatable. The writing quality is strong and nearly ready to use, requiring only minor adjustments and saving our writers valuable time.',
   },
   {
     id: 'tm-6',
-    name: 'Sophie Laurent',
-    role: 'Romance author, France',
-    initials: 'SL',
-    avatarBg: '#C4B5C8',
+    name: 'Preksha Shah',
+    storyName: 'Hidden Saintess',
+    role: '',
+    initials: 'PS',
+    avatarBg: '#A8BDD1',
     quote:
-      'In French romance, restraint is everything. Atlas knows that. The English version it produced never over-explained what should be left unspoken, and the audience retention data proved it.',
-    listenHref: '#',
+      'My experience with Copilot Adaptation has been very positive. The localization felt consistent throughout, with natural dialogue and improved readability. There were fewer errors compared to the usual process, which reduced the need for manual corrections and repetitive edits. This made the workflow smoother and allowed me to focus more on storytelling. Overall, it saved time without compromising quality.',
   },
   {
     id: 'tm-7',
-    name: 'Rajesh Mehta',
-    role: 'Tamil fiction writer, India',
-    initials: 'RM',
-    avatarBg: '#B8C9A3',
+    name: 'Francis Nief',
+    storyName: 'Code Vampire',
+    role: '',
+    initials: 'FN',
+    avatarBg: '#C9B5C4',
     quote:
-      'The caste dynamics in my story are structural, not ornamental. Atlas flagged every scene where a direct adaptation would have erased that structure and proposed culturally honest alternatives.',
-    listenHref: '#',
-  },
-  {
-    id: 'tm-8',
-    name: 'Elena Vasquez',
-    role: 'Audio drama creator, Colombia',
-    initials: 'EV',
-    avatarBg: '#D1B8A8',
-    quote:
-      'Six months into Spanish adaptation, a colleague asked which version came first. Nobody could tell. That\'s the bar, and Atlas cleared it for every one of my twelve episodes.',
-    listenHref: '#',
+      'My experience using Copilot was smooth and engaging. The AI helped me quickly access precise information about the show’s complex universe, making the French localization richer and more coherent. It supported the process without limiting creativity, allowing me to focus on rewriting while easily navigating detailed story elements.',
   },
 ];
 
@@ -189,7 +179,9 @@ export default function Testimonials() {
                 </div>
                 <div className="testimonial-card__meta">
                   <strong className="testimonial-card__name">{t.name}</strong>
-                  <span className="testimonial-card__story">{t.storyName ?? t.role}</span>
+                  {t.storyName ? (
+                    <span className="testimonial-card__story">{t.storyName}</span>
+                  ) : null}
                 </div>
               </div>
             </article>
