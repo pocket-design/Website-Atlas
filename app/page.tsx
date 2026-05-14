@@ -153,7 +153,7 @@ export default function Home() {
             <BentoGraphic scene="graph" />
             <h3 className="t-h4">Deep knowledge of dependencies</h3>
             <p className="t-body-sm">
-              Every story is a web of interconnected decisions. A character's workplace depends on their city, their title depends on local hierarchy, their nickname depends on their name. Atlas maps these dependencies and resolves them in the right order. <strong>One change cascades correctly across the entire story.</strong>
+              Every story is a web of interconnected decisions. Atlas maps them and resolves each one in the right order. <strong>One change cascades correctly across the entire story.</strong>
             </p>
           </div>
         </div>

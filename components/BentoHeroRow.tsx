@@ -8,7 +8,7 @@ export default function BentoHeroRow() {
         <div className="bento-hero-left-copy">
           <h3 className="t-h4">Full cultural transposition, not translation</h3>
           <p className="t-body-sm">
-            Names become culturally native. A corner store becomes a Späti in Berlin, a konbini in Tokyo, a duka in Nairobi. Food, humor, family dynamics, and street-level details are rebuilt from scratch. <strong>Readers never sense a foreign origin.</strong>
+            Names, places, and everyday details become culturally native. A corner store is a Späti in Berlin, a kirana in Mumbai, a colmado in Madrid, an épicerie in Paris. Food, humor, and family dynamics are rebuilt from scratch. <strong>Your audience never senses a foreign origin.</strong>
           </p>
         </div>
       </div>
