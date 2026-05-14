@@ -47,6 +47,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: '',
     initials: 'BK',
     avatarBg: '#B5C4B1',
+    photoSrc: '/assets/testimonials/blaine-axel-knight.png',
     quote:
       'Using Copilot Adaptation made the scripting process much more efficient. It helped refine dialogue, improve pacing, and make the writing feel more polished and natural. What stood out most was its ability to adapt my Chinese series for an English-speaking audience. It handled cultural references, character dynamics, and setting changes thoughtfully while preserving the core story. What would normally require extensive rewriting and research became a much more streamlined process, saving significant time while maintaining creative quality.',
   },
