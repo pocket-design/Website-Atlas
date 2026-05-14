@@ -35,7 +35,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'de',
     countryCode: 'de',
-    name: 'Germany',
+    name: 'German',
     image: '/assets/berlin-locale.webp',
     imageLabel: 'Berlin',
     segments: [
@@ -75,7 +75,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'br',
     countryCode: 'br',
-    name: 'Brazil',
+    name: 'Portuguese',
     image: '/assets/sao-paulo-locale.webp',
     imageLabel: 'São Paulo',
     segments: [
@@ -115,7 +115,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'jp',
     countryCode: 'jp',
-    name: 'Japan',
+    name: 'Japanese',
     image: '/assets/tokyo-locale.webp',
     imageLabel: 'Tokyo',
     segments: [
@@ -155,7 +155,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'it',
     countryCode: 'it',
-    name: 'Italy',
+    name: 'Italian',
     image: '/assets/rome-locale.webp',
     imageLabel: 'Rome',
     segments: [
@@ -195,7 +195,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'fr',
     countryCode: 'fr',
-    name: 'France',
+    name: 'French',
     image: '/assets/paris-locale.webp',
     imageLabel: 'Paris',
     segments: [
@@ -233,7 +233,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'in',
     countryCode: 'in',
-    name: 'India (Hindi)',
+    name: 'Hindi',
     image: '/assets/mumbai-locale.webp',
     imageLabel: 'Mumbai',
     segments: [
@@ -271,7 +271,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'ta',
     countryCode: 'in',
-    name: 'India (Tamil)',
+    name: 'Tamil',
     image: '/assets/chennai-locale.webp',
     imageLabel: 'Chennai',
     segments: [
@@ -309,7 +309,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'es',
     countryCode: 'es',
-    name: 'Spain',
+    name: 'Spanish',
     image: '/assets/madrid-locale.webp',
     imageLabel: 'Madrid',
     segments: [
@@ -347,7 +347,7 @@ const ALL_LOCALES: Locale[] = [
   {
     key: 'nl',
     countryCode: 'nl',
-    name: 'Netherlands',
+    name: 'Dutch',
     image: '/assets/amsterdam-locale.webp',
     imageLabel: 'Amsterdam',
     segments: [
@@ -632,14 +632,14 @@ export function LocaleCascade() {
       if (!hl) return;
       const fragments = hl.getClientRects();
       const hlRect = fragments.length > 0 ? fragments[0] : hl.getBoundingClientRect();
-      const stripRect = strip.getBoundingClientRect();
-      const rawX = hlRect.left + hlRect.width / 2 - stripRect.left;
+      const gridRect = grid.getBoundingClientRect();
+      const rawX = hlRect.left + hlRect.width / 2 - gridRect.left;
       const tooltipHalfWidth = 80;
       const minX = tooltipHalfWidth;
-      const maxX = stripRect.width - tooltipHalfWidth;
+      const maxX = gridRect.width - tooltipHalfWidth;
       setTooltipPos({
         x: Math.max(minX, Math.min(rawX, maxX)),
-        y: hlRect.top - stripRect.top,
+        y: hlRect.top - gridRect.top,
       });
     };
 
@@ -841,14 +841,14 @@ export function LocaleCascade() {
               ))}
             </div>
           )}
-        </div>
-        <div
-          className={'cascade-tooltip' + (hasTooltip && isActive ? ' is-visible' : '')}
-          data-bucket={currentBucket >= 0 ? currentBucket : undefined}
-          style={tooltipPos ? { left: tooltipPos.x, top: tooltipPos.y } : { left: 0, top: 0 }}
-          aria-hidden={!hasTooltip}
-        >
-          {currentBucket >= 0 && currentBucket < BUCKETS.length ? BUCKETS[currentBucket] : ''}
+          <div
+            className={'cascade-tooltip' + (hasTooltip && isActive ? ' is-visible' : '')}
+            data-bucket={currentBucket >= 0 ? currentBucket : undefined}
+            style={tooltipPos ? { left: tooltipPos.x, top: tooltipPos.y } : { left: 0, top: 0 }}
+            aria-hidden={!hasTooltip}
+          >
+            {currentBucket >= 0 && currentBucket < BUCKETS.length ? BUCKETS[currentBucket] : ''}
+          </div>
         </div>
       </div>
     </div>
