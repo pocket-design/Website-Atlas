@@ -157,7 +157,7 @@ export default function Testimonials() {
     <section className="testimonials" aria-label="Writer testimonials">
       {/* Section heading */}
       <div className="testimonials__header">
-        <h2 className="t-h2 testimonials__heading">
+        <h2 className="t-h3 testimonials__heading">
           Trusted by authors who write for global audiences.
         </h2>
       </div>

@@ -113,7 +113,7 @@ export function GlobeDialKit({ ui, set, reset }: Props) {
   return (
     <div style={{
       position: 'absolute', top: 16, right: 16, zIndex: 20,
-      fontFamily: 'var(--font-mallory-narrow), system-ui, sans-serif',
+      fontFamily: 'var(--font-mallory-compact), system-ui, sans-serif',
       userSelect: 'none',
     }}>
       {/* Header bar */}

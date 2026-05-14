@@ -1,5 +1,6 @@
 /* Fonts loaded via next/font/local in app/layout.tsx and exposed as
-   --font-season-mix and --font-mallory-narrow CSS variables. */
+   --font-season-mix (Season Collection variable font) and
+   --font-mallory-compact (Mallory MP Compact) CSS variables. */
 
 @import "tailwindcss";
 
@@ -60,7 +61,7 @@
 
   /* ── Type families ──────────────────────────────────────── */
   --font-display: var(--font-season-mix), Georgia, serif;
-  --font-sans:    var(--font-mallory-narrow), 'Inter', system-ui, sans-serif;
+  --font-sans:    var(--font-mallory-compact), 'Inter', system-ui, sans-serif;
 
   /* ── Spacing (matches the --sp-* scale; --sp-1 = 8px) ───── */
   --spacing-half: 4px;
@@ -100,59 +101,50 @@
    DESIGN TOKENS  ·  docs/design-system.md is the source of truth
    ═══════════════════════════════════════════════════════════ */
 :root {
-  /* ── Ink palette ─────────────────────────────────────────── */
-  --ink-tint-7:  #E2E2E2;
-  --ink-tint-6:  #C6C6C6;
-  --ink-tint-5:  #A9A9A9;
-  --ink-tint-4:  #8D8D8D;
-  --ink-tint-3:  #717171;
-  --ink-tint-2:  #545454;
-  --ink-tint-1:  #383838;
+  /* Ink — neutral grey scale (dark to light) */
+  --ink-shade-2: #0D0D0D;
+  --ink-shade-1: #151515;
   --ink:         #1C1C1C;
-  --ink-shade-1: #181818;
-  --ink-shade-2: #151515;
-  --ink-shade-3: #111111;
+  --ink-tint-1:  #333333;
+  --ink-tint-2:  #4A4A4A;
+  --ink-tint-3:  #636363;
+  --ink-tint-4:  #7A7A7A;
+  --ink-tint-5:  #999999;
+  --ink-tint-6:  #B3B3B3;
+  --ink-tint-7:  #CCCCCC;
+  --ink-tint-8:  #E0E0E0;
 
-  /* ── Vellum palette ──────────────────────────────────────── */
-  --vellum-tint-7:  #FEFEFD;
-  --vellum-tint-6:  #FDFDFB;
-  --vellum-tint-5:  #FDFCF9;
-  --vellum-tint-4:  #FCFCF8;
-  --vellum-tint-3:  #FBFBF6;
-  --vellum-tint-2:  #FBFAF4;
-  --vellum-tint-1:  #FAF9F2;
-  --vellum:         #FAF9F1;
-  --vellum-shade-1: #DAD9D2;
-  --vellum-shade-2: #BBBAB4;
-  --vellum-shade-3: #9C9B96;
-  --vellum-shade-4: #7D7C78;
-  --vellum-shade-5: #5D5D5A;
-  --vellum-shade-6: #3E3E3C;
-  --vellum-shade-7: #1F1F1E;
+  /* Vellum */
+  --vellum-tint-7:    #FEFEFD;
+  --vellum-tint-3:    #FBFBF6;
+  --vellum:           #F4F3EB;
+  --vellum-shade-half: #ECEBE4; /* whisper-soft hairline — default border/divider */
+  --vellum-shade-1:   #DAD9D2;
+  --vellum-shade-2:   #BBBAB4;
+  --vellum-shade-3:   #9C9B96;
+  --vellum-shade-4:   #7D7C78;
 
-  /* ── Scarlet palette ─────────────────────────────────────── */
+  /* Scarlet */
   --scarlet-tint-7:  #FDE2DF;
-  --scarlet-tint-6:  #FCC6BF;
-  --scarlet-tint-3:  #F8715F;
   --scarlet:         #F51D00;
   --scarlet-shade-1: #D61900;
   --scarlet-shade-2: #B71500;
 
-  /* ── Semantic: text ──────────────────────────────────────── */
-  --text-primary:   var(--ink);           /* #1C1C1C — headings, emphasis */
-  --text-secondary: var(--ink-tint-3);    /* #717171 — body, supporting   */
-  --text-tertiary:  var(--ink-tint-4);    /* #8D8D8D — captions, meta     */
-  --text-disabled:  var(--ink-tint-5);    /* #A9A9A9 — disabled           */
-  --text-on-dark:   var(--vellum);        /* #FAF9F1 — text on ink fills  */
+  /* Semantic text */
+  --text-primary:    var(--ink);           /* #1C1C1C — body, headings */
+  --text-secondary:  var(--ink-tint-2);    /* #4A4A4A — supporting copy, labels */
+  --text-tertiary:   var(--ink-tint-3);    /* #636363 — chapter titles, meta text */
+  --text-muted:      var(--ink-tint-5);    /* #999999 — empty states, placeholders */
+  --text-on-dark:    var(--vellum);
 
-  /* ── Semantic: surface ───────────────────────────────────── */
-  --surface-page:    var(--vellum);          /* page ground                */
-  --surface-card:    var(--vellum-tint-7);   /* raised card (≈ white)      */
-  --surface-alt:     var(--vellum-shade-1);  /* alternate section band     */
-  --surface-divider: var(--vellum-shade-2);  /* hairlines                  */
-  --surface-inverse: var(--ink);             /* dark band                  */
+  --surface-page:           var(--vellum);
+  --surface-card:           var(--vellum-tint-7);
+  --surface-alt:            var(--vellum-shade-1);
+  --surface-divider:        var(--vellum-shade-half); /* default hairline — barely there on white and beige */
+  --surface-divider-hover:  var(--vellum-shade-1);    /* slight emphasis on hover/focus, still soft */
+  --surface-inverse:        var(--ink);
 
-  /* ── Spacing — 8px grid ──────────────────────────────────── */
+  /* Spacing (8px grid) */
   --sp-half: 4px;
   --sp-1:    8px;
   --sp-1-5:  12px;
@@ -168,137 +160,71 @@
   --sp-15:   120px;
   --sp-20:   160px;
 
-  /* ── Section rhythm ───────────────────────────────────────
-     Top and bottom vertical padding applied uniformly to every
-     top-level section so the eye reads equal "rest" between
-     content blocks. 2 × this value = breathing room between
-     any two adjacent section bodies. */
-  --sp-section: var(--sp-10);    /* 80px → 160px between sections */
-
-  /* ── Container widths ────────────────────────────────────── */
+  /* Container */
   --container:        1200px;
-  --container-narrow:  720px;
-  --container-wide:   1376px;
+  --container-narrow: 720px;
 
-  /* ── Radii ───────────────────────────────────────────────── */
-  /* design-system.md: input/tag 6 · button 8 · card 12 · panel 16 · pill 9999 */
-  --r-input:  6px;
-  --r-tag:    6px;
-  --r-btn:    8px;
-  --r-card:  12px;
-  --r-panel: 16px;
-  --r-pill:  9999px;
+  /* Radii */
+  --r-xs:          2px;
+  --r-sm:          6px;
+  --r-btn:         4px;
+  --r-input:       4px;
+  --r-tag:         4px;
+  --r-card-inner:  8px;
+  --r-input-inner: 10px;
+  --r-tw-inner:    12px;
+  --r-card:        14px;
+  --r-input-outer: 16px;
+  --r-tw-outer:    20px;
+  --r-pill:        32px;
+  --r-full:        9999px;
 
-  /* ── Shadows — layered, pure-black low-alpha ─────────────── */
-  --shadow-border:
-    0px 0px 0px 1px rgba(0, 0, 0, 0.06),
-    0px 1px 2px -1px rgba(0, 0, 0, 0.06),
-    0px 2px 4px 0px rgba(0, 0, 0, 0.04);
-  --shadow-border-hover:
-    0px 0px 0px 1px rgba(0, 0, 0, 0.08),
-    0px 1px 2px -1px rgba(0, 0, 0, 0.08),
-    0px 2px 4px 0px rgba(0, 0, 0, 0.06);
-  --shadow-elevated:
-    0px 0px 0px 1px rgba(0, 0, 0, 0.04),
-    0px 4px 12px -2px rgba(0, 0, 0, 0.08),
-    0px 16px 32px -8px rgba(0, 0, 0, 0.10);
+  /* ─── Typography: sizes ─── */
+  --fs-xs:    11px;
+  --fs-sm:    12px;
+  --fs-ui:    13px;
+  --fs-base:  14px;
+  --fs-md:    15px;
+  --fs-body:  16px;
+  --fs-lg:    18px;
+  --fs-xl:    20px;
+  --fs-2xl:   22px;
+  --fs-stat:  48px;
 
-  /* Keep --shadow-md as alias for backwards-compat */
-  --shadow-md: var(--shadow-border);
-
-  /* ── Motion ──────────────────────────────────────────────── */
-  --ease:        cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --dur-instant: 120ms;
-  --dur-normal:  200ms;
-
-  /* ── Type scale extras ───────────────────────────────────── */
-  --fs-ui:       15px;
-  --fs-base:     16px;
+  /* ─── Typography: weights ─── */
   --fw-regular:  400;
   --fw-medium:   500;
   --fw-semibold: 600;
   --fw-bold:     700;
+
+  /* ─── Typography: line-heights ─── */
   --lh-1:        1;
-
-  /* ── Z-index ─────────────────────────────────────────────── */
-  --z-base:   0;
-  --z-raised: 1;
-  --z-nav:    100;
-
-  /* ── Glass surface (nav) ─────────────────────────────────── */
-  --glass-bg:     rgba(250, 249, 241, 0.82);
-  --glass-blur:   blur(32px) saturate(1.8);
-  --border-glass: 1px solid rgba(255, 255, 255, 0.4);
-
-  /* ── Type-family aliases ─────────────────────────────────── */
-  /* Season Mix = headings only · Mallory = everything else    */
-  --ff-display: var(--font-season-mix), Georgia, serif;
-  --ff-sans:    var(--font-mallory-narrow), 'Inter', system-ui, sans-serif;
-
-  /* ── Tokens pulled from `hardik` for LocaleCascade port ───
-     Verbatim where possible; --ff-sans-compact falls back to
-     main's Mallory Narrow because we haven't shipped the
-     Compact font files. */
-  --ff-sans-compact: var(--font-mallory-narrow), 'Inter', system-ui, sans-serif;
-
-  --fs-xs:   13px;
-  --fs-sm:   14px;
-  --fs-md:   17px;
-  --fs-body: 18px;    /* parity with hardik */
-  --fs-lg:   20px;
-  --fs-xl:   22px;    /* added for Proof.tsx (hardik port) */
-  --fs-2xl:  24px;
-  --fs-stat: 50px;    /* parity with hardik */
-
-  --lh-snug:     1.25;   /* added for Proof.tsx (hardik port) */
-  --lh-normal:   1.5;    /* added for Proof.tsx (hardik port) */
+  --lh-tight:    1.1;
+  --lh-snug:     1.3;
+  --lh-compact:  1.4;
+  --lh-normal:   1.5;
+  --lh-relaxed:  1.55;
+  --lh-loose:    1.6;
   --lh-spacious: 1.7;
-  --ls-normal:   0.005em;
-  --ls-wide:     0.01em;
-  --ls-wider:    0.02em;
-  --ls-caps:     0.08em;
 
-  --border-hairline:        1px solid var(--surface-divider);
-  --surface-divider-hover:  var(--vellum-shade-1);
+  /* ─── Typography: letter-spacing ─── */
+  --ls-none:    0;
+  --ls-tight:   0.003em;
+  --ls-normal:  0.005em;
+  --ls-wide:    0.01em;
+  --ls-wider:   0.02em;
+  --ls-widest:  0.06em;
+  --ls-caps:    0.08em;
 
-  --dur-fast:   160ms;
-  --dur-slow:   300ms;
-  --dur-slower: 500ms;
-  --ease-out:   cubic-bezier(0.4, 0, 0.2, 1);
-
-  --r-sm:          6px;
-  --r-card-inner:  8px;
-  --r-input-inner: 10px;
-  --r-tw-inner:    12px;
-  --r-input-outer: 16px;
-  --r-tw-outer:    20px;
-  --r-full:        9999px;
-
+  /* ─── Shadows ─── */
   --shadow-xs:
-    0px 0px 0px 1px rgba(0, 0, 0, 0.04),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.03);
+    0 1px 2px rgba(0, 0, 0, 0.06);
   --shadow-sm:
-    0px 0px 0px 1px rgba(0, 0, 0, 0.05),
-    0px 1px 2px 0px rgba(0, 0, 0, 0.04);
-  --shadow-card:        var(--shadow-border);
-  --shadow-card-hover:  var(--shadow-border-hover);
-  --shadow-btn-brand:
-    0px 0px 0px 1px rgba(214, 25, 0, 0.10),
-    0px 2px 6px -1px rgba(214, 25, 0, 0.30),
-    0px 4px 12px -2px rgba(214, 25, 0, 0.20);
-  --shadow-btn-primary:
-    0 1px 2px rgba(0, 0, 0, 0.08),
-    0 2px 6px rgba(0, 0, 0, 0.06);
-
-  --text-muted: var(--ink-tint-5);
-
-  --z-overlay: 3;
-
-  /* ── Additional tokens for playground (/playground) port ─ */
-  --r-xs:     2px;
-  --lh-tight: 1.1;
-  --lh-loose: 1.6;
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 2px 4px rgba(0, 0, 0, 0.03);
+  --shadow-md:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 14px rgba(0, 0, 0, 0.05);
   --shadow-lg:
     0 4px 12px rgba(0, 0, 0, 0.06),
     0 12px 32px rgba(0, 0, 0, 0.08);
@@ -306,10 +232,105 @@
     0 4px 6px rgba(0, 0, 0, 0.04),
     0 16px 32px rgba(50, 50, 93, 0.10),
     0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-btn-primary:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.06);
+  --shadow-btn-brand:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    0 2px 6px rgba(245, 29, 0, 0.15);
+  --shadow-card:
+    0 1px 3px rgba(0, 0, 0, 0.03),
+    0 4px 12px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(50, 50, 93, 0.08);
   --shadow-tooltip:
     0 1px 2px rgba(0, 0, 0, 0.06),
     0 6px 18px rgba(0, 0, 0, 0.14);
-  --z-modal:  200;
+  --shadow-inset:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+
+  /* ─── Z-index ─── */
+  --z-base:     0;
+  --z-raised:   1;
+  --z-overlay:  3;
+  --z-dropdown: 5;
+  --z-sticky:   10;
+  --z-tooltip:  20;
+  --z-nav:      100;
+  --z-modal:    200;
+
+  /* ─── Motion: durations ─── */
+  --dur-instant: 120ms;
+  --dur-fast:    160ms;
+  --dur-normal:  200ms;
+  --dur-slow:    300ms;
+  --dur-slower:  500ms;
+  --dur-slowest: 800ms;
+
+  /* ─── Motion: easings ─── */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-slow: cubic-bezier(0.2, 0, 0.2, 1);
+
+  /* ─── Borders ─── */
+  --border-hairline: 1px solid var(--surface-divider);
+  --border-glass:    1px solid rgba(255, 255, 255, 0.4);
+
+  /* ─── Glass / blur ─── */
+  --glass-bg:      rgba(255, 255, 255, 0.82);
+  --glass-blur:    blur(32px) saturate(1.8);
+  --glass-blur-sm: blur(4px);
+
+  /* ─── Breakpoints (reference only — used in @media) ─── */
+  --bp-sm:  480px;
+  --bp-md:  768px;
+  --bp-lg:  1024px;
+  --bp-xl:  1280px;
+
+  /* Type-family aliases — STYLEGUIDE §2.
+     `--ff-sans` is Mallory Compact (all UI text, buttons, nav, body).
+     `--ff-sans-compact` is Mallory Compact (alias, same font).
+     Mallory Narrow is forbidden; it is not loaded.
+
+     Mallory + Mallory Compact font files are NOT yet present in
+     public/fonts/. Until they are added and registered via
+     next/font/local in app/layout.tsx, both --ff-sans and
+     --ff-sans-compact fall through to a system-ui stack
+     (SF Pro on macOS). When the files arrive:
+       1) Add them to public/fonts/
+       2) Register --font-mallory and --font-mallory-compact
+          in layout.tsx via localFont()
+       3) Prepend var(--font-mallory) / var(--font-mallory-compact)
+          to the relevant stacks below.
+     A var() fallback (`,sans-serif`) MUST be supplied when the
+     variable is referenced — otherwise an undefined variable
+     invalidates the whole font-family declaration and the
+     browser falls back to Times. */
+  --ff-display:      var(--font-season-mix, Georgia), Georgia, serif;
+  --ff-sans:         var(--font-mallory-compact, sans-serif), -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+  --ff-sans-compact: var(--font-mallory-compact, sans-serif), -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+}
+
+/* ─── Main-specific additions (kept on top of hardik :root) ─── */
+:root {
+  /* 80px section rhythm — applied as padding-top/bottom on every section
+     so inter-section breathing room is 160px end-to-end. */
+  --sp-section: var(--sp-10);
+
+  /* Card border / hover shadows — used by Atlas-Bento + Proof + Testimonials. */
+  --shadow-border:
+    0 0 0 1px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-border-hover:
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 4px 12px rgba(0, 0, 0, 0.04);
+
+  /* Elevated shadow — used by floating panels (e.g. dial kit overlays). */
+  --shadow-elevated:
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    0 16px 32px rgba(50, 50, 93, 0.10);
 }
 
 /* Reset + base element styling — placed in @layer base so Tailwind utilities
@@ -322,7 +343,7 @@
     font-family: var(--ff-sans);
     background: var(--surface-page);
     color: var(--text-primary);
-    font-size: 18px;
+    font-size: var(--fs-body);
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
@@ -344,13 +365,15 @@
 /* ── Hero eyebrow + title ─────────────────────────────────── */
 /* Design system: eyebrows use Mallory 700, not Season Mix */
 .hero-eyebrow {
-  margin: 0 auto var(--sp-2);
-  font-family: var(--ff-sans);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
+  margin: 0 auto var(--sp-1);
+  font-family: var(--ff-display);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-1);
+  font-variation-settings: "SERF" 65, "slnt" 0;
+  letter-spacing: var(--ls-wider);
+  color: var(--text-primary);
+  transform: translateY(-16px);
 }
 .hero-title {
   margin: 0 auto var(--sp-8);
@@ -358,103 +381,110 @@
 }
 
 /* ── Type scale ──────────────────────────────────────────── */
+/* Season Collection VF axes — SERF 65 nudges from Mix midpoint
+   toward serif, slnt 0 is upright. Applies to all display
+   headings so they share the same visual tone. */
+.t-hero, .t-display, .t-h1, .t-h2, .t-h3, .t-h4 {
+  font-variation-settings: "SERF" 65, "slnt" 0;
+}
 .t-hero {
   font-family: var(--ff-display);
-  font-weight: 400;
-  font-size: clamp(58px, 7.5vw, 98px);
+  font-weight: var(--fw-medium);
+  font-size: clamp(56px, 7.5vw, 96px);
   line-height: 1.05;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 .t-display {
   font-family: var(--ff-display);
-  font-weight: 400;
-  font-size: clamp(42px, 5.4vw, 58px);
+  font-weight: var(--fw-medium);
+  font-size: clamp(40px, 5.4vw, 56px);
   line-height: 1.07;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 .t-h1 {
   font-family: var(--ff-display);
-  font-weight: 400;
-  font-size: clamp(38px, 4.5vw, 50px);
+  font-weight: var(--fw-medium);
+  font-size: clamp(36px, 4.5vw, 48px);
   line-height: 1.10;
-  letter-spacing: -0.025em;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 .t-h2 {
   font-family: var(--ff-display);
-  font-weight: 400;
-  font-size: clamp(30px, 3.4vw, 38px);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-weight: var(--fw-semibold);
+  font-size: clamp(28px, 3.4vw, 36px);
+  line-height: 1.30;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 .t-h3 {
   font-family: var(--ff-display);
-  font-weight: 400;
-  font-size: clamp(24px, 2.4vw, 30px);
-  line-height: 1.20;
-  letter-spacing: -0.015em;
+  font-weight: var(--fw-semibold);
+  font-size: clamp(22px, 2.4vw, 28px);
+  line-height: 1.35;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 .t-h4 {
   font-family: var(--ff-display);
-  font-weight: 400;
-  font-size: 22px;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xl);
+  line-height: 1.40;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 .t-subheading {
-  font-family: var(--ff-sans);
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 1.5;
+  font-family: var(--ff-sans-compact);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-lg);
+  line-height: 1.50;
   text-wrap: pretty;
 }
 .t-body {
-  font-family: var(--ff-sans);
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 1.55;
+  font-family: var(--ff-sans-compact);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body);
+  line-height: var(--lh-relaxed);
   text-wrap: pretty;
 }
 .t-body-sm {
-  font-family: var(--ff-sans);
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.45;
-  letter-spacing: 0.003em;
+  font-family: var(--ff-sans-compact);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-base);
+  line-height: var(--lh-relaxed);
+  letter-spacing: var(--ls-tight);
   text-wrap: pretty;
 }
+/* UI / label tier — Mallory regular, trim-height applied */
 .t-label {
   font-family: var(--ff-sans);
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.4;
-  letter-spacing: 0.005em;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-base);
+  line-height: var(--lh-1);
+  letter-spacing: var(--ls-normal);
 }
 .t-eyebrow {
   font-family: var(--ff-sans);
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 1.4;
-  letter-spacing: 0.08em;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-1);
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
 }
 .t-nav {
   font-family: var(--ff-sans);
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1;
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-base);
+  line-height: var(--lh-1);
 }
 .t-caption {
   font-family: var(--ff-sans);
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 1.4;
-  letter-spacing: 0.02em;
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-compact);
+  letter-spacing: var(--ls-wider);
 }
 
 /* ── Buttons ─────────────────────────────────────────────── */
@@ -828,7 +858,7 @@
   outline: none;
   color: var(--vellum);
   font-family: var(--ff-sans);
-  font-size: 18px; /* body — 15px is off-scale */
+  font-size: var(--fs-body);
   font-weight: 400;
 }
 .prompt-box input::placeholder { color: rgba(250,249,241,0.4); }
@@ -1096,10 +1126,11 @@
 .testimonial-card__quote {
   /* Hero pull-quote — Season Mix display serif, large */
   font-family: var(--ff-display);
-  font-weight: 400;
+  font-weight: var(--fw-regular);
   font-size: 28px;
   line-height: 1.25;
   letter-spacing: -0.01em;
+  font-variation-settings: "SERF" 65, "slnt" 0;
   color: var(--text-primary);
   margin: 0;
   text-wrap: balance;
@@ -1184,8 +1215,8 @@
 footer {
   position: relative;
   z-index: var(--z-raised);
-  background: var(--ink);
-  color: var(--text-on-dark);
+  background: #000;
+  color: #fff;
   padding: var(--sp-section) var(--sp-8) 0;
 }
 .footer-inner {
@@ -1235,7 +1266,7 @@ footer {
   font-weight: var(--fw-bold);
   font-size: var(--fs-sm);
   text-transform: uppercase;
-  letter-spacing: var(--ls-caps);  /* hardik uses --ls-widest (0.1em); substituted with --ls-caps (0.08em) */
+  letter-spacing: var(--ls-widest);
   color: rgba(255, 255, 255, 0.5);
   margin-bottom: var(--sp-1);
 }
@@ -1247,7 +1278,7 @@ footer {
   transition: color var(--dur-instant) var(--ease);
 }
 .footer-col a:hover {
-  color: var(--text-on-dark);
+  color: #fff;
 }
 .footer-bottom {
   max-width: var(--container);
@@ -1341,7 +1372,7 @@ footer {
   resize: none;
   overflow: hidden;
   font-family: var(--ff-sans);
-  font-size: 17px;       /* Hardik: --fs-md */
+  font-size: var(--fs-md);
   line-height: 1.65;
   color: var(--text-primary);
   text-wrap: pretty;
@@ -1375,7 +1406,7 @@ footer {
   display: inline-flex;
   align-items: center;
   gap: var(--sp-1);
-  background: linear-gradient(to bottom, #FF3318, var(--scarlet));
+  background: linear-gradient(to bottom, #ff3318, var(--scarlet));
   color: var(--vellum);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -1386,20 +1417,16 @@ footer {
   font-size: var(--fs-base);
   font-weight: var(--fw-bold);
   line-height: var(--lh-1);
+  letter-spacing: var(--ls-normal);
   cursor: pointer;
   min-height: 40px;
-  box-shadow: var(--shadow-elevated);
-  transition:
-    background var(--dur-instant) var(--ease),
-    transform  var(--dur-normal)  var(--ease-spring),
-    box-shadow var(--dur-instant) var(--ease);
+  text-box-trim: both;
+  text-box-edge: cap alphabetic;
+  box-shadow: var(--shadow-btn-brand);
+  transition: background var(--dur-instant) var(--ease), transform var(--dur-normal) var(--ease-spring), box-shadow var(--dur-instant) var(--ease);
 }
-.btn-global:hover  { background: linear-gradient(to bottom, var(--scarlet), var(--scarlet-shade-1)); }
-.btn-global:active {
-  background: linear-gradient(to bottom, var(--scarlet-shade-1), var(--scarlet-shade-2));
-  transform: scale(0.95);
-  box-shadow: var(--shadow-border);
-}
+.btn-global:hover    { background: linear-gradient(to bottom, var(--scarlet), var(--scarlet-shade-1)); }
+.btn-global:active   { background: linear-gradient(to bottom, var(--scarlet-shade-1), var(--scarlet-shade-2)); transform: scale(0.95); box-shadow: var(--shadow-xs); }
 .btn-global:disabled { opacity: 0.6; cursor: default; transform: none; }
 
 

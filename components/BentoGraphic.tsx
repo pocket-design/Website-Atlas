@@ -15,8 +15,8 @@ type SceneFn = (
   s: SceneState,
 ) => void;
 
-const FONT_BODY = '12px var(--font-mallory-narrow), system-ui, sans-serif';
-const FONT_SMALL = '11px var(--font-mallory-narrow), system-ui, sans-serif';
+const FONT_BODY = '12px var(--font-mallory-compact), system-ui, sans-serif';
+const FONT_SMALL = '11px var(--font-mallory-compact), system-ui, sans-serif';
 
 const scenes: Record<SceneName, SceneFn> = {
   /* Multilingual nodes drifting and connecting. */

@@ -21,7 +21,7 @@ export default function Home() {
            that extends past 100vh transitions onto the body's vellum bg. */}
       <section className="hero">
         <HeroBgWithDialKit />
-        <div className="hero-eyebrow">Meet Atlas by Pocket</div>
+        <div className="hero-eyebrow">Take your story global with Atlas</div>
         <h1 className="t-display hero-title">
           Incredibly powerful story adaptation engine for writers
         </h1>
@@ -94,7 +94,7 @@ export default function Home() {
 
       {/* FOLD 5 — FINAL CTA */}
       <section className="final-cta">
-        <h2 className="t-h1">
+        <h2 className="t-h3">
           Bring your story to
           <br />
           Pocket today

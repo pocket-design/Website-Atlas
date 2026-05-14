@@ -5,26 +5,30 @@ import 'dialkit/styles.css';
 import 'flag-icons/css/flag-icons.min.css';
 import { DialRoot } from 'dialkit';
 
+// Display family — Season Collection variable font.
+// Axes: wght 300–900, SERF 0–100 (sans→serif), slnt -11–0.
 const seasonMix = localFont({
-  src: '../public/fonts/SeasonMix-Regular.ttf',
+  src: '../public/fonts/season-mix/SeasonCollectionVF.woff2',
   variable: '--font-season-mix',
   display: 'swap',
 });
 
-const malloryNarrow = localFont({
+// Mallory MP Compact — slightly tighter width than regular Mallory MP,
+// used for body copy. Replaces Mallory Narrow on this branch.
+const malloryMPCompact = localFont({
   src: [
     {
-      path: '../public/fonts/Mallory-MP-Narrow-Book.ttf',
+      path: '../public/fonts/mallory-mp-compact/Mallory-MP-Compact-Book.ttf',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../public/fonts/Mallory-MP-Narrow-Bold.ttf',
+      path: '../public/fonts/mallory-mp-compact/Mallory-MP-Compact-Bold.ttf',
       weight: '700',
       style: 'normal',
     },
   ],
-  variable: '--font-mallory-narrow',
+  variable: '--font-mallory-compact',
   display: 'swap',
 });
 
@@ -38,7 +42,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${seasonMix.variable} ${malloryNarrow.variable}`}>
+    <html lang="en" className={`${seasonMix.variable} ${malloryMPCompact.variable}`}>
       <body>
         {children}
         <DialRoot productionEnabled defaultOpen />

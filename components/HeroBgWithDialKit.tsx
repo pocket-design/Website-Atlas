@@ -1,9 +1,24 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDialKit } from 'dialkit';
 import HeroBg from './HeroBg';
 import type { HeroCity, HeroMode } from './HeroBgDialKit';
+
+// V1 auto-cycle order: starts at Japan, advances every 5s.
+const CITY_ORDER: HeroCity[] = ['japan', 'newyork', 'egypt'];
+const CYCLE_INTERVAL_MS = 5000;
+
+function useAutoCycledCity(intervalMs: number): HeroCity {
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setIdx((i) => (i + 1) % CITY_ORDER.length);
+    }, intervalMs);
+    return () => clearInterval(id);
+  }, [intervalMs]);
+  return CITY_ORDER[idx];
+}
 
 const DIAL_CONFIG = {
   // ── V1 & V2 shared ──────────────────────────────────────────────────────
@@ -36,6 +51,7 @@ const DIAL_CONFIG = {
 
 export default function HeroBgWithDialKit() {
   const v = useDialKit('Scene Controls', DIAL_CONFIG);
+  const cycledCity = useAutoCycledCity(CYCLE_INTERVAL_MS);
 
   // Refs let the RAF / timer loops inside HeroBg read the latest value
   // without triggering re-renders on every frame.
@@ -50,7 +66,7 @@ export default function HeroBgWithDialKit() {
   return (
     <HeroBg
       mode={v.Mode           as HeroMode}
-      city={v.City           as HeroCity}
+      city={cycledCity}
       radiusRef={radiusRef}
       lagRef={lagRef}
       cycleIntervalRef={cycleIntervalRef}

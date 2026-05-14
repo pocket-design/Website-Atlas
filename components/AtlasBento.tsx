@@ -13,10 +13,13 @@
  */
 
 // ── Card data ─────────────────────────────────────────────────────────────────
+// Body copy is split into `body` (regular) + `strongTail` (rendered <strong>)
+// to mirror hardik's editorial pattern — the last sentence reads as a claim.
 interface BentoCard {
   id: string;
   heading: string;
   body: string;
+  strongTail?: string;
   gridColumn: string;
   gridRow: string;
   bg: string;
@@ -27,7 +30,8 @@ const CARDS: BentoCard[] = [
   {
     id: 'atlas-bento-1',
     heading: 'Full cultural transposition, not translation',
-    body: 'Names become culturally native. A corner store becomes a Späti in Berlin, a konbini in Tokyo, a duka in Nairobi. Food, humor, family dynamics and street-level details are rebuilt from scratch. Readers never sense a foreign origin.',
+    body: 'Names become culturally native. A corner store becomes a Späti in Berlin, a konbini in Tokyo, a duka in Nairobi. Food, humor, family dynamics, and street-level details are rebuilt from scratch.',
+    strongTail: 'Readers never sense a foreign origin.',
     gridColumn: '1 / 3',
     gridRow: '1 / 3',
     bg: 'linear-gradient(145deg, #FF8C3A 0%, #F51D00 45%, #1C1C1C 100%)',
@@ -36,7 +40,8 @@ const CARDS: BentoCard[] = [
   {
     id: 'atlas-bento-2',
     heading: 'Supports insanely long prose',
-    body: 'Thousands of words, hundreds of episodes, entire seasons. Atlas stays perfectly consistent from first page to last.',
+    body: 'Thousands of words, hundreds of episodes, entire seasons.',
+    strongTail: 'Atlas stays perfectly consistent from first page to last.',
     gridColumn: '3 / 4',
     gridRow: '1 / 2',
     bg: 'linear-gradient(145deg, #1C1C1C 0%, #383838 100%)',
@@ -45,7 +50,8 @@ const CARDS: BentoCard[] = [
   {
     id: 'atlas-bento-3',
     heading: 'Strategy-first architecture',
-    body: 'Before changing a single word, Atlas generates a full strategy: tone, naming rules, geographic mappings. One document governs every downstream decision.',
+    body: 'Before changing a single word, Atlas generates a full strategy: tone, naming rules, geographic mappings.',
+    strongTail: 'One document governs every downstream decision.',
     gridColumn: '4 / 5',
     gridRow: '1 / 3',
     bg: 'linear-gradient(145deg, #92400E 0%, #D97706 100%)',
@@ -55,6 +61,7 @@ const CARDS: BentoCard[] = [
     id: 'atlas-bento-4',
     heading: 'Fully genre-aware',
     body: 'Atlas reads your genre and adapts accordingly. Humor lands differently in comedy, tension builds differently in suspense, intimacy shifts in romance.',
+    strongTail: 'A romance adapts differently from a thriller.',
     gridColumn: '3 / 4',
     gridRow: '2 / 3',
     bg: 'linear-gradient(145deg, #374151 0%, #111827 100%)',
@@ -62,7 +69,8 @@ const CARDS: BentoCard[] = [
   {
     id: 'atlas-bento-5',
     heading: 'Self-healing validation',
-    body: 'A verification pass flags conflicts and cultural mixing. Only broken items are surgically regenerated.',
+    body: 'A verification pass flags conflicts and cultural mixing.',
+    strongTail: 'Only broken items are surgically regenerated.',
     gridColumn: '1 / 3',
     gridRow: '3 / 4',
     bg: 'linear-gradient(145deg, #7C2D12 0%, #F51D00 100%)',
@@ -70,7 +78,8 @@ const CARDS: BentoCard[] = [
   {
     id: 'atlas-bento-6',
     heading: 'Deep knowledge of dependencies',
-    body: "Every story is a web of interconnected decisions. A character's workplace, title, nickname — Atlas maps all dependencies and resolves them in the right order.",
+    body: "Every story is a web of interconnected decisions. A character's workplace depends on their city, their title depends on local hierarchy, their nickname depends on their name. Atlas maps these dependencies and resolves them in the right order.",
+    strongTail: 'One change cascades correctly across the entire story.',
     gridColumn: '3 / 5',
     gridRow: '3 / 4',
     bg: 'linear-gradient(145deg, #1C1C1C 0%, #B71500 100%)',
@@ -89,7 +98,7 @@ export default function AtlasBento() {
   return (
     <section className="atlas-bento">
       <div className="atlas-bento__header">
-        <h2 className="t-h2 atlas-bento__section-heading">
+        <h2 className="t-h3 atlas-bento__section-heading">
           Atlas adapts your story better than any general-purpose LLMs.
         </h2>
       </div>
@@ -130,7 +139,10 @@ export default function AtlasBento() {
               {/* Text */}
               <div className="atlas-bento__content">
                 <h3 className="t-h4 atlas-bento__heading">{card.heading}</h3>
-                <p className="t-body-sm atlas-bento__body">{card.body}</p>
+                <p className="t-body-sm atlas-bento__body">
+                  {card.body}
+                  {card.strongTail ? <> <strong>{card.strongTail}</strong></> : null}
+                </p>
               </div>
             </div>
           ))}
