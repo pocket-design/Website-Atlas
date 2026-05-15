@@ -13,23 +13,26 @@ Three families: **Ink** (near-black neutrals), **Vellum** (cream surfaces and wa
 ### Ink (text, dark surfaces)
 | Token | Hex | Usage |
 | --- | --- | --- |
-| `--ink-tint-7` | `#E2E2E2` | Lightest disabled text on dark |
-| `--ink-tint-6` | `#C6C6C6` | — |
-| `--ink-tint-5` | `#A9A9A9` | — |
-| `--ink-tint-4` | `#8D8D8D` | Tertiary text |
-| `--ink-tint-3` | `#717171` | Secondary text |
-| `--ink-tint-1` | `#383838` | Primary button hover |
+| `--ink-shade-2` | `#0D0D0D` | Darkest — primary button active |
+| `--ink-shade-1` | `#151515` | — |
 | `--ink` | `#1C1C1C` | Primary text, dark surfaces |
-| `--ink-shade-2` | `#151515` | Primary button active |
+| `--ink-tint-1` | `#333333` | Primary button hover |
+| `--ink-tint-2` | `#4A4A4A` | Secondary text (`--text-secondary`) |
+| `--ink-tint-3` | `#636363` | Tertiary text (`--text-tertiary`) |
+| `--ink-tint-4` | `#7A7A7A` | — |
+| `--ink-tint-5` | `#999999` | Muted / placeholder (`--text-muted`) |
+| `--ink-tint-6` | `#B3B3B3` | — |
+| `--ink-tint-7` | `#CCCCCC` | — |
+| `--ink-tint-8` | `#E0E0E0` | Lightest disabled text on dark |
 
 ### Vellum (page surface, light neutrals)
 | Token | Hex | Usage |
 | --- | --- | --- |
 | `--vellum-tint-7` | `#FEFEFD` | Card / inner-input white |
 | `--vellum-tint-3` | `#FBFBF6` | Subtle surface tint, locale-card eyebrow strip |
-| `--vellum` | `#FAF9F1` | Page background |
+| `--vellum` | `#F4F3EB` | Page background |
 | `--vellum-shade-half` | `#ECEBE4` | **Default hairline** — barely-there divider on white and beige |
-| `--vellum-shade-1` | `#DAD9D2` | Outer-input beige, alt surface, hover/focus border |
+| `--vellum-shade-1` | `#DAD9D2` | Alt surface, hover/focus border |
 | `--vellum-shade-2` | `#BBBAB4` | SVG branch strokes (where lines must read against page) |
 | `--vellum-shade-3` | `#9C9B96` | Image-card label color (decorative) — **not used as a border** |
 | `--vellum-shade-4` | `#7D7C78` | — |
@@ -39,23 +42,42 @@ Three families: **Ink** (near-black neutrals), **Vellum** (cream surfaces and wa
 ### Scarlet (brand)
 | Token | Hex | Usage |
 | --- | --- | --- |
+| `--scarlet-tint-1` | `#ff3318` | Gradient highlight stop above `--scarlet` (top of brand buttons) |
 | `--scarlet-tint-7` | `#FDE2DF` | Tinted accent surface |
 | `--scarlet` | `#F51D00` | Primary CTAs, brand emphasis |
 | `--scarlet-shade-1` | `#D61900` | Scarlet hover |
 | `--scarlet-shade-2` | `#B71500` | Scarlet active |
 
+### Utility colors
+| Token | Hex | Usage |
+| --- | --- | --- |
+| `--white` | `#ffffff` | Pure white — top stop of secondary button gradient |
+| `--color-success` | `#22c55e` | Checkmarks, success indicators |
+
+### Button gradient stops
+These form the `btn-secondary` (white pill) and `try-icon-btn` gradient ladder. Use only via token, never raw hex.
+
+| Token | Hex | Stop |
+| --- | --- | --- |
+| `--btn-bg-top` | `#ffffff` | Rest state top |
+| `--btn-bg-mid` | `#f7f7f5` | Rest state bottom / hover top |
+| `--btn-bg-bottom` | `#f0f0ec` | Hover bottom / active top |
+| `--btn-bg-active` | `#eaeae6` | Active bottom |
+
 ### Semantic aliases
 | Token | Maps to | Usage |
 | --- | --- | --- |
 | `--text-primary` | `--ink` | Body and heading text |
-| `--text-secondary` | `--ink-tint-3` | Secondary body, sub-headlines |
-| `--text-tertiary` | `--ink-tint-4` | Eyebrows, captions, placeholder |
+| `--text-secondary` | `--ink-tint-2` | Secondary body, sub-headlines |
+| `--text-tertiary` | `--ink-tint-3` | Eyebrows, captions, placeholder |
+| `--text-muted` | `--ink-tint-5` | Empty states, placeholders |
 | `--text-on-dark` | `--vellum` | Text on ink surfaces |
 | `--surface-page` | `--vellum` | Page background |
 | `--surface-card` | `--vellum-tint-7` | Card / panel surface |
 | `--surface-alt` | `--vellum-shade-1` | Alt section background |
-| `--surface-divider` | `--vellum-shade-2` | Hairlines |
-| `--surface-inverse` | `--ink` | Dark fold background |
+| `--surface-divider` | `--vellum-shade-half` | Default hairlines |
+| `--surface-divider-hover` | `--vellum-shade-1` | Hairlines on hover/focus |
+| `--surface-inverse` | `--ink` | Dark fold background (footer) |
 
 ---
 
@@ -91,10 +113,10 @@ Headings and editorial display. Always uses `text-wrap: balance` so multi-line b
 | --- | --- | --- | --- | --- |
 | `t-hero` | `clamp(56px, 7.5vw, 96px)` | `1.05` | `0` | The largest line on the page. **Reserved.** One per page, max — used by the page's primary headline. |
 | `t-display` | `clamp(40px, 5.4vw, 56px)` | `1.07` | `0` | Section openers below the hero. The "next biggest" tier after the hero headline. |
-| `t-h1` | `clamp(36px, 4.5vw, 48px)` | `1.10` | `0` | Final-CTA heading, large feature opener. |
+| `t-h1` | `clamp(36px, 4.5vw, 48px)` | `1.10` | `0` | Large feature opener. |
 | `t-h2` | `clamp(28px, 3.4vw, 36px)` | `1.30` | `0` | Section h2s ("Built for stories that cross borders"). |
 | `t-h3` | `clamp(22px, 2.4vw, 28px)` | `1.35` | `0` | Bento-cell titles, mid-level headings. |
-| `t-h4` | `20px` | `1.40` | `0` | Card titles, in-card headings. |
+| `t-h4` | `20px` | `1.40` | `0` | Card titles, in-card headings, show card names. |
 
 #### Body tier — Mallory MP Compact (`--ff-sans-compact`)
 
@@ -136,7 +158,6 @@ Both `.hero-eyebrow` and `.hero-title` carry a layered white text-shadow for leg
 - **Hero stack:** `.hero-eyebrow` (announcement label) → `.hero-title` (headline) → `t-body` story textarea. No `t-subheading` between — the headline IS the subhead in this composition.
 - **Section stack:** `t-eyebrow` (section label, scarlet) → `t-h2` (section headline) → optional `t-lead` (opening paragraph) → bento/cards/etc.
 - **Card stack:** `t-eyebrow` or `t-label` strip → image → `t-h4` title → `t-body-sm` body.
-- **Final-CTA stack:** `t-h1` (CTA headline, ink-on-vellum) → input or button.
 
 Never stack two tokens of the same tier directly (e.g. two `t-h2`s adjacent). The hierarchy collapses.
 
@@ -149,6 +170,16 @@ Never stack two tokens of the same tier directly (e.g. two `t-h2`s adjacent). Th
 For elements that need a fixed visible height (buttons, eyebrow strips), enforce it via `min-height` so the trim-height change doesn't shrink the click target. Buttons must hit the **40px minimum** specified in §6.
 
 Additionally, all buttons and nav links apply `text-box-trim: both; text-box-edge: cap alphabetic` for CSS-native optical centering (supported in Chrome 133+, Safari 18.2+).
+
+### Testimonial quote sizes
+
+Testimonials use larger sizes than the standard body scale to give quotes editorial weight:
+
+| Element | Token | Notes |
+| --- | --- | --- |
+| Quote text | `var(--fs-xl)` (20px) | Mallory Compact, normal weight. Render with `text-wrap: pretty`. |
+| Author name | `var(--fs-lg)` (18px) | Mallory Compact, bold (700). |
+| Author locale | `var(--fs-base)` (14px) | Mallory Compact, normal weight, `--text-secondary`. |
 
 ---
 
@@ -204,14 +235,15 @@ Concentric rule (from the polish skill): **outer radius = inner radius + padding
 | --- | --- | --- |
 | `--r-btn` | 4 | Square buttons (rare — pill is default) |
 | `--r-input` | 4 | Square inputs |
-| `--r-tag` | 4 | Tags, chips |
-| `--r-card` | **14** | Cards, locale-cascade wrapper, bento cells, use-case cards. Softened from the original 6px so cards read as friendly editorial blocks rather than crisp tech-product boxes. |
+| `--r-tag` | 4 | Tags, chips, show genre tags |
+| `--r-sm` | 6 | Small utility elements (dropdowns, tooltips) |
+| `--r-xs` | 2 | Hairline UI chips |
 | `--r-card-inner` | **8** | Nested elements inside cards — image frames, inner thumbnails, anything that floats with padding inside a card surface. |
-| `--r-pill` | 32 | Pill buttons |
-| `--r-input-outer` | 16 | Outer adapter input box (vellum-shaded outer) — story box stays close to its original radius; do not soften this one |
 | `--r-input-inner` | 10 | Inner white surface inside `--r-input-outer` (with `sp-1` padding → concentric: 16 = 10 + 8 ✓) |
-| `--r-tw-outer` | 20 | Translation-window outer (Satyam's existing) |
-| `--r-tw-inner` | 12 | Translation-window inner panel (with `sp-1` padding → 20 = 12 + 8 ✓) |
+| `--r-card` | **14** | Cards, locale-cascade wrapper, bento cells, show cards, testimonial quote cards. Softened from the original 6px so cards read as friendly editorial blocks rather than crisp tech-product boxes. |
+| `--r-input-outer` | 16 | Outer adapter input box (vellum-shaded outer) — story box stays close to its original radius; do not soften this one |
+| `--r-pill` | 32 | Pill buttons |
+| `--r-full` | 9999 | Fully rounded (avatar circles, locale flag pills) |
 
 **Card radius rule:** every card-level surface on the page uses `--r-card` (14px). The story box at the top of the hero is the *one* exception — it uses `--r-input-outer` (16px) because its concentric inner element requires that math. Don't soften the story box; do soften everything else.
 
@@ -223,30 +255,24 @@ Concentric rule (from the polish skill): **outer radius = inner radius + padding
 
 | Token | Curve | Usage |
 | --- | --- | --- |
-| `--ease` | `cubic-bezier(0.22, 1, 0.36, 1)` | All interactive transitions and entrance animations |
+| `--ease` | `cubic-bezier(0.22, 1, 0.36, 1)` | All interactive transitions |
+| `--ease-spring` | `cubic-bezier(0.34, 1.56, 0.64, 1)` | Spring-bounce release on button `:active` |
 
-### Durations
+### CSS transition durations (interactive states only)
 
 | Use | ms |
 | --- | --- |
-| Color/border hover | 120 |
-| Border + shadow hover | 160 |
-| Transform / lift on hover | 250 |
-| Entrance fade-up | 700 |
-| Branch draw-in | 900 |
-| Translation-window adapt fade | 500 |
+| Color/border hover | 120 (`--dur-instant`) |
+| Border + shadow hover | 160 (`--dur-fast`) |
+| Transform / lift on hover | 250 (`--dur-slow`) |
+| Branch draw-in (keyframe) | 900 |
+| Show card vinyl spin (keyframe) | 1800, infinite |
 
-### Entrance staggers
-
-When more than one peer enters together, stagger by **120ms** between siblings. Locale cards use 0.20s, 0.32s, 0.44s, 0.56s, 0.68s — exactly 120ms apart. Branch paths stagger by 80ms (slightly faster because they're decorative threads rather than content).
-
-### Interruptibility
-
-Use **CSS transitions** for interactive state changes (hover, focus, active) so they can be interrupted mid-flight. Reserve **CSS keyframes** for one-time staged sequences (entrance fades, branch draw-in).
+> **Note:** On-load entrance fade/translate animations are currently **disabled** across the entire page. The page renders static on load. The branch draw-in (`stroke-dashoffset` animation) in `AdaptationFlow.tsx` is the only active keyframe sequence tied to a specific user interaction (locale pill selection).
 
 ### Scale on press (spring bounce)
 
-Every interactive button shrinks to `transform: scale(0.95)` on `:active` with a spring overshoot easing on release (`200ms cubic-bezier(0.34, 1.56, 0.64, 1)`). This creates a satisfying press-and-bounce feel. Applied universally to `btn-primary`, `btn-brand`, `btn-global`, `btn-demo`, and `tw-translate`.
+Every interactive button shrinks to `transform: scale(0.95)` on `:active` with a spring overshoot easing on release (`200ms cubic-bezier(0.34, 1.56, 0.64, 1)`). This creates a satisfying press-and-bounce feel. Applied universally to `btn-primary`, `btn-brand`, `btn-global`, `btn-secondary`.
 
 ### `will-change`
 
@@ -254,7 +280,7 @@ Only on `transform`, `opacity`, `filter`. Never `will-change: all`. Only add whe
 
 ### `prefers-reduced-motion`
 
-Globe rotation honors `prefers-reduced-motion`. New animations should too — set duration to 0 or skip the keyframe entirely.
+New animations must respect `prefers-reduced-motion`. Set duration to `0` or skip the keyframe entirely.
 
 ---
 
@@ -262,20 +288,19 @@ Globe rotation honors `prefers-reduced-motion`. New animations should too — se
 
 ### 6.1 Buttons
 
-**Primary scarlet pill** (`btn-global`, `btn-brand`, etc.):
+**Primary scarlet pill** (`btn-global`, `btn-brand`):
 - Family `--ff-sans`, weight 700, size 14px, line-height 1 (trimmed), letter-spacing 0.005em
-- Background `--scarlet`, color `--vellum`, no border
+- Background `linear-gradient(to bottom, var(--scarlet-tint-1), var(--scarlet))`, color `--vellum`, no border
 - Padding `10px var(--sp-3)`, border-radius `var(--r-pill)`, min-height **40px**
 - Hover → `--scarlet-shade-1`, active → `--scarlet-shade-2` + `scale(0.96)`
 
 **Secondary white pill** (`btn-secondary`):
 - Same type spec as primary (14px, 700, line-height 1, trimmed)
-- Background `linear-gradient(to bottom, #ffffff, #f7f7f5)` — subtle top-to-bottom gradient for depth
+- Background `linear-gradient(to bottom, var(--btn-bg-top), var(--btn-bg-mid))` — subtle top-to-bottom gradient for depth
 - Color `--ink`, 1px border `--surface-divider`
 - Padding `10px var(--sp-2-5)`, border-radius `var(--r-pill)`, min-height **40px**
-- Box-shadow `0 1px 2px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.03)`
-- Hover → gradient darkens to `#f7f7f5 → #f0f0ec`, border `--surface-divider-hover`
-- Active → gradient `#f0f0ec → #eaeae6` + `scale(0.95)` with spring bounce
+- Hover → gradient `var(--btn-bg-mid) → var(--btn-bg-bottom)`, border `--surface-divider-hover`
+- Active → gradient `var(--btn-bg-bottom) → var(--btn-bg-active)` + `scale(0.95)` with spring bounce
 
 **Ink primary pill** (`btn-primary`, e.g. nav "Go global"):
 - Same shape as primary scarlet, swap background to `--ink`, hover `--ink-tint-1`, active `--ink-shade-2`
@@ -290,7 +315,7 @@ The signature double-border that introduces the cascade.
 │  │   textarea — t-body, padding sp-3                   │  │
 │  └─────────────────────────────────────────────────────┘  │
 │  ┌─ buttons row, padding sp-1-5 sp-1 sp-half sp-1 ──────┐ │
-│  │  [Demo story]                       [Take this global →] │
+│  │  [Demo story]                   [Take this global →] │  │
 │  └─────────────────────────────────────────────────────┘  │
 ─────────────────────────────────────────────────────────────
 ```
@@ -301,9 +326,11 @@ Outer max-width **`--container-narrow` (720px)** — the story passage should fe
 
 Hover/focus state: outer border deepens to `--vellum-shade-3`, shadow lifts (1+2 / 8+24 layered).
 
+**Mobile:** `max-height: 200px` on the textarea with `overflow-y: auto` to ensure the CTA button stays visible in the viewport.
+
 ### 6.3 Bento cards (the universal card pattern)
 
-**This is the ONE card style used everywhere on the page.** Testimonials, features, proof stats, story steps — all use the same card. Never invent a new card style.
+**This is the ONE card style used everywhere on the page.** Testimonials, features, proof stats — all use the same card. Never invent a new card style.
 
 ```css
 .any-card {
@@ -322,6 +349,8 @@ Properties (all mandatory, no exceptions):
 - Padding: `var(--sp-4)` (32px)
 - Box-shadow: `none` (shadows are currently disabled site-wide)
 - No hover state change on cards (background stays the same)
+
+**Exception — Transposition bento card:** uses `var(--vellum-shade-half)` as its background (one step warmer than card-white) and `1px solid var(--vellum-shade-1)` border so it reads distinctly against the surrounding vellum page background. No hover background change.
 
 Card title: `t-h4` (20px, semibold), `margin-bottom: var(--sp-1-5)`
 Card body: `t-body-sm` (14px), `color: var(--text-secondary)`
@@ -347,9 +376,9 @@ Mandatory properties:
 
 Column counts used on this site:
 - 6 columns: feature bento (with span-2, span-3, span-4 on cells)
-- 3 columns: proof cards
-- 2 columns: testimonials
-- 4 columns: story steps
+- 3 columns: proof cards (collapse to 1 column on mobile)
+- 2-column / alternating: testimonials (see §6.10)
+- 4 columns: show grid (pairs of source + adaptations)
 
 On mobile (`max-width: 767px`), all grids collapse to `grid-template-columns: 1fr`.
 
@@ -378,7 +407,7 @@ Never use arbitrary greys, rgba values, or hardcoded hex for separators.
 ### 6.7 Locale cards (cascade)
 
 Each card:
-- Outer container `--surface-card`, 1px `--surface-divider`, radius `--r-card` (6px), `overflow: hidden`
+- Outer container `--surface-card`, 1px `--surface-divider`, radius `--r-card` (14px), `overflow: hidden`
 - Eyebrow strip: flag + country name in `t-eyebrow` (Mallory regular, trimmed line-height 1, all caps), background `--vellum-tint-3`, bottom 1px `--surface-divider`
 - Image area: 4:3 aspect, current placeholder is a `--vellum-shade-1 → --vellum-tint-3` gradient with city name in `t-display` faded out. Replace with real photography per §7.
 - Story text: `t-body-sm` (Mallory Compact 14px / 1.55), padded `sp-3`, color `--text-secondary`
@@ -390,9 +419,26 @@ Each card:
 
 Stroke `--vellum-shade-2`, 1px, no fill. On entry each path animates `stroke-dashoffset: 600 → 0` with the staggered delays in §5.
 
-### 6.9 Globe (existing — Satyam)
+### 6.9 Show cards (blockbusters section)
 
-Hand-coded canvas wireframe with cursor-repel physics, multilingual character glyphs, and scarlet hover halo. Rotation paused under `prefers-reduced-motion`. Anchored to bottom of hero, only top hemisphere visible. Don't touch unless tasked.
+The `ShowsSection` component renders the adapted-show grid. Each show occupies two adjacent grid columns: the **source card** (thumbnail + title + genre tags + stats) and the **adaptations card** (3 locale thumbnails side-by-side). Implemented in `components/ShowsSection.tsx`.
+
+**Vinyl hover animation:** the source card thumbnail rotates to a gentle `@keyframes vinyl-spin` on hover, giving the illusion of a spinning record. The play icon (Feather Icons polygon) appears centered over the thumbnail on hover, colored `var(--ink)`.
+
+Genre tags use `--r-tag` (4px), background `--ink`, color `--vellum-tint-7`. Locale pills on adaptation thumbnails use the same shape with the locale's flag icon.
+
+### 6.10 Testimonials
+
+The testimonials section uses an **alternating two-column layout** — not a uniform card grid:
+
+- **Row A** (odd rows): author block on left (`1fr`), quote card on right (`2fr`)
+- **Row B** (even rows): quote card on left (`2fr`), author block on right (`1fr`)
+
+Author block (`.t-row__author`): unboxed — no card background. Avatar (60px circle), name in `var(--fs-lg)` bold, locale subtitle in `var(--fs-base)` `--text-secondary`. On Row A the block aligns right (toward the quote); on Row B it aligns left.
+
+Quote card (`.t-row__quote`): standard card pattern — `--surface-card` background, `--border-hairline`, `--r-card`, `var(--sp-4)` padding. Quote text `var(--fs-xl)`, no decorative quote marks. Italicize `<em>` for titles; bold `<strong>` for key claims and all mentions of Atlas.
+
+**Mobile:** single column, quote card first, author block below (left-aligned, avatar + name/locale in a row).
 
 ---
 
@@ -402,10 +448,10 @@ These ride on top of every component, drawn from the [make-interfaces-feel-bette
 
 | # | Principle | Atlas application |
 | --- | --- | --- |
-| 1 | **Concentric border radius** | Outer = inner + padding. Enforced for the adapter input (16 / 10 with sp-1) and translation window (20 / 12 with sp-1). |
+| 1 | **Concentric border radius** | Outer = inner + padding. Enforced for the adapter input (16 / 10 with sp-1). |
 | 2 | **Optical over geometric alignment** | Button `→` arrows offset by 4–6px from text via `gap: var(--sp-1)`. Flag emoji + country label horizontally aligned via flex `gap: var(--sp-1)`, no padding tweaks needed. |
 | 3 | **Shadows over borders for depth** | Hover lifts use layered `box-shadow` with multiple transparency stops, not heavier borders. Hairline borders stay at 1px. |
-| 4 | **Interruptible animations** | Hover/active use `transition`. Entrance and branch draw-in use `@keyframes`. |
+| 4 | **Interruptible animations** | Hover/active use `transition`. Branch draw-in and vinyl spin use `@keyframes`. |
 | 5 | **Split + stagger entrances** | Locale cards stagger by 120ms (0.20s through 0.68s); branches stagger by 80ms. |
 | 6 | **Subtle exits** | No exit animations on this page yet. When added, use small `translateY` (8–12px) not full height. |
 | 7 | **Contextual icon animations** | When buttons swap state (e.g. "Take this global →" → "Adapting…"), icons cross-fade with `cubic-bezier(0.2, 0, 0, 1)`, opacity 0↔1, scale 0.25↔1, blur 4px↔0. Both icons in DOM, one absolute. |
@@ -416,8 +462,8 @@ These ride on top of every component, drawn from the [make-interfaces-feel-bette
 | 12 | **Scale on press** | All buttons `transform: scale(0.95)` on `:active` with spring-bounce release (`200ms cubic-bezier(0.34, 1.56, 0.64, 1)`). |
 | 13 | **Skip animation on page-load** for already-visible content | When framer-motion arrives, use `initial={false}` on `AnimatePresence` for default-state elements. Today the page has no `AnimatePresence` so this is documentation-only. |
 | 14 | **Never `transition: all`** | Always specify properties: `transition: background 120ms var(--ease), transform 120ms var(--ease)`. Confirmed in code review. |
-| 15 | **Sparse `will-change`** | Only on `.bcell`, `.card`, `.locale-card` for `transform`. Never `will-change: all`. |
-| 16 | **40px hit area minimum** | All buttons enforce `min-height: 40px`. Nav links use `padding: 12px 4px` (= 40px effective hit on the 14px font). Tab buttons have `padding: 5px 10px` and need a pseudo-element extension if their visible height drops below 40px. |
+| 15 | **Sparse `will-change`** | Only on `.bcell`, `.locale-card` for `transform`. Never `will-change: all`. |
+| 16 | **40px hit area minimum** | All buttons enforce `min-height: 40px`. Nav links use `padding: 12px 4px` (= 40px effective hit on the 14px font). |
 
 ### Trim-height (project-specific addition)
 
