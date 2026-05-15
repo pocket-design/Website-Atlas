@@ -1,3 +1,5 @@
+import React from 'react';
+
 const PLAY_ICON = (
   <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <polygon points="5 3 19 12 5 21 5 3" />
@@ -81,8 +83,8 @@ export default function ShowsSection() {
   return (
     <div className="show-grid">
       {SHOWS.map((show) => (
-        <>
-          <div key={show.href} className="show-card">
+        <React.Fragment key={show.href}>
+          <div className="show-card">
             <a className="show-card-thumb-wrap" href={show.href} target="_blank" rel="noopener">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={show.thumb} alt="" className="show-card-thumb" />
@@ -102,7 +104,7 @@ export default function ShowsSection() {
               </div>
             </div>
           </div>
-          <div key={`${show.href}-adaptations`} className="show-card show-card-adaptations">
+          <div className="show-card show-card-adaptations">
             {show.adaptations.map((a) => (
               <a key={a.href} className="show-adapt-thumb" href={a.href} target="_blank" rel="noopener">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -115,7 +117,7 @@ export default function ShowsSection() {
               </a>
             ))}
           </div>
-        </>
+        </React.Fragment>
       ))}
     </div>
   );
