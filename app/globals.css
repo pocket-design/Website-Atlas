@@ -2433,7 +2433,7 @@ footer {
 .testimonials .section-header {
   max-width: var(--container);
   margin: 0 auto var(--sp-4);
-  text-align: right;
+  text-align: left;
 }
 /* Testimonials — alternating author-left / quote-left rows */
 .testimonials-rows {
