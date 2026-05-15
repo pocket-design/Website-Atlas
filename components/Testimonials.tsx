@@ -50,7 +50,12 @@ export default function Testimonials() {
   return (
     <section id="testimonials" className="testimonials">
       <div className="section-header">
-        <h2 className="t-h3">What the writers from around the world say about Atlas.</h2>
+        <div className="testimonials-flags">
+          {['fi-it', 'fi-us', 'fi-in', 'fi-fr', 'fi-de'].map(flag => (
+            <span key={flag} className={`fi ${flag} testimonials-flag`} />
+          ))}
+        </div>
+        <h2 className="t-h3">What the writers from around the world<br />say about Atlas.</h2>
       </div>
       <div className="testimonials-rows">
         {TESTIMONIALS.map((t, i) => {

@@ -2435,6 +2435,17 @@ footer {
   margin: 0 auto var(--sp-4);
   text-align: left;
 }
+.testimonials-flags {
+  display: flex;
+  gap: var(--sp-1);
+  margin-bottom: var(--sp-2);
+}
+.testimonials-flag {
+  width: 28px;
+  height: 20px;
+  border-radius: 3px;
+  opacity: 0.85;
+}
 /* Testimonials — alternating author-left / quote-left rows */
 .testimonials-rows {
   max-width: var(--container);
@@ -2529,6 +2540,9 @@ footer {
   }
   .testimonials .section-header {
     text-align: center;
+  }
+  .testimonials-flags {
+    justify-content: center;
   }
   .testimonials-rows {
     gap: var(--sp-5);
