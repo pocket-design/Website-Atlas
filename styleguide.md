@@ -77,7 +77,7 @@ These form the `btn-secondary` (white pill) and `try-icon-btn` gradient ladder. 
 | `--surface-alt` | `--vellum-shade-1` | Alt section background |
 | `--surface-divider` | `--vellum-shade-half` | Default hairlines |
 | `--surface-divider-hover` | `--vellum-shade-1` | Hairlines on hover/focus |
-| `--surface-inverse` | `--ink` | Dark fold background (footer) |
+| `--surface-inverse` | `#000000` | Dark fold background (footer) |
 
 ---
 

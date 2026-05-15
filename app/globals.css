@@ -59,7 +59,7 @@
   --surface-alt:            var(--vellum-shade-1);
   --surface-divider:        var(--vellum-shade-half); /* default hairline — barely there on white and beige */
   --surface-divider-hover:  var(--vellum-shade-1);    /* slight emphasis on hover/focus, still soft */
-  --surface-inverse:        var(--ink);
+  --surface-inverse:        #000000;
 
   /* Spacing (8px grid) */
   --sp-half: 4px;
