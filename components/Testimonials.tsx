@@ -2,32 +2,32 @@ import type { ReactNode } from 'react';
 
 const TESTIMONIALS: { name: string; locale: string; flag: string; avatar: string; quote: ReactNode }[] = [
   {
-    name: 'Kathrin Corpataux',
-    locale: 'Germany',
-    flag: 'fi-de',
-    avatar: 'https://i.pravatar.cc/120?img=47',
-    quote: <>The cultural audit caught the small things I would have flattened in translation. Its substitution prompts helped me rebuild scenes around American rhythms without losing <strong>the story&apos;s quiet German interiority</strong>.</>,
+    name: 'Daniele Grassetti',
+    locale: 'Italy',
+    flag: 'fi-it',
+    avatar: '/assets/testimonials/daniele-grassetti.png',
+    quote: <><strong>Atlas</strong> significantly accelerated and refined the DE→IT adaptation process. The Italian dialogue feels natural, the pacing is improved, and the tone and intent of the German original are well preserved. It saves a considerable amount of time <strong>without compromising quality</strong>.</>,
   },
   {
-    name: 'Priya Venkataraman',
+    name: 'Blaine Axel Knight',
+    locale: 'United States',
+    flag: 'fi-us',
+    avatar: '/assets/testimonials/blaine-axel-knight.png',
+    quote: <><strong>Atlas</strong> handled cultural references, character dynamics, and setting changes thoughtfully while preserving the core story. What would normally require extensive rewriting and research became a <strong>much more streamlined process</strong>.</>,
+  },
+  {
+    name: 'Mallika',
     locale: 'India',
     flag: 'fi-in',
-    avatar: 'https://i.pravatar.cc/120?img=38',
-    quote: <><strong>Atlas</strong> understood that my protagonist&apos;s relationship with her mother in law carries entirely different weight in an Indian context versus a Western one. It <strong>rebuilt those scenes from the inside out</strong>.</>,
+    avatar: '/assets/testimonials/mallika.png',
+    quote: <>The standout feature was its adaptation capability. It transformed my Korean script into an American setting, handling names, locations, and cultural nuances that would have otherwise required <strong>considerable manual effort</strong>.</>,
   },
   {
-    name: 'Yuki Tanaka',
-    locale: 'Japan',
-    flag: 'fi-jp',
-    avatar: 'https://i.pravatar.cc/120?img=67',
-    quote: <>Honorifics, gifting scenes, the weight of silence between characters. <strong>Atlas</strong> mapped all of it onto equivalents that English readers would <strong>feel rather than just read</strong>.</>,
-  },
-  {
-    name: 'Sophie Laurent',
+    name: 'Francis Nief',
     locale: 'France',
     flag: 'fi-fr',
-    avatar: 'https://i.pravatar.cc/120?img=9',
-    quote: <>In French romance, restraint is everything. <strong>Atlas</strong> knows that. The English version it produced <strong>never overexplained what should be left unspoken</strong>, and the audience retention data proved it.</>,
+    avatar: '/assets/testimonials/francis-nief.png',
+    quote: <><strong>Atlas</strong> helped me quickly access precise information about the show&apos;s complex universe, making the French localization richer and more coherent. It supported the process <strong>without limiting creativity</strong>.</>,
   },
 ];
 
