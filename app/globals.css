@@ -2435,6 +2435,14 @@ footer {
   margin: 0 auto var(--sp-4);
   text-align: left;
 }
+.testimonials-heart {
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  vertical-align: middle;
+  margin-bottom: 0.1em;
+  fill: var(--scarlet);
+}
 .testimonials-flags {
   display: flex;
   gap: var(--sp-1);
