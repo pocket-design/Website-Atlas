@@ -1432,8 +1432,8 @@ section.hero,
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: var(--vellum-shade-half);
-  border: 1px solid var(--vellum-shade-1);
+  background: var(--surface-card);
+  border: var(--border-hairline);
 }
 .bento-hero-left .bcell-graphic {
   contain: size !important;
