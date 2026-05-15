@@ -2463,7 +2463,7 @@ footer {
   justify-content: flex-start;
 }
 .t-row--b .t-row__author {
-  justify-content: flex-start;
+  justify-content: flex-end;
 }
 .t-author-block {
   display: flex;
@@ -2475,8 +2475,8 @@ footer {
   text-align: left;
 }
 .t-row--b .t-author-block {
-  align-items: flex-start;
-  text-align: left;
+  align-items: flex-end;
+  text-align: right;
 }
 .t-row__quote {
   background: var(--surface-card);
