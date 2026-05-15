@@ -651,7 +651,7 @@ section.hero,
   align-items: center;
   pointer-events: none;
 }
-.hero-copy-wrap .adapt-flow {
+.hero .adapt-flow {
   pointer-events: auto;
 }
 .hero-puff {
