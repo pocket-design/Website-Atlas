@@ -1402,7 +1402,7 @@ section.hero,
   box-shadow: none;
   transition: background-color var(--dur-instant) var(--ease), box-shadow var(--dur-instant) var(--ease), border-color var(--dur-instant) var(--ease);
 }
-.bcell:hover {
+.bcell:not(.bento-hero-left):hover {
   background-color: var(--surface-card);
 }
 .bcell.span-2 { grid-column: span 2; }
@@ -1434,9 +1434,6 @@ section.hero,
   overflow: hidden;
   background: var(--vellum-shade-half);
   border: 1px solid var(--vellum-shade-1);
-}
-.bento-hero-left:hover {
-  background: var(--vellum-shade-1);
 }
 .bento-hero-left .bcell-graphic {
   contain: size !important;
