@@ -1,3 +1,5 @@
+'use client';
+import { useRef, useEffect } from 'react';
 import type { ReactNode } from 'react';
 
 const TESTIMONIALS: { name: string; locale: string; flag: string; avatar: string; quote: ReactNode }[] = [
@@ -47,8 +49,15 @@ function AuthorBlock({ t }: { t: typeof TESTIMONIALS[0] }) {
 }
 
 export default function Testimonials() {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('is-in-view'); io.disconnect(); } }, { threshold: 0.15 });
+    io.observe(el); return () => io.disconnect();
+  }, []);
+
   return (
-    <section id="testimonials" className="testimonials">
+    <section ref={ref} id="testimonials" className="testimonials">
       <div className="section-header">
         <div className="testimonials-flags">
           {['fi-it', 'fi-us', 'fi-in', 'fi-fr', 'fi-de'].map(flag => (

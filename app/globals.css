@@ -2541,6 +2541,26 @@ footer {
   align-items: center;
   gap: var(--sp-1);
 }
+
+/* ── Quote sheen — red sweep through bold words on scroll into view ── */
+.testimonials.is-in-view .t-quote strong {
+  background: linear-gradient(90deg, var(--text-primary) 35%, var(--scarlet) 50%, var(--text-primary) 65%);
+  background-size: 400% 100%;
+  background-position: 150% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: quote-sheen 3s ease-in-out 1 forwards;
+}
+.testimonials.is-in-view .t-row:nth-child(1) .t-quote strong { animation-delay: 0.2s; }
+.testimonials.is-in-view .t-row:nth-child(2) .t-quote strong { animation-delay: 3.2s; }
+.testimonials.is-in-view .t-row:nth-child(3) .t-quote strong { animation-delay: 6.2s; }
+.testimonials.is-in-view .t-row:nth-child(4) .t-quote strong { animation-delay: 9.2s; }
+
+@keyframes quote-sheen {
+  from { background-position: 150% center; }
+  to   { background-position: -50% center; }
+}
 @media (max-width: 767px) {
   .testimonials {
     padding-left: 20px;
