@@ -1,27 +1,31 @@
 import type { ReactNode } from 'react';
 
-const TESTIMONIALS: { name: string; locale: string; avatar: string; quote: ReactNode }[] = [
+const TESTIMONIALS: { name: string; locale: string; flag: string; avatar: string; quote: ReactNode }[] = [
   {
     name: 'Kathrin Corpataux',
     locale: 'Germany',
+    flag: 'fi-de',
     avatar: 'https://i.pravatar.cc/120?img=47',
     quote: <>The cultural audit caught the small things I would have flattened in translation. Its substitution prompts helped me rebuild scenes around American rhythms without losing <strong>the story&apos;s quiet German interiority</strong>.</>,
   },
   {
     name: 'Priya Venkataraman',
     locale: 'India',
+    flag: 'fi-in',
     avatar: 'https://i.pravatar.cc/120?img=38',
     quote: <><strong>Atlas</strong> understood that my protagonist&apos;s relationship with her mother in law carries entirely different weight in an Indian context versus a Western one. It <strong>rebuilt those scenes from the inside out</strong>.</>,
   },
   {
     name: 'Yuki Tanaka',
     locale: 'Japan',
+    flag: 'fi-jp',
     avatar: 'https://i.pravatar.cc/120?img=67',
     quote: <>Honorifics, gifting scenes, the weight of silence between characters. <strong>Atlas</strong> mapped all of it onto equivalents that English readers would <strong>feel rather than just read</strong>.</>,
   },
   {
     name: 'Sophie Laurent',
     locale: 'France',
+    flag: 'fi-fr',
     avatar: 'https://i.pravatar.cc/120?img=9',
     quote: <>In French romance, restraint is everything. <strong>Atlas</strong> knows that. The English version it produced <strong>never overexplained what should be left unspoken</strong>, and the audience retention data proved it.</>,
   },
@@ -34,7 +38,9 @@ function AuthorBlock({ t }: { t: typeof TESTIMONIALS[0] }) {
       <img className="testimonial-card__avatar" src={t.avatar} alt={t.name} />
       <div className="testimonial-card__meta">
         <strong className="testimonial-card__name">{t.name}</strong>
-        <span className="testimonial-card__locale">Writer from {t.locale}</span>
+        <span className="testimonial-card__locale">
+          <span className={`locale-flag fi ${t.flag}`} aria-hidden="true" /> Writer from {t.locale}
+        </span>
       </div>
     </div>
   );
