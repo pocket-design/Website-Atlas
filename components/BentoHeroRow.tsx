@@ -6,7 +6,7 @@ export default function BentoHeroRow() {
       <div className="bcell bento-hero-left">
         <BentoGraphic scene="transpose" />
         <div className="bento-hero-left-copy">
-          <h3 className="t-h4">Full cultural transposition, not translation</h3>
+          <h3 className="t-h4">Cultural transposition, not translation</h3>
           <p className="t-body-sm">
             Names, places, and everyday details become culturally native. A corner store is a Späti in Berlin, a kirana in Mumbai, a colmado in Madrid, an épicerie in Paris. Food, humor, and family dynamics are rebuilt from scratch. <strong>Your audience never senses a foreign origin.</strong>
           </p>

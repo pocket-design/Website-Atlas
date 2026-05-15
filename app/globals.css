@@ -1668,7 +1668,19 @@ section.hero,
 
 @media (max-width: 767px) {
   .magnets-container {
-    display: none;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: var(--sp-4) 0 var(--sp-2);
+  }
+  .magnet-scattered {
+    position: static !important;
+    left: unset !important;
+    top: unset !important;
+    height: 60px;
   }
 }
 

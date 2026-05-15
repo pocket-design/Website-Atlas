@@ -144,7 +144,7 @@ export default function Home() {
         <div className="bento-grid">
           <div className="bcell span-3">
             <BentoGraphic scene="triage" />
-            <h3 className="t-h4">Fully genre-aware</h3>
+            <h3 className="t-h4">Genre-aware adaptation</h3>
             <p className="t-body-sm">
               Atlas reads your genre and adapts accordingly. Humor lands differently in comedy, tension builds differently in suspense, intimacy shifts in romance. <strong>A romance adapts differently from a thriller.</strong>
             </p>
