@@ -6,28 +6,28 @@ const TESTIMONIALS: { name: string; locale: string; flag: string; avatar: string
     locale: 'Italy',
     flag: 'fi-it',
     avatar: '/assets/testimonials/daniele-grassetti.png',
-    quote: <><strong>Atlas</strong> significantly accelerated and refined the DE→IT adaptation process. The Italian dialogue feels natural, the pacing is improved, and the tone and intent of the German original are well preserved. It saves a considerable amount of time <strong>without compromising quality</strong>.</>,
+    quote: <><strong>Atlas significantly accelerated</strong> and refined the DE→IT adaptation process. The Italian dialogue feels natural, the pacing is improved, and the tone and intent of the German original are well preserved. It saves a considerable amount of time without compromising quality.</>,
   },
   {
     name: 'Blaine Axel Knight',
     locale: 'United States',
     flag: 'fi-us',
     avatar: '/assets/testimonials/blaine-axel-knight.png',
-    quote: <><strong>Atlas</strong> handled cultural references, character dynamics, and setting changes thoughtfully while preserving the core story. What would normally require extensive rewriting and research became a <strong>much more streamlined process</strong>.</>,
+    quote: <><strong>Atlas handled cultural references,</strong> character dynamics, and setting changes thoughtfully while preserving the core story. What would normally require extensive rewriting and research became a much more streamlined process.</>,
   },
   {
     name: 'Mallika',
     locale: 'India',
     flag: 'fi-in',
     avatar: '/assets/testimonials/mallika.png',
-    quote: <>The standout feature was its adaptation capability. It transformed my Korean script into an American setting, handling names, locations, and cultural nuances that would have otherwise required <strong>considerable manual effort</strong>.</>,
+    quote: <><strong>Atlas transformed my Korean script</strong> into an American setting, handling names, locations, and cultural nuances that would have otherwise required considerable manual effort. What stood out most was how thoughtfully it preserved the core story.</>,
   },
   {
     name: 'Francis Nief',
     locale: 'France',
     flag: 'fi-fr',
     avatar: '/assets/testimonials/francis-nief.png',
-    quote: <><strong>Atlas</strong> helped me quickly access precise information about the show&apos;s complex universe, making the French localization richer and more coherent. It supported the process <strong>without limiting creativity</strong>.</>,
+    quote: <><strong>Atlas helped me navigate</strong> the show&apos;s complex universe precisely, making the French localization richer and more coherent. It supported the process without limiting creativity, allowing me to focus entirely on rewriting.</>,
   },
 ];
 
