@@ -2518,6 +2518,9 @@ footer {
   font-family: var(--ff-sans);
   font-size: var(--fs-base);
   color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
 }
 @media (max-width: 767px) {
   .testimonials {
