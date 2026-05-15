@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const HERO_IMAGES = [
   { src: '/assets/hero-japan.jpg', cls: 'hero-bg-img--japan' },
-  { src: '/assets/hero-newyork.jpg', cls: '' },
+  { src: '/assets/hero-newyork.jpg', cls: 'hero-bg-img--newyork' },
   { src: '/assets/hero-egypt.jpg', cls: '' },
 ];
 
