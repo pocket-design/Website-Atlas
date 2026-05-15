@@ -54,7 +54,7 @@ export default function Testimonials() {
       </div>
       <div className="testimonials-rows">
         {TESTIMONIALS.map((t, i) => {
-          const isEven = i % 2 !== 0;
+          const isEven = i % 2 === 0;
           return (
             <article key={i} className={`t-row ${isEven ? 't-row--a' : 't-row--b'}`}>
               {isEven ? (

@@ -2433,7 +2433,7 @@ footer {
 .testimonials .section-header {
   max-width: var(--container);
   margin: 0 auto var(--sp-4);
-  text-align: left;
+  text-align: right;
 }
 /* Testimonials — alternating author-left / quote-left rows */
 .testimonials-rows {
@@ -2460,10 +2460,10 @@ footer {
   align-items: center;
 }
 .t-row--a .t-row__author {
-  justify-content: flex-start;
+  justify-content: flex-end;
 }
 .t-row--b .t-row__author {
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 .t-author-block {
   display: flex;
@@ -2471,12 +2471,12 @@ footer {
   gap: var(--sp-2);
 }
 .t-row--a .t-author-block {
-  align-items: flex-start;
-  text-align: left;
-}
-.t-row--b .t-author-block {
   align-items: flex-end;
   text-align: right;
+}
+.t-row--b .t-author-block {
+  align-items: flex-start;
+  text-align: left;
 }
 .t-row__quote {
   background: var(--surface-card);
