@@ -1896,7 +1896,7 @@ section.hero,
   width: 140px;
   height: 140px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 0;
   flex-shrink: 0;
 }
 .show-card-thumb-wrap {
@@ -2047,7 +2047,7 @@ section.hero,
   height: 100%;
   object-fit: cover;
   display: block;
-  border-radius: 8px;
+  border-radius: 0;
 }
 .show-adapt-pill {
   position: absolute;
